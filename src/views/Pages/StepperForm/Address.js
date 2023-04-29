@@ -82,7 +82,7 @@ function Address() {
           </FormControl>
         </Flex>
 
-        {/* Agrega los demás campos siguiendo este formato */}
+       
       </Flex>
     </GradientBorder>
   );

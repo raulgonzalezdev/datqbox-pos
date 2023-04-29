@@ -7,6 +7,7 @@ import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
 import StepperForm from "views/Pages/StepperForm/StepperForm.js"
+import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js"
 
 import {
   HomeIcon,
@@ -16,6 +17,7 @@ import {
   DocumentIcon,
   RocketIcon,
   SupportIcon,
+  
 } from "components/Icons/Icons";
 
 var dashRoutes = [
@@ -41,6 +43,15 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
     component: Billing,
+    layout: "/admin",
+  },
+  
+  {
+    path: "/periodsaccounting",
+    name: "Periods Accounting",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color='inherit' />,
+    component: PeriodsAccounting,
     layout: "/admin",
   },
   {
