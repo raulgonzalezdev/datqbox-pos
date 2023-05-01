@@ -4,15 +4,17 @@ import UserInfo from "./UserInfo";
 import Address from "./Address";
 import Social from "./Social";
 import Profile from "./Profile";
+import UsersList from "./UsersList"
 
 const steps = [
   { title: "User Info" },
   { title: "Address" },
   { title: "Social" },
   { title: "Profile" },
+  { title: "Users List" },
 ];
 
-const components = [UserInfo, Address, Social, Profile];
+const components = [UserInfo, Address, Social, Profile, UsersList];
 
 const StepperForm = () =>{
 

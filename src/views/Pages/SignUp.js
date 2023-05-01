@@ -30,6 +30,7 @@ function SignUp() {
   const textColor = "gray.400";
 
   return (
+    <GradientBorder p='2px' me={{ base: "none", lg: "30px", xl: "none" }}>
     <Flex position='relative' overflow={{ lg: "hidden" }}>
       <Flex
         flexDirection='column'
@@ -350,6 +351,8 @@ function SignUp() {
         </Box>
       </Flex>
     </Flex>
+    </GradientBorder>
+
   );
 }
 

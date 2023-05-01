@@ -102,14 +102,14 @@ function StepperForm({ steps, components, onSubmit }) {
             <Box mb="8">
               <Flex justifyContent="space-between" width="100%">
                 {activeStep > 0 && (
-                  <Button maxW='135px' fontSize='10px' variant='brand'  bg="gray.300" _hover={{ bg: "gray.400" }} onClick={handlePrev} mr="8">
+                  <Button maxW='200px' fontSize='14px' variant='brand'  bg="gray.300" _hover={{ bg: "gray.400" }} onClick={handlePrev} mr="8">
                     Prev
                   </Button>
                 )}
                 {activeStep < steps.length - 1 ? (
-                  <Button maxW='135px' fontSize='10px' variant='brand' onClick={handleNext}>Next</Button>
+                  <Button maxW='200px' fontSize='14px' variant='brand' onClick={handleNext}>Next</Button>
                 ) : (
-                  <Button maxW='135px' fontSize='10px' variant='brand' onClick={() => onSubmit()}>Submit</Button>
+                  <Button maxW='200px' fontSize='14px' variant='brand' onClick={() => onSubmit()}>Submit</Button>
                 )}
               </Flex>
             </Box>

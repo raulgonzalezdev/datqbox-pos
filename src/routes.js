@@ -7,6 +7,7 @@ import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
 import StepperForm from "views/Pages/StepperForm/StepperForm.js"
+import UsersList from "views/Pages/StepperForm/UsersList"
 import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js"
 
 import {
@@ -17,6 +18,7 @@ import {
   DocumentIcon,
   RocketIcon,
   SupportIcon,
+  
   
 } from "components/Icons/Icons";
 
@@ -30,11 +32,19 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    path: "/Userslist",
+    name: "User List",
+    rtlName: "لوحة القيادة",
+    icon: <StatsIcon color='inherit' />,
+    component: UsersList,
+    layout: "/admin",
+  },
+  {
     path: "/tables",
     name: "Tables",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
-    component: Tables,
+    component:Tables,
     layout: "/admin",
   },
   {

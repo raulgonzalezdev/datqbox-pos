@@ -1,23 +1,55 @@
 // ReusableComponents.js
 import React from "react";
-import { Flex, Text,FormLabel as ChakraFormLabel,  Input as ChakraInput, Select as ChakraSelect } from "@chakra-ui/react";
+import { Flex, Text,FormLabel as ChakraFormLabel, Textarea as ChakraTextarea,  Input as ChakraInput, Select as ChakraSelect } from "@chakra-ui/react";
 import GradientBorder from "components/GradientBorder/GradientBorder";
 
-export const StyledInput = ({ ...props }) => (
-  <ChakraInput size="lg" w={{ base: "100%", md: "346px" }} h="46px" {...props} />
+export const StyledTextarea = ({ ...props }) => (
+  <ChakraTextarea
+    size="md" 
+    w={{ base: "100%", md: "346px" }} 
+    h="46px" 
+    placeholderTextColor="black" 
+    focusBorderColor="black" 
+    borderColor="gray.300"
+    bg="white"
+    color="black"
+    {...props}
+  />
 );
 
+export const StyledInput = ({ ...props }) => (
+  <ChakraInput 
+    size="md" 
+    w={{ base: "100%", md: "546px" }} 
+    h="46px" 
+    placeholderTextColor="black" 
+    focusBorderColor="black" 
+    borderColor="gray.300"
+    bg="white"
+    color="black"
+    {...props} 
+  />
+);
+
+
 export const StyledFormLabel = ({ ...props }) => (
-    <ChakraFormLabel ms='4px' fontSize='sm' color='white' {...props} fontWeight='normal' />
+    <ChakraFormLabel ms='4px' fontSize='md' color='white' {...props} fontWeight='normal' />
   );
   
 
 export const StyledSelect = ({ ...props }) => (
-  <ChakraSelect size="lg" w={{ base: "100%", md: "346px" }} h="46px" {...props} />
+  <ChakraSelect size="lg"
+   w={{ base: "100%", md: "346px" }}
+   h="46px"
+   placeholderTextColor="black" 
+   focusBorderColor="black" 
+   borderColor="gray.300"
+   bg="white"
+   color="black" {...props} />
 );
 
 export const GradientInput = ({ children, ...props }) => (
-  <GradientBorder mb="24px" h="50px" w={{ base: "100%", lg: "fit-content" }} borderRadius="20px" {...props}>
+  <GradientBorder mb="24px" h="50px" w={{ base: "100%", lg: "fit-content" }} borderRadius="15px"  {...props}>
     {children}
   </GradientBorder>
 );

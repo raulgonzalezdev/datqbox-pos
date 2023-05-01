@@ -241,7 +241,7 @@ export const tablesTableData = [
     date: "21/01/21",
   },
   {
-    logo: avatar7,
+    logo: avatar5,
     name: "Mark Wilson",
     email: "mark@simmmple.com",
     subdomain: "Designer",

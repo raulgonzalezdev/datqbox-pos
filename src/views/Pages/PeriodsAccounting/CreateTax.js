@@ -82,7 +82,7 @@ function CreateTax() {
           </Text>
         </CardHeader>
         <CardBody>
-          <Box sx={{ height: 400, width: "100%" }}>
+        <Box sx={{ width: "100%" }}>
           <ThemeProvider theme={taxTableTheme}>
             <DataGrid
               rows={rows}
@@ -97,6 +97,8 @@ function CreateTax() {
               pageSizeOptions={[5]}
               checkboxSelection
               disableRowSelectionOnClick
+              color="secondary" // o color="secondary"
+               autoHeight
             />
              </ThemeProvider>
           </Box>

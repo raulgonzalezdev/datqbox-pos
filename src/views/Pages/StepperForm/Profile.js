@@ -1,72 +1,67 @@
 import React from "react";
 import {
   FormControl,
-  FormLabel,
-  Input,
-  Textarea,
   Flex,
-  Text,
 } from "@chakra-ui/react";
+import {
+  StyledInput,
+  GradientInput,
+  StyledFormLabel,
+  StyledTextarea,
+  BaseFlex,
+  StyledText,
+} from "components/ReusableComponents/ReusableComponents";
 
 import GradientBorder from "components/GradientBorder/GradientBorder";
+
 function Profile() {
-  const textColor = "gray.400";
-  const titleColor = "white";
 
   return (
     <GradientBorder p="2px">
-      <Flex
-        background="transparent"
-        borderRadius="30px"
-        direction="column"
-        p="40px"
-        minW={{ base: "unset", md: "430px", xl: "450px" }}
-        w="100%"
-        mx={{ base: "0px" }}
-        bg={{
-          base: "rgb(19,21,56)",
-        }}
-        alignItems="center"
-      >
-        <Text
-          mb="36px"
-          ms="4px"
-          color={textColor}
-          fontWeight="bold"
-          fontSize="14px"
-        >
+      <BaseFlex>
+        <StyledText fontSize="20px">
           Mandatory Informations
-        </Text>
-        <Text
-          mb="36px"
-          ms="4px"
-          color={textColor}
-          fontWeight="bold"
-          fontSize="14px"
-        >
+        </StyledText>
+        <StyledText fontSize="16px">
           Enter your profile information
-        </Text>
+        </StyledText>      
         <FormControl>
-          <FormLabel ms="4px" fontSize="sm" fontWeight="normal" color="white">
+          <StyledFormLabel>
             Public Email
-          </FormLabel>
-          <GradientBorder borderRadius="20px">
-            <Input
-              color="white"
-              bg="rgb(19,21,54)"
-              border="transparent"
-              borderRadius="20px"
-              fontSize="sm"
-              size="lg"
-              w={{ base: "100%", md: "346px" }}
-              maxW="100%"
-              h="46px"
+          </StyledFormLabel>
+              <StyledInput      
               placeholder="Use an address you don't use frequently"
+            />    
+        </FormControl>
+        <Flex  direction="row">
+        <FormControl w="50%" mr={2}>
+          <StyledFormLabel>
+            First Name
+          </StyledFormLabel>
+              <StyledInput
+              placeholder='Enter your first name'
             />
-          </GradientBorder>
+        </FormControl>
+        <FormControl w="50%">
+          <StyledFormLabel>
+            Last Name
+          </StyledFormLabel> 
+            <StyledInput
+              placeholder='Enter your last name'
+            />
+        </FormControl>
+        </Flex>
+        <FormControl>
+          <StyledFormLabel>
+            Bio
+          </StyledFormLabel>       
+            <StyledTextarea                      
+              placeholder='Tell us about yourself'
+            />
+   
         </FormControl>
         {/* Agrega los demás campos siguiendo este formato */}
-      </Flex>
+      </BaseFlex>
     </GradientBorder>
   );
 }
