@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Box, Flex, Button, Input } from "@chakra-ui/react";
-import {
-  StyledInput,
-  StyledText,
-} from "components/ReusableComponents/ReusableComponents";
+import React, { useState, useEffect, useCallback } from "react";
+
+import { Box, Flex, Button } from "@chakra-ui/react";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeProvider } from "@mui/material/styles";
 import taxTableTheme from "theme/themeTableMUI";
@@ -13,45 +10,67 @@ import NumericButtons from "./NumericButtons";
 import CategoryTabs from "./CategoryTabs";
 import { createColumns } from "./gridColumns";
 import GradientBorder from "components/GradientBorder/GradientBorder";
-import CustomInput from "components/CustomInput/CustomInput"
+import CustomInput from "components/CustomInput/CustomInput";
+import { StyledText } from "components/ReusableComponents/ReusableComponents";
 
 const POSApp = () => {
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [selectedOperation, setSelectedOperation] = useState(null);
-  const searchInputRef = useRef(null);
-  const categoryTabsRef = useRef(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [numberBuffer, setNumberBuffer] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const handleRowClick = (params) => {
     setSelectedRowId(params.id);
   };
 
   const handleNumericButtonClick = (number) => {
-    const selectedRow = rows.find((row) => row.id === selectedRowId);
+    console.log(number);
+    if (!selectedRowId) {
+      setInputValue((prevValue) => `${prevValue}${number}`);
+    } else {
+      const selectedRow = rows.find((row) => row.id === selectedRowId);
   
-    if (!selectedRow) {
-      return;
+      if (!selectedRow) {
+        return;
+      }
+  
+      const newRows = rows.map((row) => {
+        if (row.id === selectedRow.id) {
+          if (selectedOperation === "Cant") {
+            row.cant = parseFloat(`${row.cant}${number}`);
+          } else if (selectedOperation === "Precio") {
+            row.price = parseFloat(`${row.price}${number}`);
+          }
+        }
+        return row;
+      });
+  
+      setRows(newRows);
+      updateTotal(newRows);
+      setInputValue((prevValue) => `${prevValue}${number}`);
     }
-  
-    setNumberBuffer((prevNumberBuffer) => {
-      const newNumberBuffer = `${prevNumberBuffer}${number}`;
-      console.log("numberBuffer", newNumberBuffer); // Cambio realizado aquí
-      return newNumberBuffer;
-    });
-    focusSearchInput();
   };
   
+  
 
-  const handleEnterClick = () => {
+  const handleEnterClick = useCallback(() => {
     const selectedRow = rows.find((row) => row.id === selectedRowId);
 
-    if (!selectedRow || !numberBuffer) {
+    if (!selectedRow || !inputValue) {
+      if (!selectedOperation) {
+        fetchProductByCode(inputValue).then((product) => {
+          if (product) {
+            handleProductDoubleClick(product);
+          }
+          setInputValue("");
+        });
+      }
       return;
     }
 
-    const parsedNumber = parseFloat(numberBuffer);
+    const parsedNumber = parseFloat(inputValue);
 
     const newRows = rows.map((row) => {
       if (row.id === selectedRow.id) {
@@ -63,7 +82,7 @@ const POSApp = () => {
             row.price = parsedNumber;
             break;
           case "% Desc":
-            const discount = parseFloat(numberBuffer);
+            const discount = parseFloat(inputValue);
             row.price = row.originalPrice * (1 - discount / 100);
             break;
           default:
@@ -75,36 +94,16 @@ const POSApp = () => {
 
     setRows(newRows);
     updateTotal(newRows);
-    setNumberBuffer(""); // Limpia el buffer después de aplicar el cambio
-    setSelectedOperation(null); // Quita la selección de la operación al presionar Enter
-  };
-  const focusSearchInput = () => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  };
-  
-
-  useEffect(() => {
-    focusSearchInput();
-  }, []);
+    setInputValue("");
+    setSelectedOperation(null);
+  }, [rows, inputValue, selectedOperation, selectedRowId]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (selectedOperation && !isNaN(event.key)) {
-        handleNumericButtonClick(parseInt(event.key, 10));
-      } else {
-        switch (event.key) {
-          case "Enter":
-            handleEnterClick();
-            break;
-          case "Backspace":
-          case "Delete":
-            // Aquí puedes agregar la lógica para manejar el botón "Borrar"
-            break;
-          default:
-            break;
-        }
+      if (event.key === "Enter") {
+        handleEnterClick();
+      } else if (event.key === "Backspace" || event.key === "Delete") {
+        // Aquí puedes agregar la lógica para manejar el botón "Borrar"
       }
     };
 
@@ -112,10 +111,17 @@ const POSApp = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-    focusSearchInput();
-  }, [selectedOperation, handleNumericButtonClick, handleEnterClick]);
+  }, [handleEnterClick]);
 
-
+  const fetchProductByCode = (code) => {
+    return new Promise((resolve) => {
+      // Simula un tiempo de espera de 1 segundo para buscar el producto
+      setTimeout(() => {
+        alert(`Buscando producto con código: ${code}`);
+        resolve(null); // Devuelve 'null' ya que esta es solo una función temporal
+      }, 1000);
+    });
+  };
 
   const handleProductDoubleClick = (product) => {
     const productIndex = rows.findIndex((row) => row.id === product.id);
@@ -130,7 +136,6 @@ const POSApp = () => {
       setRows([...rows, newRow]);
       updateTotal([...rows, newRow]); // Agrega esta línea para actualizar el total general
     }
-    focusSearchInput();
   };
 
   const incrementQuantity = (params) => {
@@ -185,13 +190,11 @@ const POSApp = () => {
     decrementQuantity,
     deleteRow
   );
-  const searchInputStyle = {
-    fontSize: "24px",
-    cursor: "text",
-    backgroundColor: "white",
-    color: "black",
+
+  const handleInputChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
   };
-  
 
   return (
     <GradientBorder>
@@ -209,12 +212,7 @@ const POSApp = () => {
             maxHeight="calc(100vh - 50px)"
             overflowY="auto"
           >
-            <CustomInput
-              ref={searchInputRef}
-              width="100%"
-              placeholder="Buscar por código de barras"
-              
-            />
+            <CustomInput value={inputValue} onChange={handleInputChange} />
 
             <Flex direction="column" pt={{ base: "20px", md: "20px" }}>
               <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -248,7 +246,6 @@ const POSApp = () => {
               </Flex>
             </Flex>
           </Box>
-
           <Flex mb={4}>
             <Button mr={2}>Cliente</Button>
             <Button mr={2}>Nota del Cliente</Button>
@@ -259,16 +256,12 @@ const POSApp = () => {
             <Button width="50%" height="100%" mb={4}>
               Enviar Payment
             </Button>
+
             <NumericButtons
               handleNumericButtonClick={handleNumericButtonClick}
               handleEnterClick={handleEnterClick}
-              incrementQuantity={incrementQuantity}
-              decrementQuantity={decrementQuantity}
-              deleteRow={deleteRow}
               selectedOperation={selectedOperation}
               setSelectedOperation={setSelectedOperation}
-              selectedRowId={selectedRowId} // Agrega esto
-              focusSearchInput={focusSearchInput}
             />
           </Flex>
         </Flex>
@@ -281,7 +274,7 @@ const POSApp = () => {
           marginTop="55px"
           overflowY="hidden"
         >
-          <CategoryTabs ref={categoryTabsRef} handleProductDoubleClick={handleProductDoubleClick}   />
+          <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />
         </Flex>
       </Flex>
     </GradientBorder>

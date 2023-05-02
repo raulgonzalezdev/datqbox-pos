@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React from "react";
 import {
   Box,
   SimpleGrid,
@@ -12,13 +12,8 @@ import {
 import { productosRows as productsList, categories } from "variables/products";
 import GradientBorder from "components/GradientBorder/GradientBorder";
 
-const CategoryTabs = forwardRef(({ handleProductDoubleClick }, ref) => {
-    const categoryTabsRef = useRef(null);
-
-    useImperativeHandle(ref, () => ({
-      contains: (element) => categoryTabsRef.current.contains(element),
-    }));
-
+const CategoryTabs = (({ handleProductDoubleClick }) => {
+  
 
 
     return (
@@ -32,7 +27,7 @@ const CategoryTabs = forwardRef(({ handleProductDoubleClick }, ref) => {
         </TabList>
         <GradientBorder>
           <Box
-            ref={categoryTabsRef}
+            
             maxHeight="calc(100vh - 120px)"
             overflowY="auto"
           >

@@ -96,7 +96,7 @@ routes: PropTypes.arrayOf(PropTypes.object),
 // Deafult Navbar color
 Sidebar.defaultProps = {
 sidebarVariant: "blue",
-logoText: "SIMMMPLE",
+logoText: "DATQBOX",
 };
 
 export default SidebarDesktop;

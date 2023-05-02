@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Input } from "@chakra-ui/react";
 
-const CustomInput = () => {
+const CustomInput = ({ value, onChange }) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -23,6 +23,7 @@ const CustomInput = () => {
     cursor: "text",
     backgroundColor: "white",
     color: "black",
+    
   };
 
   return (
@@ -30,7 +31,13 @@ const CustomInput = () => {
       ref={inputRef}
       onBlur={handleBlur}
       placeholder="Escanee el código de barras"
+      focusBorderColor="brand.500"
+      _placeholder={{ color: "gray.400" }}
+      borderWidth="2px"
       style={searchInputStyle}
+      value={value}
+      onChange={(e) => onChange(e)}
+
     />
   );
 };
