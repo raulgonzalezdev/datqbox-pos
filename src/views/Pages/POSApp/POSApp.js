@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex, Button, Input } from "@chakra-ui/react";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeProvider } from "@mui/material/styles";
 import taxTableTheme from "theme/themeTableMUI";
@@ -12,53 +12,79 @@ import { createColumns } from "./gridColumns";
 import GradientBorder from "components/GradientBorder/GradientBorder";
 import CustomInput from "components/CustomInput/CustomInput";
 import { StyledText } from "components/ReusableComponents/ReusableComponents";
+//import backgroundImage from "assets/img/background-body-admin.png";
 
 const POSApp = () => {
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [selectedOperation, setSelectedOperation] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [numberBuffer, setNumberBuffer] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]); 
+ 
+  
 
-  const handleRowClick = (params) => {
-    setSelectedRowId(params.id);
+  
+  
+  
+
+  const handleCellClick = (params) => {
+    if (selectedRows.includes(params.id)) {
+      // Si el ID ya está en la lista de filas seleccionadas, elimínalo
+      setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((id) => id !== params.id));
+    } else {
+      // Si el ID no está en la lista de filas seleccionadas, agrégalo
+      setSelectedRows((prevSelectedRows) => [...prevSelectedRows, params.id]);
+    }
   };
 
   const handleNumericButtonClick = (number) => {
-    console.log(number);
-    if (!selectedRowId) {
-      setInputValue((prevValue) => `${prevValue}${number}`);
-    } else {
-      const selectedRow = rows.find((row) => row.id === selectedRowId);
-  
-      if (!selectedRow) {
-        return;
+    if (number === 'backspace') {
+      // Si el botón es de "Borrar", elimina el último dígito del input
+      setInputValue((prevValue) => prevValue.slice(0, -1));
+    } else if (number === '.') {
+      // Si el botón es un punto decimal, verifica que no haya uno ya en el input y lo agrega
+      if (!inputValue.includes('.')) {
+        setInputValue((prevValue) => `${prevValue}${number}`);
       }
-  
-      const newRows = rows.map((row) => {
-        if (row.id === selectedRow.id) {
-          if (selectedOperation === "Cant") {
-            row.cant = parseFloat(`${row.cant}${number}`);
-          } else if (selectedOperation === "Precio") {
-            row.price = parseFloat(`${row.price}${number}`);
-          }
+    } else {
+      // Si no es un botón especial, procesa la entrada de número
+      if (!selectedRowId) {
+        // Si no hay fila seleccionada, simplemente agrega el número al input
+        setInputValue((prevValue) => `${prevValue}${number}`);
+      } else {
+        // Si hay una fila seleccionada, actualiza la cantidad o el precio de la fila según la operación seleccionada
+        const selectedRow = rows.find((row) => row.id === selectedRowId);
+    
+        if (!selectedRow) {
+          return;
         }
-        return row;
-      });
-  
-      setRows(newRows);
-      updateTotal(newRows);
-      setInputValue((prevValue) => `${prevValue}${number}`);
+    
+        const newRows = rows.map((row) => {
+          if (row.id === selectedRow.id) {
+            if (selectedOperation === "Cant") {
+              // Si se está actualizando la cantidad, convierte el valor anterior en número y agrega el nuevo dígito
+              row.cant = parseFloat(`${row.cant}${number}`);
+            } else if (selectedOperation === "Precio") {
+              // Si se está actualizando el precio, convierte el valor anterior en número y agrega el nuevo dígito
+              row.price = parseFloat(`${row.price}${number}`);
+            }
+          }
+          return row;
+        });
+    
+        setRows(newRows);
+        updateTotal(newRows);
+        setInputValue((prevValue) => `${prevValue}${number}`);
+      }
     }
   };
   
   
+  
 
   const handleEnterClick = useCallback(() => {
-    const selectedRow = rows.find((row) => row.id === selectedRowId);
-
-    if (!selectedRow || !inputValue) {
+    if (!inputValue) {
       if (!selectedOperation) {
         fetchProductByCode(inputValue).then((product) => {
           if (product) {
@@ -69,11 +95,12 @@ const POSApp = () => {
       }
       return;
     }
-
+  
     const parsedNumber = parseFloat(inputValue);
-
+  
     const newRows = rows.map((row) => {
-      if (row.id === selectedRow.id) {
+      if (selectedRows.includes(row.id)) {
+        // Aplica los cambios solo a las filas seleccionadas
         switch (selectedOperation) {
           case "Cant":
             row.cant = parsedNumber;
@@ -83,7 +110,9 @@ const POSApp = () => {
             break;
           case "% Desc":
             const discount = parseFloat(inputValue);
-            row.price = row.originalPrice * (1 - discount / 100);
+if (!isNaN(discount)) {
+    row.price = row.price * (1 - discount / 100);
+}
             break;
           default:
             break;
@@ -91,13 +120,16 @@ const POSApp = () => {
       }
       return row;
     });
-
+  
     setRows(newRows);
     updateTotal(newRows);
     setInputValue("");
     setSelectedOperation(null);
-  }, [rows, inputValue, selectedOperation, selectedRowId]);
+    setSelectedRowId(null);
+    //setSelectedRows([]);
 
+  }, [rows, inputValue, selectedOperation, selectedRows]);
+  
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Enter") {
@@ -197,7 +229,8 @@ const POSApp = () => {
   };
 
   return (
-    <GradientBorder>
+
+  
       <Flex>
         <Flex
           direction="column"
@@ -224,14 +257,16 @@ const POSApp = () => {
                         maxHeight="calc(100vh - 410px - 16px)"
                       >
                         <DataGrid
+
                           rows={rows}
                           columns={columns}
                           pageSize={5}
                           rowsPerPageOptions={[5]}
                           checkboxSelection
-                          disableRowSelectionOnClick
+                          onCellClick={handleCellClick} 
+                          selectionModel={selectedRows} 
                           autoHeight
-                          onRowClick={handleRowClick}
+                          
                         />
                       </Box>
                     </ThemeProvider>
@@ -277,7 +312,8 @@ const POSApp = () => {
           <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />
         </Flex>
       </Flex>
-    </GradientBorder>
+
+    
   );
 };
 

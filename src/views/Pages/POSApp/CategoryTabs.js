@@ -25,7 +25,7 @@ const CategoryTabs = (({ handleProductDoubleClick }) => {
             </Tab>
           ))}
         </TabList>
-        <GradientBorder>
+        {/* <GradientBorder> */}
           <Box
             
             maxHeight="calc(100vh - 120px)"
@@ -61,7 +61,7 @@ const CategoryTabs = (({ handleProductDoubleClick }) => {
               ))}
             </TabPanels>
           </Box>
-        </GradientBorder>
+        {/* </GradientBorder> */}
       </Tabs>
     );
   }

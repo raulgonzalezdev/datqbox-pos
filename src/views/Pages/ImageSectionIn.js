@@ -34,7 +34,7 @@ function ImageSection() {
           fontSize="20px"
           fontWeight="500"
         >
-          INSPIRED BY THE FUTURE:
+          DATQBOX  -  POS
         </Text>
         <Text
           textAlign="center"
@@ -45,7 +45,7 @@ function ImageSection() {
           bgClip="text !important"
           bg="linear-gradient(94.56deg, #FFFFFF 79.99%, #21242F 102.65%)"
         >
-          THE VISION UI DASHBOARD
+          Tecnología avanzada para la administración moderna
         </Text>
       </Box>
     </Box>

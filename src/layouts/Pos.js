@@ -7,6 +7,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
+//import theme from "theme/themeAdmin.js";
 
 
 export default function Pages(props) {
@@ -90,7 +91,7 @@ export default function Pages(props) {
         <Portal containerRef={navRef}>
           <PosNavbar
             secondary={getActiveNavbar(routes)}
-            logoText='Datqbox POS'
+            logoText='DATQBOX  -  POS'
           
           />
         </Portal>

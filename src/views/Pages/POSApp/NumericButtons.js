@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { SimpleGrid, Button } from "@chakra-ui/react";
 
+import { BiTag, BiSubdirectoryLeft } from "react-icons/bi";
+import { FaBackspace, FaCheck } from "react-icons/fa";
+import { BsBackspace } from "react-icons/bs";
+import { GrReturn } from "react-icons/gr";
+
+
+
 const NumericButtons = ({
   handleNumericButtonClick,
   handleEnterClick,
@@ -10,7 +17,7 @@ const NumericButtons = ({
   const selectedButtonStyle = {
     border: "2px solid",
     borderColor: "green.500",
-    backgroundColor: "green.200",
+    backgroundColor: "green.500",
   };
   
   const handleCantBtnClick = () => {
@@ -24,6 +31,15 @@ const NumericButtons = ({
   const handleDescBtnClick = () => {
     setSelectedOperation(selectedOperation === "% Desc" ? null : "% Desc");
   };
+
+  const handleDecimalButtonClick = () => {
+    handleNumericButtonClick('.');
+  };
+
+  const handleBackspaceButtonClick = () => {
+    handleNumericButtonClick('backspace');
+  };
+
 
   return (
     <SimpleGrid columns={4} spacing={1} ml={4}>
@@ -55,9 +71,16 @@ const NumericButtons = ({
         Precio
       </Button>
       <Button onClick={() => handleNumericButtonClick(0)}>0</Button>
-      <Button>,</Button>
-      <Button>Borrar</Button>
-      <Button onClick={handleEnterClick}>Enter</Button>
+      <Button onClick={handleDecimalButtonClick}>,</Button>
+      <Button onClick={handleBackspaceButtonClick}>
+        <FaBackspace />
+         Back 
+      </Button>
+      <Button onClick={handleEnterClick}>
+        
+        <GrReturn />
+        Enter
+      </Button>
     </SimpleGrid>
   );
 };
