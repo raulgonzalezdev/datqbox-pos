@@ -45,9 +45,9 @@
   },
   "target": "web",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-app-rewired  start",
+    "build": "react-app-rewired  build && gulp licenses",
+    "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build",
     "lint:check": "eslint . --ext=js,jsx;  exit 0",
@@ -60,11 +60,14 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx-source": "^7.14.5",
+    "customize-cra": "^1.0.0",
     "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "3.4.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "react-app-rewired": "^2.2.1"
   },
   "browserslist": {
     "production": [

@@ -8,6 +8,8 @@ const taxTableTheme = createTheme({
           border: 'none',
           '& .MuiDataGrid-cell': {
             borderBottom: '1px solid #ddd',
+            color: '#fff', // Cambiar el color de las celdas de datos
+            fontFamily: 'Plus Jakarta Display',
           },
           '& .MuiDataGrid-columnHeaderTitleContainer': {
             color: '#56577A',
@@ -32,24 +34,20 @@ const taxTableTheme = createTheme({
           '& .MuiDataGrid-colCellCheckbox': {
             color: '#fff',
           },
-          '& .MuiDataGrid-pagination': {
-            color: '#fff',
-          },
-          '& .MuiDataGrid-menuIcon': {
-            color: '#fff',
-          },
           '& .MuiDataGrid-sortIcon': {
             color: '#fff',
           },
-          "& .MuiDataGrid-footer": {
-            color: "#fff", // color del texto de la paginación
-          },
           "& .MuiDataGrid-pages": {
-            color: "#fff", // color de los números de la paginación
+            color: "#000", 
           },
           row: {
             paddingTop: '20px',
             paddingBottom: '20px',
+          },
+        },
+        columnHeader: {
+          '& .MuiDataGrid-columnHeaderMenuOpen .MuiDataGrid-menuIcon': {
+            color: '#fff',
           },
         },
       },
@@ -57,12 +55,16 @@ const taxTableTheme = createTheme({
   },
   palette: {
     primary: {
-      main: "#56577A",
+      main: "#fff",
     },
     text: {
-      primary: "#fff",
+      primary: "#56577A",
     },
   },
 });
+
+
+
+
 
 export default taxTableTheme;

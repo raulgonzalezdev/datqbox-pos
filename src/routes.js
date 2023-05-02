@@ -9,6 +9,7 @@ import SignUp from "views/Pages/SignUp.js";
 import StepperForm from "views/Pages/StepperForm/StepperForm.js"
 import UsersList from "views/Pages/StepperForm/UsersList"
 import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js"
+import POSApp from "views/Pages/POSApp/POSApp.js"
 
 import {
   HomeIcon,
@@ -48,12 +49,12 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/billing",
-    name: "Billing",
+    path: "/pos",
+    name: "POS",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
-    component: Billing,
-    layout: "/admin",
+    component: POSApp,
+    layout: "/pos",
   },
   
   {

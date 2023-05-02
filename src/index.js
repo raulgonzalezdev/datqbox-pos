@@ -7,6 +7,7 @@ import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
+import PosLayout from "layouts/Pos.js";
 
 ReactDOM.render(
   <HashRouter>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Route path={`/auth`} component={AuthLayout} />
       <Route path={`/admin`} component={AdminLayout} />
       <Route path={`/rtl`} component={RTLLayout} />
+      <Route path={`/pos`} component={PosLayout} />
       <Redirect from={`/`} to='/admin/dashboard' />
     </Switch>
   </HashRouter>,

@@ -1,0 +1,63 @@
+//products 
+
+export const productosRows = [
+    { id: 1, productName: "Jabón de aloe vera", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 2, productName: "Arroz integral", price: "2.99", cant: "1.00", category: "Viveres" },
+    { id: 3, productName: "Agua de coco", price: "1.99", cant: "1.00", category: "Bebidas" },
+    { id: 4, productName: "Jabón de miel", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 5, productName: "Harina de trigo", price: "1.49", cant: "1.00", category: "Viveres" },
+    { id: 6, productName: "Refresco de cola", price: "0.99", cant: "1.00", category: "Bebidas" },
+    { id: 7, productName: "Jabón de lavanda", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 8, productName: "Frijoles negros", price: "1.99", cant: "1.00", category: "Viveres" },
+    { id: 9, productName: "Té verde", price: "2.49", cant: "1.00", category: "Bebidas" },
+    { id: 10, productName: "Jabón de coco", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 11, productName: "Aceite de oliva", price: "5.99", cant: "1.00", category: "Viveres" },
+    { id: 12, productName: "Jugo de naranja", price: "1.99", cant: "1.00", category: "Bebidas" },
+    { id: 13, productName: "Jabón de almendra", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 14, productName: "Azúcar moreno", price: "1.49", cant: "1.00", category: "Viveres" },
+    { id: 15, productName: "Agua mineral", price: "0.99", cant: "1.00", category: "Bebidas" },
+    { id: 16, productName: "Jabón de rosa mosqueta", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 17, productName: "Pasta de dientes", price: "2.99", cant: "1.00", category: "Viveres" },
+    { id: 18, productName: "Café molido", price: "3.49", cant: "1.00", category: "Viveres"},
+    { id: 19, productName: "Jabón de aceite de argán", price: "5.99", cant: "1.00", category: "Jabones" },
+    { id: 20, productName: "Leche de almendra", price: "3.99", cant: "1.00", category: "Bebidas" },
+    { id: 21, productName: "Papel higiénico", price: "6.99", cant: "1.00", category: "Viveres" },
+    { id: 22, productName: "Jabón de manteca de karité", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 23, productName: "Mermelada de fresa", price: "2.99", cant: "1.00", category: "Viveres" },
+    { id: 24, productName: "Agua con gas", price: "0.99", cant: "1.00", category: "Bebidas" },
+    { id: 25, productName: "Jabón de té verde", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 26, productName: "Aceite de coco", price: "7.99", cant: "1.00", category: "Viveres" },
+    { id: 27, productName: "Refresco de naranja", price: "0.99", cant: "1.00", category: "Bebidas" },
+    { id: 28, productName: "Jabón de limón", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 29, productName: "Avena instantánea", price: "1.99", cant: "1.00", category: "Viveres" },
+    { id: 30, productName: "Agua saborizada", price: "1.49", cant: "1.00", category: "Bebidas" },
+    { id: 31, productName: "Jabón de romero", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 32, productName: "Cereal de arroz", price: "2.99", cant: "1.00", category: "Viveres" },
+    { id: 33, productName: "Cerveza rubia", price: "4.99", cant: "1.00", category: "Bebidas" },
+    { id: 34, productName: "Jabón de lavanda y manzanilla", price: "5.99", cant: "1.00", category: "Jabones" },
+    { id: 35, productName: "Mantequilla de maní", price: "3.99", cant: "1.00", category: "Viveres" },
+    { id: 36, productName: "Té negro", price: "2.49", cant: "1.00", category: "Bebidas" },
+    { id: 37, productName: "Jabón de jazmín", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 39, productName: "Pasta de ajo", price: "1.99", cant: "1.00", category: "Viveres" },
+    { id: 40, productName: "Agua de manzana", price: "1.99", cant: "1.00", category: "Bebidas" },
+    { id: 41, productName: "Jabón de árbol de té", price: "3.99", cant: "1.00", category: "Jabones" },
+    { id: 42, productName: "Galletas de avena", price: "2.49", cant: "1.00", category: "Viveres" },
+    { id: 43, productName: "Refresco de limón", price: "0.99", cant: "1.00", category: "Bebidas" },
+    { id: 44, productName: "Jabón de rosa", price: "4.99", cant: "1.00", category: "Jabones" },
+    { id: 45, productName: "Miel de abeja", price: "6.99", cant: "1.00", category: "Viveres" },
+    { id: 46, productName: "Café instantáneo", price: "4.49", cant: "1.00", category: "Bebidas" },
+    { id: 47, productName: "Jabón de leche de cabra", price: "5.99", cant: "1.00", category: "Jabones" },
+    { id: 48, productName: "Mantequilla sin sal", price: "3.99", cant: "1.00", category: "Viveres" },
+    { id: 49, productName: "Jugo de piña", price: "1.99", cant: "1.00", category: "Bebidas" },
+    { id: 50, productName: "Jabón de avena", price: "4.99", cant: "1.00", category: "Jabones" },
+  ];
+
+  
+ export const categories = [
+    { id: 1, categoryName: "Jabones" },
+    { id: 2, categoryName: "Viveres" },
+    { id: 3, categoryName: "Bebidas" },
+  ];
+  
+  
+  

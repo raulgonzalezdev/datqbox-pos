@@ -7,21 +7,7 @@ gulp.task("licenses", async function () {
     .src("build/static/js/*chunk.js", { base: "./" })
     .pipe(
       gap.prependText(`/*!
-
-      =========================================================
-      * Vision UI Free Chakra - v1.0.0
-      =========================================================
-      
-      * Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
-      * Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-      * Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
-      
-      * Design and Coded by Simmmple & Creative Tim
-      
-      =========================================================
-      
-      * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-      
+      * DatqBox - Pos
       */`)
     )
     .pipe(gulp.dest("./", { overwrite: true }));
@@ -32,21 +18,7 @@ gulp.task("licenses", async function () {
     .pipe(
       gap.prependText(`<!--
       /*!
-
-      =========================================================
-      * Vision UI Free Chakra - v1.0.0
-      =========================================================
-      
-      * Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
-      * Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-      * Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
-      
-      * Design and Coded by Simmmple & Creative Tim
-      
-      =========================================================
-      
-      * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-      
+      * DatqBox - Pos
       */
       -->`)
     )
@@ -56,23 +28,12 @@ gulp.task("licenses", async function () {
   gulp
     .src("build/static/css/*chunk.css", { base: "./" })
     .pipe(
-      gap.prependText(`/*!
-
-      =========================================================
-      * Vision UI Free Chakra - v1.0.0
-      =========================================================
       
-      * Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
-      * Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-      * Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
-      
-      * Design and Coded by Simmmple & Creative Tim
-      
-      =========================================================
-      
-      * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-      
-      */`)
+      gap.prependText(`<!--
+      /*!
+      * DatqBox - Pos
+      */
+      -->`)
     )
     .pipe(gulp.dest("./", { overwrite: true }));
   return;
