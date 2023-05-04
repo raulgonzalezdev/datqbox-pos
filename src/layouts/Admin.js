@@ -7,7 +7,7 @@ import Footer from "components/Footer/Footer.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import routes from "routes.js";
 // Custom Chakra theme
 import theme from "theme/themeAdmin.js";
@@ -82,8 +82,8 @@ export default function Dashboard(props) {
       if (prop.layout === "/admin") {
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
+            path={prop.path}
+            element={<prop.component />}
             key={key}
           />
         );
@@ -125,7 +125,7 @@ export default function Dashboard(props) {
             <PanelContainer>
               <Switch>
                 {getRoutes(routes)}
-                <Redirect from='/admin' to='/admin/dashboard' />
+                <Route path="/" element={<Navigate to="/admin/dashboard" />} />
               </Switch>
             </PanelContainer>
           </PanelContent>

@@ -1,43 +1,40 @@
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
 import Footer from "components/Footer/Footer.js";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import React, { Component } from "react";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
 
-class AuthLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.wrapper = React.createRef();
-    this.navRef = React.createRef();
-  }
+function AuthLayout(props) {
+  const wrapper = React.createRef();
+  const navRef = React.createRef();
+  const navigate = useNavigate();
 
-  componentDidMount() {
+  useEffect(() => {
     document.body.style.overflow = "unset";
-  }
 
-  componentWillUnmount() {
-    document.body.style.overflow = "";
-  }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.forceUpdate !== this.props.forceUpdate) {
-      this.props.history.push("/auth/signin");
+  useEffect(() => {
+    if (props.forceUpdate) {
+      navigate("/auth/signin");
     }
-  }
+  }, [props.forceUpdate, navigate]);
 
-
-  getActiveRoute = (routes) => {
+  const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
-        let collapseActiveRoute = this.getActiveRoute(routes[i].views);
+        let collapseActiveRoute = getActiveRoute(routes[i].views);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
       } else if (routes[i].category) {
-        let categoryActiveRoute = this.getActiveRoute(routes[i].views);
+        let categoryActiveRoute = getActiveRoute(routes[i].views);
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
@@ -52,19 +49,19 @@ class AuthLayout extends Component {
     return activeRoute;
   };
 
-  getRoutes = (routes) => {
+  const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
-        return this.getRoutes(prop.views);
+        return getRoutes(prop.views);
       }
       if (prop.category === "account") {
-        return this.getRoutes(prop.views);
+        return getRoutes(prop.views);
       }
       if (prop.layout === "/auth") {
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
+            path={prop.path}
+            element={<prop.component />}
             key={key}
           />
         );
@@ -74,11 +71,11 @@ class AuthLayout extends Component {
     });
   };
 
-  getActiveNavbar = (routes) => {
+  const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].category) {
-        let categoryActiveNavbar = this.getActiveNavbar(routes[i].views);
+        let categoryActiveNavbar = getActiveNavbar(routes[i].views);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
@@ -94,12 +91,10 @@ class AuthLayout extends Component {
     }
     return activeNavbar;
   };
-  
 
-  render() {
-    document.documentElement.dir = "ltr";
-    return (
-      <ChakraProvider theme={theme} resetCss={false} w="100%">
+  document.documentElement.dir = "ltr";
+  return (
+     <ChakraProvider theme={theme} resetCss={false} w="100%">
         <Box ref={this.wrapper} w="100%">
           <Portal containerRef={this.wrapper}>
             <AuthNavbar
@@ -108,17 +103,16 @@ class AuthLayout extends Component {
             />
           </Portal>
           <Box w="100%">
-            <Box ref={this.wrapper} w="100%">
-              <Switch>
+          <Box ref={this.wrapper} w="100%">
+              <Routes>
                 {this.getRoutes(routes)}
-                <Redirect from="/auth" to="/auth/signin" />
-              </Switch>
+                <Route path="/" element={<Navigate to="/auth/signin" />} />
+              </Routes>
             </Box>
           </Box>
         </Box>
       </ChakraProvider>
-    );
-  }
+  );
 }
 
-export default withRouter(AuthLayout);
+export default AuthLayout;

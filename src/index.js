@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import jwtDecode from "jwt-decode";
 
-
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "graphql/client";
 import AuthLayout from "layouts/Auth.js";
@@ -110,42 +114,41 @@ class App extends Component {
     }
 
     return (
-      <HashRouter>
+      <Router>
         <ApolloProvider client={client}>
-          <Switch>
-           {/* <Route path={`/auth`} render={(props) => <AuthLayout {...props} forceUpdate={this.state.forceUpdate} />} />  */}
-           {/* <Route path={`/auth`} render={(props) => <AuthLayout {...props} forceUpdate={this.state.forceUpdate} setForcepdate={(forceUpdate) => this.setState({ forceUpdate })} />} />  */}
-           <Route path={`/auth`} component={AuthLayout} />
-
-
-             <Route
-              path={`/admin`}
-              render={(props) =>
-                this.state.isAuthenticated ? (
-                  <AdminLayout {...props} onLogout={this.handleLogout} />
-                ) : (
-                  <Redirect to="/auth/signin" />
-                )
-              }
-            /> 
-            
+          <Routes>
+            <Route path="/auth/*" element={<AuthLayout />} />
             <Route
-              path={`/pos`}
-              render={(props) =>
+              path="/admin/*"
+              element={
                 this.state.isAuthenticated ? (
-                  <PosLayout {...props} onLogout={this.handleLogout} />
+                  <AdminLayout onLogout={this.handleLogout} />
                 ) : (
-                  <Redirect to="/auth/signin" />
+                  <Navigate to="/auth/signin" />
                 )
               }
             />
-            <Redirect
-              from={`/`}
-              to={this.state.isAuthenticated ? "/pos" : "/auth/signin"}
+            <Route
+              path="/pos/*"
+              element={
+                this.state.isAuthenticated ? (
+                  <PosLayout onLogout={this.handleLogout} />
+                ) : (
+                  <Navigate to="/auth/signin" />
+                )
+              }
             />
-          </Switch>
+            <Route
+              path="/"
+              element={
+                <Navigate
+                  to={this.state.isAuthenticated ? "/pos/pos" : "/auth/signin"}
+                />
+              }
+            />
+          </Routes>
         </ApolloProvider>
-      </HashRouter>
+      </Router>
     );
   }
 }

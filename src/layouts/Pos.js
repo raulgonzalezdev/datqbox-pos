@@ -4,7 +4,7 @@ import Footer from "components/Footer/Footer.js";
 // core components
 import PosNavbar from "components/Navbars/PosNavbar.js";
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
 //import theme from "theme/themeAdmin.js";
@@ -73,8 +73,8 @@ export default function Pages(props) {
       if (prop.layout === "/pos") {
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
+            path={prop.path}
+            element={<prop.component />}
             key={key}
           />
         );
@@ -98,10 +98,10 @@ export default function Pages(props) {
         </Portal>
         <Box w='100%'>
           <Box ref={wrapper} w='100%'>
-            <Switch>
+          <Routes>
               {getRoutes(routes)}
-              <Redirect from='/pos' to='/pos/pos' />
-            </Switch>
+              <Route path='/pos/*' element={<Navigate to='/pos/pos' />} />
+            </Routes>
           </Box>
         </Box>
       </Box>
