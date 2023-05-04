@@ -26,7 +26,8 @@ import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import routes from "routes.js";
+import { adminRoutes } from "routes";
+
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
@@ -113,7 +114,7 @@ export default function HeaderLinks(props) {
         iconColor='gray.500'
         logoText={props.logoText}
         secondary={props.secondary}
-        routes={routes}
+        routes={adminRoutes}
         // logo={logo}
         {...rest}
       />

@@ -3,7 +3,8 @@ import Footer from "components/Footer/Footer.js";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import React, { useEffect } from "react";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
-import routes from "routes.js";
+import { authRoutes } from "routes";
+
 import theme from "theme/themeAuth.js";
 
 function AuthLayout(props) {
@@ -57,7 +58,7 @@ function AuthLayout(props) {
       if (prop.category === "account") {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/auth") {
+      if (prop.path === "/auth") {
         return (
           <Route
             path={prop.path}
@@ -95,17 +96,17 @@ function AuthLayout(props) {
   document.documentElement.dir = "ltr";
   return (
      <ChakraProvider theme={theme} resetCss={false} w="100%">
-        <Box ref={this.wrapper} w="100%">
-          <Portal containerRef={this.wrapper}>
+        <Box ref={wrapper} w="100%">
+          <Portal containerRef={wrapper}>
             <AuthNavbar
-              secondary={this.getActiveNavbar(routes)}
+              secondary={getActiveNavbar(authRoutes)}
               logoText="DATQBOX - POS"
             />
           </Portal>
           <Box w="100%">
-          <Box ref={this.wrapper} w="100%">
+          <Box ref={wrapper} w="100%">
               <Routes>
-                {this.getRoutes(routes)}
+                {getRoutes(authRoutes)}
                 <Route path="/" element={<Navigate to="/auth/signin" />} />
               </Routes>
             </Box>

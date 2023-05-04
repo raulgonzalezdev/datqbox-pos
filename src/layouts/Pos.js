@@ -5,7 +5,8 @@ import Footer from "components/Footer/Footer.js";
 import PosNavbar from "components/Navbars/PosNavbar.js";
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import routes from "routes.js";
+import { adminRoutes } from "routes";
+
 import theme from "theme/themeAuth.js";
 //import theme from "theme/themeAdmin.js";
 
@@ -70,7 +71,7 @@ export default function Pages(props) {
       if (prop.category === "account") {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/pos") {
+      if (prop.path === "/pos") {
         return (
           <Route
             path={prop.path}
@@ -86,11 +87,12 @@ export default function Pages(props) {
   const navRef = React.useRef();
   document.documentElement.dir = "ltr";
   return (
-    <ChakraProvider theme={theme} resetCss={false} w='100%'>
+    // <ChakraProvider theme={theme} resetCss={false} w='100%'>
+    <ChakraProvider >
       <Box ref={navRef} w='100%'>
         <Portal containerRef={navRef}>
           <PosNavbar
-            secondary={getActiveNavbar(routes)}
+            secondary={getActiveNavbar(adminRoutes)}
             logoText='DATQBOX  -  POS'
             {...props}
           
@@ -99,7 +101,7 @@ export default function Pages(props) {
         <Box w='100%'>
           <Box ref={wrapper} w='100%'>
           <Routes>
-              {getRoutes(routes)}
+              {getRoutes(adminRoutes)}
               <Route path='/pos/*' element={<Navigate to='/pos/pos' />} />
             </Routes>
           </Box>

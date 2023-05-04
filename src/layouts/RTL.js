@@ -10,7 +10,8 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import routes from "routes.js";
+import { adminRoutes } from "routes";
+
 // Custom Chakra theme
 import theme from "theme/themeAdmin";
 import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
@@ -80,7 +81,7 @@ export default function Dashboard(props) {
       if (prop.category === "account") {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/rtl" || prop.layout === "/admin") {
+      if (prop.path === "/rtl" || prop.path === "/admin") {
         return (
           <Route
             path={prop.path}
@@ -97,10 +98,11 @@ export default function Dashboard(props) {
   document.documentElement.dir = "rtl";
   // Chakra Color Mode
   return (
-    <ChakraProvider theme={theme} resetCss={false}>
+    // <ChakraProvider theme={theme} resetCss={false}>
+    <ChakraProvider >
       <RtlProvider>
         <Sidebar
-          routes={routes}
+          routes={adminRoutes}
           logoText={"DATQBOX"}
           display='none'
           sidebarVariant={sidebarVariant}
@@ -117,8 +119,8 @@ export default function Dashboard(props) {
             <AdminNavbar
               onOpen={onOpen}
               logoText={"DATQBOX"}
-              brandText={getActiveRoute(routes)}
-              secondary={getActiveNavbar(routes)}
+              brandText={getActiveRoute(adminRoutes)}
+              secondary={getActiveNavbar(adminRoutes)}
               fixed={fixed}
               {...rest}
             />
@@ -127,7 +129,7 @@ export default function Dashboard(props) {
             <PanelContent>
               <PanelContainer>
               <Routes>
-                  {getRoutes(routes)}
+                  {getRoutes(adminRoutes)}
                   <Route path="/rtl/*" element={<Navigate to="/rtl/rtl-support-page" />} />
                 </Routes>
               </PanelContainer>
@@ -142,7 +144,7 @@ export default function Dashboard(props) {
             />
           </Portal> */}
           <Configurator
-            secondary={getActiveNavbar(routes)}
+            secondary={getActiveNavbar(adminRoutes)}
             isOpen={isOpen}
             onClose={onClose}
             isChecked={fixed}
