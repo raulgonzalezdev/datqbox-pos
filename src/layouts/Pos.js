@@ -92,6 +92,7 @@ export default function Pages(props) {
           <PosNavbar
             secondary={getActiveNavbar(routes)}
             logoText='DATQBOX  -  POS'
+            {...props}
           
           />
         </Portal>
@@ -99,7 +100,7 @@ export default function Pages(props) {
           <Box ref={wrapper} w='100%'>
             <Switch>
               {getRoutes(routes)}
-              <Redirect from='/pos' to='/auth/login-page' />
+              <Redirect from='/pos' to='/pos/pos' />
             </Switch>
           </Box>
         </Box>

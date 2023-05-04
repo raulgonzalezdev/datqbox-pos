@@ -1,33 +1,43 @@
-// chakra imports
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
 import Footer from "components/Footer/Footer.js";
-// core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import React, { Component } from "react";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
 
+class AuthLayout extends Component {
+  constructor(props) {
+    super(props);
+    this.wrapper = React.createRef();
+    this.navRef = React.createRef();
+  }
 
-export default function Pages(props) {
-  const { ...rest } = props;
-  // ref for the wrapper div
-  const wrapper = React.createRef();
-  React.useEffect(() => {
+  componentDidMount() {
     document.body.style.overflow = "unset";
-    // Specify how to clean up after this effect:
-    return function cleanup() {};
-  });
-  const getActiveRoute = (routes) => {
+  }
+
+  componentWillUnmount() {
+    document.body.style.overflow = "";
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.forceUpdate !== this.props.forceUpdate) {
+      this.props.history.push("/auth/signin");
+    }
+  }
+
+
+  getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].views);
+        let collapseActiveRoute = this.getActiveRoute(routes[i].views);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
       } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].views);
+        let categoryActiveRoute = this.getActiveRoute(routes[i].views);
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
@@ -41,11 +51,34 @@ export default function Pages(props) {
     }
     return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
+
+  getRoutes = (routes) => {
+    return routes.map((prop, key) => {
+      if (prop.collapse) {
+        return this.getRoutes(prop.views);
+      }
+      if (prop.category === "account") {
+        return this.getRoutes(prop.views);
+      }
+      if (prop.layout === "/auth") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
+  getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].views);
+        let categoryActiveNavbar = this.getActiveNavbar(routes[i].views);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
@@ -61,47 +94,31 @@ export default function Pages(props) {
     }
     return activeNavbar;
   };
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return getRoutes(prop.views);
-      }
-      if (prop.category === "account") {
-        return getRoutes(prop.views);
-      }
-      if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
-  const navRef = React.useRef();
-  document.documentElement.dir = "ltr";
-  return (
-    <ChakraProvider theme={theme} resetCss={false} w='100%'>
-      <Box ref={navRef} w='100%'>
-        <Portal containerRef={navRef}>
-          <AuthNavbar
-            secondary={getActiveNavbar(routes)}
-            logoText='VISION UI FREE'
-          />
-        </Portal>
-        <Box w='100%'>
-          <Box ref={wrapper} w='100%'>
-            <Switch>
-              {getRoutes(routes)}
-              <Redirect from='/auth' to='/auth/login-page' />
-            </Switch>
+  
+
+  render() {
+    document.documentElement.dir = "ltr";
+    return (
+      <ChakraProvider theme={theme} resetCss={false} w="100%">
+        <Box ref={this.wrapper} w="100%">
+          <Portal containerRef={this.wrapper}>
+            <AuthNavbar
+              secondary={this.getActiveNavbar(routes)}
+              logoText="DATQBOX - POS"
+            />
+          </Portal>
+          <Box w="100%">
+            <Box ref={this.wrapper} w="100%">
+              <Switch>
+                {this.getRoutes(routes)}
+                <Redirect from="/auth" to="/auth/signin" />
+              </Switch>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </ChakraProvider>
-  );
+      </ChakraProvider>
+    );
+  }
 }
+
+export default withRouter(AuthLayout);

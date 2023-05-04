@@ -17,6 +17,24 @@ const GET_USERS = gql`
   }
 `;
 
+const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    loginUser(input: { email: $email, password: $password }) {
+      token
+      user {
+        id
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
+
+
+
+
+
 const ADD_USER = gql`
   mutation AddUser($input: UserInput!) {
     addUser(input: $input) {
@@ -71,4 +89,8 @@ export function useUpdateUser() {
 
 export function useDeleteUser() {
   return useMutation(DELETE_USER);
+}
+
+export function useSignIn() {
+  return useMutation(LOGIN_USER);
 }

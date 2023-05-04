@@ -22,6 +22,7 @@ import {
   HomeIcon,
   PersonIcon,
   RocketIcon,
+  LogoutIcon,
 } from "components/Icons/Icons";
 import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import PropTypes from "prop-types";
@@ -104,22 +105,8 @@ export default function PosNavbar(props) {
           <Text>Profile</Text>
         </Button>
       </NavLink>
-      <NavLink to='/auth/signup'>
-        <Button
-          fontSize='sm'
-          ms='0px'
-          me='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={
-            <RocketIcon color={navbarIcon} w='12px' h='12px' me='0px' />
-          }>
-          <Text>Sign Up</Text>
-        </Button>
-      </NavLink>
-      <NavLink to='/auth/signin'>
+     
+      {/* <NavLink to='/auth/signin'> */}
         <Button
           fontSize='sm'
           ms='0px'
@@ -128,11 +115,13 @@ export default function PosNavbar(props) {
           color={navbarIcon}
           variant='transparent-with-icon'
           leftIcon={
-            <DocumentIcon color={navbarIcon} w='12px' h='12px' me='0px' />
-          }>
-          <Text>Sign In</Text>
+            <LogoutIcon color={navbarIcon} w='12px' h='12px' me='0px' />
+          }
+          onClick={props.onLogout}
+          >
+          <Text>Logout</Text>
         </Button>
-      </NavLink>
+      {/* </NavLink> */}
     </HStack>
   );
   return (

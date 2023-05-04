@@ -1,22 +1,7 @@
-/*!
-
-=========================================================
-* Vision UI Free Chakra - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-* Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 import React from "react";
+
+import { useNavigate } from 'react-router-dom';
+
 // Chakra imports
 import {
   Box,
@@ -38,10 +23,50 @@ import signInImage from "assets/img/signInImage.png";
 // Custom Components
 import AuthFooter from "components/Footer/AuthFooter";
 import GradientBorder from "components/GradientBorder/GradientBorder";
+import { useSignIn } from 'graphql/users/crudUser';
+
+
 
 function SignIn() {
   const titleColor = "white";
   const textColor = "gray.400";
+
+  const [signIn, { data, loading, error }] = useSignIn();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [rememberMe, setRememberMe] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleRememberMeChange = (event) => {
+    setRememberMe(event.target.checked);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      console.log('email', email)  
+      console.log('password', password)
+      const { data } = await signIn({ variables: { email, password } });
+      const { token } = data.loginUser
+     
+      localStorage.setItem('authToken', token);
+
+      navigate('/pos');
+      console.log('token', token)
+      
+
+    } catch (err) {
+      console.error('Error during sign in:', err);
+    }
+  };
 
   return (
     <Flex position='relative'>
@@ -101,6 +126,8 @@ function SignIn() {
                   w={{ base: "100%", md: "346px" }}
                   maxW='100%'
                   h='46px'
+                  value={email}
+                  onChange={handleEmailChange}
                   placeholder='Your email adress'
                 />
               </GradientBorder>
@@ -126,6 +153,8 @@ function SignIn() {
                   size='lg'
                   w={{ base: "100%", md: "346px" }}
                   maxW='100%'
+                  value={password}
+                  onChange={handlePasswordChange}
                   type='password'
                   placeholder='Your password'
                 />
@@ -133,7 +162,10 @@ function SignIn() {
             </FormControl>
             <FormControl display='flex' alignItems='center'>
               <DarkMode>
-                <Switch id='remember-login' colorScheme='brand' me='10px' />
+                <Switch 
+                 checked={rememberMe}
+                 onChange={handleRememberMeChange} 
+                 id='remember-login' colorScheme='brand' me='10px' />
               </DarkMode>
               <FormLabel
                 htmlFor='remember-login'
@@ -152,7 +184,9 @@ function SignIn() {
               maxW='350px'
               h='45'
               mb='20px'
-              mt='20px'>
+              mt='20px'
+              onClick={handleSubmit}
+              >
               SIGN IN
             </Button>
 
