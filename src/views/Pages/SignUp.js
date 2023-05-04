@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Vision UI Free Chakra - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-* Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 import React from "react";
 
@@ -39,6 +23,7 @@ import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 // Custom Components
 import AuthFooter from "components/Footer/AuthFooter";
 import GradientBorder from "components/GradientBorder/GradientBorder";
+import { useAddUser } from "graphql/users/crudUser"
 
 // Assets
 import signUpImage from "assets/img/signUpImage.png";
@@ -46,6 +31,37 @@ import signUpImage from "assets/img/signUpImage.png";
 function SignUp() {
   const titleColor = "white";
   const textColor = "gray.400";
+
+  const [addUser, { loading, error }] = useAddUser();
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const newUser = {
+      firstName: name, 
+      lastName: ".", 
+      email: email, 
+      password: password, 
+      avatar: "", 
+      role: "USER", 
+      is_superuser: false, 
+      is_active: true, 
+    };
+    console.log(newUser);
+    const response = await addUser({ variables: { input: newUser } });
+    console.log("User created:", response.data.addUser);
+  } catch (err) {
+    console.error("Error creating user:", err);
+  }
+};
+
+
 
   return (
     <Flex position='relative' overflow={{ lg: "hidden" }}>
@@ -187,7 +203,7 @@ function SignUp() {
                 mb='22px'>
                 or
               </Text>
-              <FormControl>
+            <form onSubmit={handleSubmit}>
                 <FormLabel
                   color={titleColor}
                   ms='4px'
@@ -215,6 +231,8 @@ function SignUp() {
                     h='46px'
                     type='text'
                     placeholder='Your name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </GradientBorder>
                 <FormLabel
@@ -242,6 +260,8 @@ function SignUp() {
                     maxW='100%'
                     h='46px'
                     type='email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder='Your email address'
                   />
                 </GradientBorder>
@@ -271,6 +291,8 @@ function SignUp() {
                     h='46px'
                     type='password'
                     placeholder='Your password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </GradientBorder>
                 <FormControl display='flex' alignItems='center' mb='24px'>
@@ -294,10 +316,12 @@ function SignUp() {
                   maxW='350px'
                   h='45'
                   mb='20px'
-                  mt='20px'>
+                  mt='20px'
+                  isLoading={loading}>
+                 
                   SIGN UP
                 </Button>
-              </FormControl>
+              </form>
               <Flex
                 flexDirection='column'
                 justifyContent='center'

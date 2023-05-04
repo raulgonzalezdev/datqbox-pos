@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://datqbox.com",
   "dependencies": {
+    "@apollo/client": "^3.7.14",
     "@chakra-ui/icons": "^1.1.5",
     "@chakra-ui/react": "1.8.8",
     "@chakra-ui/system": "^1.12.1",
@@ -21,6 +22,7 @@
     "apexcharts": "^3.27.3",
     "classnames": "2.3.1",
     "framer-motion": "^4.1.17",
+    "graphql": "^16.6.0",
     "match-sorter": "6.3.0",
     "moment": "2.29.1",
     "nouislider": "15.0.0",

@@ -3,7 +3,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import { ApolloProvider } from "@apollo/client";
+import { client } from "graphql/client";
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
@@ -11,6 +12,7 @@ import PosLayout from "layouts/Pos.js";
 
 ReactDOM.render(
   <HashRouter>
+   <ApolloProvider client={client}>
     <Switch>
       <Route path={`/auth`} component={AuthLayout} />
       <Route path={`/admin`} component={AdminLayout} />
@@ -18,6 +20,7 @@ ReactDOM.render(
       <Route path={`/pos`} component={PosLayout} />
       <Redirect from={`/`} to='/admin/dashboard' />
     </Switch>
+    </ApolloProvider>  
   </HashRouter>,
   document.getElementById("root")
 );
