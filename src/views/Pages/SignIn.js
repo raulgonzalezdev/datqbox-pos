@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // Chakra imports
 import {
@@ -35,7 +35,7 @@ function SignIn() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [rememberMe, setRememberMe] = React.useState(false);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -59,7 +59,7 @@ function SignIn() {
      
       localStorage.setItem('authToken', token);
 
-      navigate('/pos');
+      history.push('/pos');
       console.log('token', token)
       
 
