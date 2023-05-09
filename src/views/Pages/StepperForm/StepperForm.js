@@ -4,7 +4,7 @@ import UserInfo from "./UserInfo";
 import Address from "./Address";
 import Social from "./Social";
 import Profile from "./Profile";
-import UsersList from "./UsersList"
+import UsersList from "../Users/UsersList"
 
 const steps = [
   { title: "User Info" },

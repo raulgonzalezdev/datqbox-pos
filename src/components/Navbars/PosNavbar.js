@@ -24,7 +24,7 @@ import {
   RocketIcon,
   LogoutIcon,
 } from "components/Icons/Icons";
-import { SidebarResponsive } from "components/Sidebar/Sidebar";
+import SidebarResponsive  from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
 import React from "react";
 import { NavLink } from "react-router-dom";

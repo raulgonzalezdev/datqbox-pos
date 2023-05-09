@@ -281,10 +281,9 @@ if (!isNaN(discount)) {
               </Flex>
             </Flex>
           </Box>
-          <Flex mb={4}>
+          <Flex mb={3}>
             <Button mr={2}>Cliente</Button>
             <Button mr={2}>Nota del Cliente</Button>
-            <Button mr={2}>Reembolso</Button>
             <Button>Descuento</Button>
           </Flex>
           <Flex>

@@ -52,8 +52,7 @@ function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log('email', email)  
-      console.log('password', password)
+    
       const { data } = await signIn({ variables: { email, password } });
       const { token } = data.loginUser
      

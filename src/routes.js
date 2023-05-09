@@ -6,9 +6,10 @@ import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
 import StepperForm from "views/Pages/StepperForm/StepperForm.js";
-import UsersList from "views/Pages/StepperForm/UsersList";
+import UsersList from "views/Pages/Users/UsersList";
 import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js";
 import POSApp from "views/Pages/POSApp/POSApp.js";
+import ProductsList from "views/pages/Products/ProductsLists"
 
 import {
   HomeIcon,
@@ -18,15 +19,9 @@ import {
   DocumentIcon,
   RocketIcon,
   SupportIcon,
+  
 } from "components/Icons/Icons";
 
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
 
 var dashRoutes = [
   {
@@ -113,12 +108,12 @@ var dashRoutes = [
     state: "pageArcordion",
     views: [
       {
-        path: "/profile",
+        path: "/products",
         name: "Articulos",
         rtlName: "لوحة القيادة",
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
-        component: Profile,
+        component: ProductsList,
         layout: "/admin",
       },
     ],
