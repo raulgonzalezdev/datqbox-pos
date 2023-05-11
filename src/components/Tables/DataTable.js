@@ -1,5 +1,4 @@
-// DataTable.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DataGrid,
   GridColDef,
@@ -24,14 +23,18 @@ import { ThemeProvider } from "@mui/material/styles";
 import taxTableTheme from "theme/themeTableMUI";
 import { SearchIcon } from "@chakra-ui/icons";
 
-const DataTable = ({ title, columns, data, onAdd, onSelect }) => {
+const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
   const [searchValue, setSearchValue] = useState("");
   const [rows, setRows] = useState(data);
+  console.log('tabla', data)
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
 
   const handleSearch = (event) => {
     setSearchValue(event.target.value);
     if (event.target.value === "") {
-      setRows(data);
+      refetchData();
     } else {
       const filteredData = data.filter((row) =>
         Object.values(row).some((value) =>
@@ -43,6 +46,8 @@ const DataTable = ({ title, columns, data, onAdd, onSelect }) => {
   };
 
   const handleRowSelected = (params) => {
+    refetchData();
+
     onSelect(params.data);
   };
 
@@ -80,9 +85,12 @@ const DataTable = ({ title, columns, data, onAdd, onSelect }) => {
               <DataGrid
                 rows={rows}
                 columns={columns}
-                rowHeight={100}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                initialState={{
+                  pagination: {
+                    paginationModel: { pageSize: 10, page: 0 },
+                  },
+                }}
+                pageSizeOptions={[5, 10, 15, 25, 30, 50]}
                 disableSelectionOnClick
                 autoHeight
                 onRowDoubleClick={handleRowSelected}

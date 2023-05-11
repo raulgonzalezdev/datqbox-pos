@@ -9,7 +9,8 @@ import StepperForm from "views/Pages/StepperForm/StepperForm.js";
 import UsersList from "views/Pages/Users/UsersList";
 import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js";
 import POSApp from "views/Pages/POSApp/POSApp.js";
-import ProductsList from "views/pages/Products/ProductsLists"
+import ProductsList from "views/Pages/Products/ProductsList.js"
+
 
 import {
   HomeIcon,

@@ -1,5 +1,5 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { AddIcon, MinusIcon, DeleteIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
     Flex,
     Text,
@@ -12,43 +12,82 @@ import {
   } from "@chakra-ui/react";
 
 
-  export const createColumns = (
-    incrementQuantity,
-    decrementQuantity,
+   export const createColumns = (
+    editRow,
     deleteRow,
     onSelect
     
   ): GridColDef[] => [
     {
-      field: "userData",
-      headerName: "AUTHOR",
-      width: 300,
-      sortable: false,
+      field: "id",
+      headerName: "Id",
+      width: 50,
+      sortable: true,
       renderCell: (params) => (
         <Flex align="center">
-          <Avatar
-          bg='teal.500'
-          size='lg'
-          src={params.row.logo || ""}
-          name={params.row.name}
-        />
+          
           <Box ml={2}>
-            <Text fontWeight="bold">{params.row.name}</Text>
-            <Text fontSize="sm">{params.row.email}</Text>
+            <Text >{params.row.id}</Text>
+          
           </Box>
         </Flex>
       ),
     },
     {
-      field: "role",
-      headerName: "FUNCTION",
-      width: 200,
-      sortable: false,
+      field: "sku",
+      headerName: "Sku",
+      width: 150,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          
+          <Box ml={2}>
+            <Text >{params.row.sku}</Text>
+          
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 150,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          
+          <Box ml={2}>
+            <Text>{params.row.name}</Text>
+          
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "description",
+      headerName: "description",
+      width: 150,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          
+          <Box ml={2}>
+            <Text>{params.row.description}</Text>
+          
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "vendor",
+      headerName: "Vendedor",
+      width: 100,
+      sortable: true,
       renderCell: (params) => (
         <Flex align="center">
           <Box ml={2}>
-            <Text fontSize="md" color="#fff" fontWeight="bold">
-              {params.row.role}
+            <Text >
+              {params.row.vendor}
             </Text>
             
           </Box>
@@ -56,21 +95,71 @@ import {
       ),
     },
     {
-      field: "status",
-      headerName: "Status",
-      width: 150,
+      field: "category",
+      headerName: "Category",
+      width: 100,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            <Text >
+              {params.row.category.name}
+            </Text>
+            
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "price",
+      width: 100,
+      sortable: true,
+      align: "right",
+      renderCell: (params) => (
+        <Flex align="center" justifyContent="flex-end">
+          <Box ml={2}>
+            <Text >
+            {params.row.price.toLocaleString()}
+            </Text>
+            
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "taxrate",
+      headerName: "TaxRate",
+      width: 100,
+      sortable: true,
+      align: "right",
+      renderCell: (params) => (
+        <Flex align="center" justifyContent="flex-end">
+          <Box ml={2}>
+            <Text >
+            {params.row.price.toLocaleString()}
+            </Text>
+            
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: "newarrivals",
+      headerName: "New Arrivals",
+      width: 100,
       sortable: false,
       renderCell: (params) => (
         <Badge
-          bg={params.row.status  ? "green.400" : "transparent"}
-          color={params.row.status ? "white" : "gray.400"}
+          bg={params.row.newarrivals  ? "green.400" : "transparent"}
+          color={params.row.newarrivals ? "white" : "gray.400"}
           fontSize="sm"
           p="3px 10px"
           borderRadius="8px"
-          border={params.row.status  ? "none" : "1px solid #fff"}
+          border={params.row.newarrivals  ? "none" : "1px solid #fff"}
           fontWeight="normal"
         >
-          {params.row.status ? "Activo" : "Inactivo"}
+          {params.row.newarrivals ? "Activo" : "Inactivo"}
         </Badge>
       ),
     },
@@ -84,29 +173,23 @@ import {
       renderCell: (params) => (
         <Flex justifyContent="space-around">
           <IconButton
-            aria-label="Incrementar"
-            icon={<AddIcon />}
-            onClick={() => incrementQuantity(params)}
+            aria-label="Editar"
+            icon={<EditIcon />}
+            onClick={() => editRow(params.row.id)}
             cursor="pointer"
             mx={2}
           />
-          <IconButton
-            aria-label="Decrementar"
-            icon={<MinusIcon />}
-            onClick={() => decrementQuantity(params)}
-            cursor="pointer"
-            mx={2}
-          />
+          
           <IconButton
             aria-label="Eliminar"
             icon={<DeleteIcon />}
-            onClick={() => deleteRow(params)}
+            onClick={() => deleteRow(params.row.id)}
             cursor="pointer"
             mx={2}
           />
-          <Button colorScheme="yellow" onClick={() => onSelect(params)}>
-              Select
-            </Button>
+           <Button colorScheme="yellow" onClick={() => onSelect(params)}>
+              Clonar
+            </Button> 
         </Flex>
       ),
     },

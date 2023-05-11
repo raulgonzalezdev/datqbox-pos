@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import jwtDecode from "jwt-decode";
-
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
@@ -19,17 +19,9 @@ class App extends Component {
     isAuthenticating: true,
     // forceUpdate: false,
   };
-  // handleStorageChange = (event) => {
-  //   if (event.key === "authToken") {
-  //     if (event.newValue) {
-  //       this.setState({ isAuthenticated: true, forceUpdate: true });
-  //     } else {
-  //       this.setState({ isAuthenticated: false });
-  //     }
-  //   }
-  // };
-  
-  
+
+
+
 
   handleLogoutEvent = (event) => {
     if (event.data === "logout") {
@@ -102,22 +94,20 @@ class App extends Component {
     this.setState({ isAuthenticated: false });
   };
   
-  
+    
+ 
 
   render() {
     if (this.state.isAuthenticating) {
       return null; // Muestra un spinner de carga mientras se verifica la autenticación
     }
-
+    const queryClient = new QueryClient();
     return (
       <HashRouter>
         <ApolloProvider client={client}>
+         <QueryClientProvider client={queryClient}>
           <Switch>
-           {/* <Route path={`/auth`} render={(props) => <AuthLayout {...props} forceUpdate={this.state.forceUpdate} />} />  */}
-           {/* <Route path={`/auth`} render={(props) => <AuthLayout {...props} forceUpdate={this.state.forceUpdate} setForcepdate={(forceUpdate) => this.setState({ forceUpdate })} />} />  */}
-           <Route path={`/auth`} component={AuthLayout} />
-
-
+            <Route path={`/auth`} component={AuthLayout} />
              <Route
               path={`/admin`}
               render={(props) =>
@@ -144,6 +134,7 @@ class App extends Component {
               to={this.state.isAuthenticated ? "/pos" : "/auth/signin"}
             />
           </Switch>
+          </QueryClientProvider>
         </ApolloProvider>
       </HashRouter>
     );
