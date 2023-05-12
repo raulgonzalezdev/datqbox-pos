@@ -32,7 +32,7 @@ const UPDATE_SIZE = gql`
 
 const DELETE_SIZE = gql`
   mutation DeleteSize($id: ID!) {
-    deleteSize(id: $id)
+    deleteSize(id: $id) 
   }
 `;
 

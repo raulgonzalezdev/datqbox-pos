@@ -5,16 +5,12 @@ import {
   Button,
   Box,
   useToast,
-
   HStack,
-
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import {
-
   BaseFlex,
   StyledText,
-
 } from "components/ReusableComponents/ReusableComponents";
 
 import GradientBorder from "components/GradientBorder/GradientBorder";
@@ -24,10 +20,21 @@ import {
   useUpdateProduct,
 } from "graphql/products/crudProducts";
 
+import {
+  useAddProductColor,
+  useRemoveProductColor,
 
-import ProductInfo from './ProductInfo';
-import ProductImage from './ProductImage';
-import ProductSizeColor from './ProductSizeColor';
+} from "graphql/productcolor/crudProductColor";
+
+import {
+  useAddProductSize,
+  useRemoveProductSize,
+
+} from "graphql/productsize/crudProductSize";
+
+import ProductInfo from "./ProductInfo";
+import ProductImage from "./ProductImage";
+import ProductSizeColor from "./ProductSizeColor";
 
 function ProductForm({ productId, onCancel, onSuccess }) {
   const [formState, setFormState] = useState({});
@@ -37,7 +44,15 @@ function ProductForm({ productId, onCancel, onSuccess }) {
   const [createProduct, { loading: createLoading }] = useCreateProduct();
   const [updateProduct, { loading: updateLoading }] = useUpdateProduct();
 
+  // Agrega los estados para tamaños y colores
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
 
+   // Agrega las mutaciones
+   const [addProductSize] = useAddProductSize();
+   const [removeProductSize] = useRemoveProductSize();
+   const [addProductColor] = useAddProductColor();
+   const [removeProductColor] = useRemoveProductColor();
 
   useEffect(() => {
     if (data && data.product) {
@@ -84,7 +99,28 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }));
   };
 
+  const handleSelectedSizes = (sizeId) => {
+    console.log('Tamaño seleccionado:', sizeId);
+    setFormState((prevState) => ({
+      ...prevState,
+      sizes: [...prevState.sizes, sizeId],
+    }));
+  };
+  
+  const handleSelectedColors = (colorId) => {
+    console.log('Color seleccionado:', colorId);
+    setFormState((prevState) => ({
+      ...prevState,
+      colors: [...prevState.colors, colorId],
+    }));
+  };
+  
+
+
   const handleSubmit = async (e) => {
+
+  console.log('Tamaños seleccionados al enviar:', formState.sizes);
+  console.log('Colores seleccionados al enviar:', formState.colors);
     e.preventDefault();
     const adjustedFormState = {
       name: formState.name,
@@ -100,7 +136,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       taxRate: parseFloat(formState.taxRate),
       categoryId: formState.categoryId,
     };
-
+    let newProductId = productId;
     try {
       if (productId) {
         await updateProduct({
@@ -114,7 +150,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           isClosable: true,
         });
       } else {
-        await createProduct({ variables: { input: adjustedFormState } });
+        const newProduct=  await createProduct({ variables: { input: adjustedFormState } });
+        newProductId = newProduct.data.createProduct.id;
 
         toast({
           title: "Producto creado",
@@ -124,6 +161,26 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           isClosable: true,
         });
       }
+     
+      for (let sizeId of formState.sizes ) {
+        console.log(newProductId, sizeId)
+        try {
+          await addProductSize({ variables: { productId: newProductId, sizeId: sizeId } });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      
+      for (let colorId of formState.colors) {
+        console.log(newProductId, colorId)
+        try {
+          await addProductColor({ variables: { productId: newProductId, colorId: colorId } });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      
+
       onSuccess();
     } catch (err) {
       toast({
@@ -135,7 +192,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       });
     }
   };
-
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
@@ -177,13 +233,14 @@ function ProductForm({ productId, onCancel, onSuccess }) {
               <Flex direction={["column", "row"]} gap={4}>
                 <GradientBorder p="2px">
                   <BaseFlex>
-                  <ProductImage formState={formState} productId={productId} />
-                  
+                    <ProductImage formState={formState} productId={productId} />
                   </BaseFlex>
                 </GradientBorder>
 
                 <Flex
                   wrap="wrap"
+                  direction={["column", "row"]} // Añadir la propiedad "direction" aquí
+               
                   maxW={{
                     base: "100%",
                     md: "calc(100% - 150px)",
@@ -191,21 +248,25 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                   }}
                   mr={{ base: "0", md: "8", xl: "16" }}
                 >
-                 <ProductInfo
-                  formState={formState}
-                  handleChange={handleChange}
-                  handleNumberInputChange={handleNumberInputChange}
-                  handleRentalTypeChange={handleRentalTypeChange}
-                  handleCheckboxChange={handleCheckboxChange}
-                />
-                 <ProductSizeColor
-                  formState={formState}
-                  handleChange={handleChange}
-                  handleCheckboxChange={handleCheckboxChange}
-                />
+                  <ProductInfo
+                    formState={formState}
+                    handleChange={handleChange}
+                    handleNumberInputChange={handleNumberInputChange}
+                    handleRentalTypeChange={handleRentalTypeChange}
+                    handleCheckboxChange={handleCheckboxChange}
+                  />
+                
+                  <ProductSizeColor
+                    formState={formState}
+                    handleChange={handleChange}
+                    handleCheckboxChange={handleCheckboxChange}
+                    handleSelectedSizes={handleSelectedSizes}
+                    handleSelectedColors={handleSelectedColors}
+                  />
+                 
                 </Flex>
               </Flex>
-               <Box mt={4}>
+              <Box mt={4}>
                 <Button type="submit" colorScheme="teal" size="md">
                   {productId ? "Actualizar Producto" : "Añadir Producto"}
                 </Button>

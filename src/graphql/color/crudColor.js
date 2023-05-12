@@ -25,8 +25,8 @@ const GET_COLOR = gql`
 `;
 
 const CREATE_COLOR = gql`
-  mutation CreateColor($name: String!, $hexCode: String!) {
-    createColor(name: $name, hexCode: $hexCode) {
+  mutation CreateColor($input: ColorInput!) {
+    createColor(input: $input) {
       id
       name
       hexCode
@@ -35,8 +35,8 @@ const CREATE_COLOR = gql`
 `;
 
 const UPDATE_COLOR = gql`
-  mutation UpdateColor($id: ID!, $name: String, $hexCode: String) {
-    updateColor(id: $id, name: $name, hexCode: $hexCode) {
+  mutation UpdateColor($id: ID!, $input: ColorInput) {
+    updateColor(id: $id, input: $input) {
       id
       name
       hexCode
@@ -52,30 +52,29 @@ const DELETE_COLOR = gql`
   }
 `;
 
-
 export function useGetColors() {
-    return useQuery(GET_COLORS);
-  }
+  return useQuery(GET_COLORS);
+}
+
+export function useGetColor(id) {
+  return useQuery(GET_COLOR, { variables: { id } });
+}
   
-  export function useGetColor(id) {
-    return useQuery(GET_COLOR, { variables: { id } });
-  }
+export function useCreateColor() {
+  return useMutation(CREATE_COLOR, {
+    refetchQueries: [{ query: GET_COLORS }],
+  });
+}
   
-  export function useCreateColor() {
-    return useMutation(CREATE_COLOR, {
-      refetchQueries: [{ query: GET_COLORS }],
-    });
-  }
+export function useUpdateColor() {
+  return useMutation(UPDATE_COLOR, {
+    refetchQueries: [{ query: GET_COLORS }],
+  });
+}
   
-  export function useUpdateColor() {
-    return useMutation(UPDATE_COLOR, {
-      refetchQueries: [{ query: GET_COLORS }],
-    });
-  }
-  
-  export function useDeleteColor() {
-    return useMutation(DELETE_COLOR, {
-      refetchQueries: [{ query: GET_COLORS }],
-    });
-  }
-  
+export function useDeleteColor() {
+  return useMutation(DELETE_COLOR, {
+    refetchQueries: [{ query: GET_COLORS }],
+  });
+}
+
