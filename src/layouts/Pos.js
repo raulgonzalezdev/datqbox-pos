@@ -6,8 +6,8 @@ import PosNavbar from "components/Navbars/PosNavbar.js";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
-import theme from "theme/themeAuth.js";
-//import theme from "theme/themeAdmin.js";
+//import theme from "theme/themeAuth.js";
+import theme from "theme/themeAdmin.js";
 
 
 export default function Pages(props) {

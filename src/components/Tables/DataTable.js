@@ -88,7 +88,9 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
         </Button>
       </Flex>
   
-      <Box sx={{ width: "97%",  minHeight: "600px" }} mx="1em">
+      <Box sx={{ width: "97%", minHeight: { md: "650px", "2xl": "800px" }}} mx="1em">
+
+
         <ThemeProvider theme={taxTableTheme}>
           <DataGrid
             

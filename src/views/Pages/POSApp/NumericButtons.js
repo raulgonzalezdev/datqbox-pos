@@ -43,17 +43,18 @@ const NumericButtons = ({
 
   return (
     <Grid
-        templateColumns={{ base: "1fr", md: "2fr 2fr" }}
+        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
         my="26px"
         gap="18px"
       >
-    <Flex flexDirection={{ base: "column", md: "row" }}> 
-    <Button width="100%" height="100%" mb={4}>
-                    Enviar Payment
-                  </Button>
-                  </Flex>
+    <Flex flexDirection={{ base: "row", md: "row" }}> 
+      <Button width={{ base: "auto", md: "100%" }} height="100%" mb={4}>
+        Enviar Payment
+     </Button>
+    </Flex>
 
-     <Flex>             
+     <Flex>  
+                
     <SimpleGrid columns={4} spacing={1} ml={4}>
       <Button onClick={() => handleNumericButtonClick(1)}>1</Button>
       <Button onClick={() => handleNumericButtonClick(2)}>2</Button>
