@@ -32,13 +32,17 @@ export const GET_PRODUCTS = gql`
         id
         quantity
       }
-      colors {
-        id
-        name
+      productColors {
+        color {
+          id
+          name
+        }
       }
-      sizes {
-        id
-        name
+      productSizes {
+        size {
+          id
+          name
+        }
       }
     }
   }
@@ -76,18 +80,21 @@ export const GET_PRODUCT = gql`
         id
         quantity
       }
-      colors {
-        id
-        name
+      productColors {
+        color {
+          id
+          name
+        }
       }
-      sizes {
-        id
-        name
+      productSizes {
+        size {
+          id
+          name
+        }
       }
     }
   }
 `;
-
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {

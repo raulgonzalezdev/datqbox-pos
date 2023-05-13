@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FormControl,
   Flex,
@@ -6,6 +6,7 @@ import {
   Box,
   useToast,
   HStack,
+  Spinner,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import {
@@ -19,40 +20,49 @@ import {
   useCreateProduct,
   useUpdateProduct,
 } from "graphql/products/crudProducts";
-
+import { Form, Formik } from 'formik'
+import { InputControl, SelectControl, SubmitButton } from 'formik-chakra-ui'
 import {
-  useAddProductColor,
   useRemoveProductColor,
-
+  useAddMultipleProductColors,
 } from "graphql/productcolor/crudProductColor";
 
 import {
-  useAddProductSize,
   useRemoveProductSize,
-
+  useAddMultipleProductSizes,
 } from "graphql/productsize/crudProductSize";
 
 import ProductInfo from "./ProductInfo";
 import ProductImage from "./ProductImage";
-import ProductSizeColor from "./ProductSizeColor";
+import ProductColor from "./ProductColor";
+import ProductSize from "./ProductSize";
 
 function ProductForm({ productId, onCancel, onSuccess }) {
-  const [formState, setFormState] = useState({});
+  const [formState, setFormState] = useState({
+    sizes: [],
+    colors: [],
+  });
 
   const toast = useToast();
-  const { data, loading, error } = useGetProduct(productId);
+  const { data, loading, error } = useGetProduct(productId, {
+    skip: !productId,
+  });
+
   const [createProduct, { loading: createLoading }] = useCreateProduct();
   const [updateProduct, { loading: updateLoading }] = useUpdateProduct();
+  const [addMultipleProductSizes] = useAddMultipleProductSizes();
+  const [addMultipleProductColors] = useAddMultipleProductColors();
 
-  // Agrega los estados para tamaños y colores
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
+  const [removeProductSize] = useRemoveProductSize();
+  const [removeProductColor] = useRemoveProductColor();
+  const dbSizes =
+    formState?.productSizes?.map((sizeObj) => sizeObj.size.id) || [];
+  const dbColors =
+    formState?.productColors?.map((ColorObj) => ColorObj.color.id) || [];
 
-   // Agrega las mutaciones
-   const [addProductSize] = useAddProductSize();
-   const [removeProductSize] = useRemoveProductSize();
-   const [addProductColor] = useAddProductColor();
-   const [removeProductColor] = useRemoveProductColor();
+  const [selectedSizes, setSelectedSizes] = useState(dbSizes);
+  const [selectedColors, setSelectedColors] = useState(dbColors);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (data && data.product) {
@@ -66,6 +76,13 @@ function ProductForm({ productId, onCancel, onSuccess }) {
             ? true
             : data.product.newarrivals,
       });
+
+      setSelectedSizes(
+        data.product.productSizes.map((productSize) => productSize.size.id)
+      );
+      setSelectedColors(
+        data.product.productColors.map((productColor) => productColor.color.id)
+      );
     } else if (!productId) {
       setFormState({
         id: null,
@@ -81,8 +98,29 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         taxRate: 0,
         categoryId: "",
       });
+      setSelectedSizes([]);
+      setSelectedColors([]);
     }
   }, [data, productId]);
+
+  const handleNumberInputChange = (fieldName, value) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [fieldName]: Number(value),
+    }));
+  };
+
+  const handleSelectedSizes = (sizeId, isChecked) => {
+    setSelectedSizes((prevSizes) => {
+      if (isChecked && !prevSizes.includes(sizeId)) {
+        return [...prevSizes, sizeId];
+      } else if (!isChecked && prevSizes.includes(sizeId)) {
+        return prevSizes.filter((id) => id !== sizeId);
+      } else {
+        return prevSizes;
+      }
+    });
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -92,36 +130,18 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }));
   };
 
-  const handleNumberInputChange = (fieldName, value) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [fieldName]: Number(value),
-    }));
-  };
-
-  const handleSelectedSizes = (sizeId) => {
-    console.log('Tamaño seleccionado:', sizeId);
-    setFormState((prevState) => ({
-      ...prevState,
-      sizes: [...prevState.sizes, sizeId],
-    }));
-  };
-  
   const handleSelectedColors = (colorId) => {
-    console.log('Color seleccionado:', colorId);
-    setFormState((prevState) => ({
-      ...prevState,
-      colors: [...prevState.colors, colorId],
-    }));
+    if (selectedColors.includes(colorId)) {
+      setSelectedColors(selectedColors.filter((id) => id !== colorId));
+    } else {
+      setSelectedColors([...selectedColors, colorId]);
+    }
   };
-  
-
 
   const handleSubmit = async (e) => {
+    // e.preventDefault();
+    setIsLoading(true);
 
-  console.log('Tamaños seleccionados al enviar:', formState.sizes);
-  console.log('Colores seleccionados al enviar:', formState.colors);
-    e.preventDefault();
     const adjustedFormState = {
       name: formState.name,
       vendor: formState.vendor,
@@ -137,11 +157,50 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       categoryId: formState.categoryId,
     };
     let newProductId = productId;
+
     try {
       if (productId) {
         await updateProduct({
           variables: { id: productId, input: adjustedFormState },
         });
+      } else {
+        const newProduct = await createProduct({
+          variables: { input: adjustedFormState },
+        });
+        newProductId = newProduct.data.createProduct.id;
+      }
+
+      const { dataC } = await removeProductColor({
+        variables: {
+          input: {
+            ProductId: newProductId,
+          },
+        },
+      });
+
+      const { dataZ } = await removeProductSize({
+        variables: {
+          input: {
+            ProductId: newProductId,
+          },
+        },
+      });
+
+      const productSizes = selectedSizes.map((sizeId) => ({
+        ProductId: newProductId,
+        SizeId: sizeId,
+        stock: 10,
+      }));
+
+      const productColors = selectedColors.map((colorId) => ({
+        ProductId: newProductId,
+        ColorId: colorId,
+      }));
+
+      await addMultipleProductSizes({ variables: { input: productSizes } });
+      await addMultipleProductColors({ variables: { input: productColors } });
+
+      if (productId) {
         toast({
           title: "Producto actualizado",
           description: "El producto ha sido actualizado exitosamente",
@@ -150,9 +209,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           isClosable: true,
         });
       } else {
-        const newProduct=  await createProduct({ variables: { input: adjustedFormState } });
-        newProductId = newProduct.data.createProduct.id;
-
         toast({
           title: "Producto creado",
           description: "El producto ha sido creado exitosamente",
@@ -161,27 +217,10 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           isClosable: true,
         });
       }
-     
-      for (let sizeId of formState.sizes ) {
-        console.log(newProductId, sizeId)
-        try {
-          await addProductSize({ variables: { productId: newProductId, sizeId: sizeId } });
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      
-      for (let colorId of formState.colors) {
-        console.log(newProductId, colorId)
-        try {
-          await addProductColor({ variables: { productId: newProductId, colorId: colorId } });
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      
 
-      onSuccess();
+      setTimeout(() => {
+        onSuccess();
+      }, 3000);
     } catch (err) {
       toast({
         title: "Error",
@@ -191,6 +230,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         isClosable: true,
       });
     }
+    setIsLoading(false);
+  
   };
 
   const handleCheckboxChange = (event) => {
@@ -215,68 +256,103 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
   return (
     <GradientBorder p="2px">
-      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
-        <BaseFlex>
-          <HStack width="100%" justifyContent="space-between">
-            <StyledText fontSize="20px">
-              {productId ? "Editar Producto" : "Añadir Producto"}
-            </StyledText>
-            <Box mt={4}>
-              <Button onClick={onCancel} colorScheme="teal" size="md">
-                Retornar
-              </Button>
-            </Box>
-          </HStack>
-
-          <FormControl>
-            <form onSubmit={handleSubmit}>
-              <Flex direction={["column", "row"]} gap={4}>
-                <GradientBorder p="2px">
-                  <BaseFlex>
-                    <ProductImage formState={formState} productId={productId} />
-                  </BaseFlex>
-                </GradientBorder>
-
-                <Flex
-                  wrap="wrap"
-                  direction={["column", "row"]} // Añadir la propiedad "direction" aquí
-               
-                  maxW={{
-                    base: "100%",
-                    md: "calc(100% - 150px)",
-                    xl: "calc(100% - 150px)",
-                  }}
-                  mr={{ base: "0", md: "8", xl: "16" }}
-                >
-                  <ProductInfo
-                    formState={formState}
-                    handleChange={handleChange}
-                    handleNumberInputChange={handleNumberInputChange}
-                    handleRentalTypeChange={handleRentalTypeChange}
-                    handleCheckboxChange={handleCheckboxChange}
-                  />
-                
-                  <ProductSizeColor
-                    formState={formState}
-                    handleChange={handleChange}
-                    handleCheckboxChange={handleCheckboxChange}
-                    handleSelectedSizes={handleSelectedSizes}
-                    handleSelectedColors={handleSelectedColors}
-                  />
-                 
-                </Flex>
-              </Flex>
+      <Flex
+        background="transparent"
+        borderRadius="30px"
+        w="100%"
+        bg={{ base: "rgb(19,21,56)" }}
+        direction="column"
+        pt={{ base: "120px", md: "75px" }}
+      >
+        {isLoading ? (
+          <Spinner /> // Muestra el spinner si isLoading es true
+        ) : (
+          <BaseFlex>
+            <HStack width="100%" justifyContent="space-between">
+              <StyledText fontSize={{ base: "16px", md: "20px" }}>
+                {productId ? "Editar Producto" : "Añadir Producto"}
+              </StyledText>
               <Box mt={4}>
-                <Button type="submit" colorScheme="teal" size="md">
+                <Button onClick={onCancel} colorScheme="teal" size={{ base: "sm", md: "md" }}>
+                  Retornar
+                </Button>
+              </Box>
+            </HStack>
+  
+            <Formik
+              initialValues={formState}
+              onSubmit={handleSubmit}
+            >
+              <Form>
+                <Flex direction={{ base: "column", md: "row" }} gap={4}>
+                  <Box
+                    position="relative"
+                    bg="radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%),
+                        radial-gradient(60% 51.57% at 50% 50%, #582CFF 0%, rgba(88, 44, 255, 0) 100%),
+                        radial-gradient(54.8% 53% at 50% 50%, #151515 0%, rgba(21, 21, 21, 0) 100%)"
+                    p="2px"
+                  >
+                    <BaseFlex>
+                      <ProductImage
+                        formState={formState}
+                        productId={productId}
+                      />
+                    </BaseFlex>
+                  </Box>
+  
+                  <Flex
+                    wrap="wrap"
+                    direction={{ base: "column", md: "row" }} 
+                    maxW={{
+                      base: "100%",
+                      md: "calc(100% - 150px)",
+                      xl: "calc(100% - 150px)",
+                    }}
+                    mr={{ base: "0", md: "8", xl: "16" }}
+                  >
+                    <ProductInfo
+                      formState={formState}
+                      handleChange={handleChange}
+                      setFormState={setFormState}
+                      handleNumberInputChange={handleNumberInputChange}
+                      handleRentalTypeChange={handleRentalTypeChange}
+                      handleCheckboxChange={handleCheckboxChange}
+                    />
+                    <Flex
+                      direction={{ base: "column", md: "row" }}
+                      justifyContent="space-between"
+                      w={{ base: "100%", md: "200%" }}
+                    >
+                      <ProductColor
+                        formState={formState}
+                        handleChange={handleChange}
+                        handleCheckboxChange={handleCheckboxChange}
+                        selectedColors={selectedColors}
+                        handleSelectedColors={handleSelectedColors}
+                      />
+                      <ProductSize
+                        formState={formState}
+                        handleChange={handleChange}
+                        selectedSizes={selectedSizes}
+                        handleSelectedSizes={handleSelectedSizes}
+                      />
+                    </Flex>
+                  </Flex>
+                </Flex>
+                <Box mt={4}>
+                <Button type="submit" colorScheme="teal" size={{ base: "sm", md: "md" }}>
                   {productId ? "Actualizar Producto" : "Añadir Producto"}
                 </Button>
               </Box>
-            </form>
-          </FormControl>
+            </Form>
+          </Formik>
         </BaseFlex>
-      </Flex>
-    </GradientBorder>
-  );
+      )}
+    </Flex>
+  </GradientBorder>
+);
+
+  
 }
 
 export default ProductForm;

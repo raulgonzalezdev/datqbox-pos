@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import jwtDecode from "jwt-decode";
-import { QueryClient, QueryClientProvider } from "react-query";
+// import { QueryClient, QueryClientProvider } from "react-query";
 
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
@@ -101,11 +101,11 @@ class App extends Component {
     if (this.state.isAuthenticating) {
       return null; // Muestra un spinner de carga mientras se verifica la autenticación
     }
-    const queryClient = new QueryClient();
+    // const queryClient = new QueryClient();
     return (
       <HashRouter>
         <ApolloProvider client={client}>
-         <QueryClientProvider client={queryClient}>
+         {/* <QueryClientProvider client={queryClient}> */}
           <Switch>
             <Route path={`/auth`} component={AuthLayout} />
              <Route
@@ -134,7 +134,7 @@ class App extends Component {
               to={this.state.isAuthenticated ? "/pos" : "/auth/signin"}
             />
           </Switch>
-          </QueryClientProvider>
+          {/* </QueryClientProvider> */}
         </ApolloProvider>
       </HashRouter>
     );

@@ -106,15 +106,16 @@ export const GradientInput = ({ children, ...props }) => (
 export const BaseFlex = ({ children, ...props }) => (
   <Flex
     background="transparent"
+    bg={{
+      base: "rgb(19,21,56)",
+    }}
     borderRadius="30px"
     direction="column"
     p="40px"
     minW={{ base: "unset", md: "430px", xl: "450px" }}
     w="100%"
     mx={{ base: "0px" }}
-    bg={{
-      base: "rgb(19,21,56)",
-    }}
+    
     {...props}
   >
     {children}

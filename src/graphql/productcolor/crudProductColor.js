@@ -1,36 +1,57 @@
 import { useMutation, useQuery, gql } from "@apollo/client";
 
 const GET_PRODUCT_COLORS_BY_PRODUCT_ID = gql`
-  query GetProductColorsByProductId($productId: ID!) {
-    getProductColorsByProductId(productId: $productId) {
+  query GetProductColorsByProductId($ProductId: ID!) {
+    getProductColorsByProductId(ProductId: $ProductId) {
       id
-      productId
-      colorId
+      ProductId
+      ColorId
+      color {
+        id
+        name
+        hexCode
+      }
     }
   }
 `;
 
 const ADD_PRODUCT_COLOR = gql`
-  mutation AddProductColor($productId: ID!, $colorId: ID!) {
-    addProductColor(productId: $productId, colorId: $colorId) {
-      id
-      productId
-      colorId
+  mutation AddProductColor($ProductId: ID!, $ColorId: ID!) {
+    addProductColor(ProductId: $ProductId, ColorId: $ColorId) {
+        id
+        ProductId
+        ColorId
+        color {
+          id
+          name
+          hexCode
+        }
     }
   }
 `;
 
 const REMOVE_PRODUCT_COLOR = gql`
-  mutation RemoveProductColor($id: ID!) {
-    removeProductColor(id: $id)
+  mutation RemoveProductColor($input: RemoveProductColorInput!) {
+    removeProductColor(input: $input)
   }
 `;
 
-export function useGetProductColorsByProductId(productId) {
-  return useQuery(GET_PRODUCT_COLORS_BY_PRODUCT_ID, {
-    variables: { productId },
-  });
-}
+const ADD_MULTIPLE_PRODUCT_COLORS = gql`
+  mutation AddMultipleProductColors($input: [ProductColorInput!]!) {
+    addMultipleProductColors(input: $input) {
+      id
+      ProductId
+      ColorId
+    }
+  }
+`;
+
+
+export function useGetProductColorsByProductId(ProductId) {
+    return useQuery(GET_PRODUCT_COLORS_BY_PRODUCT_ID, {
+      variables: { ProductId },
+    });
+  }
 
 export function useAddProductColor() {
   return useMutation(ADD_PRODUCT_COLOR);
@@ -39,3 +60,7 @@ export function useAddProductColor() {
 export function useRemoveProductColor() {
   return useMutation(REMOVE_PRODUCT_COLOR);
 }
+
+export function useAddMultipleProductColors() {
+    return useMutation(ADD_MULTIPLE_PRODUCT_COLORS);
+  }

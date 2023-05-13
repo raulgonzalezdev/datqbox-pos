@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { StyledFormLabel } from "components/ReusableComponents/ReusableComponents";
 import {
   Box,
-  Checkbox,
   CheckboxGroup,
   Flex,
   Accordion,
@@ -24,8 +23,7 @@ import {
   Stack,
   useToast,
   useDisclosure,
-  RadioGroup,
-  Radio,
+
 } from "@chakra-ui/react";
 
 import { IconButton, Icon } from "@chakra-ui/react";
@@ -38,55 +36,28 @@ import {
   useUpdateColor,
   useDeleteColor,
 } from "graphql/color/crudColor";
-import {
-  useGetSizes,
-  useCreateSize,
-  useUpdateSize,
-  useDeleteSize,
-} from "graphql/sizes/crudSizes";
+
 import ColorPicker from "components/ColorPicker/colorPiker";
 
-function ProductSizeColor({
+function ProductColor({
   formState,
   handleChange,
   handleCheckboxChange,
   handleSelectedColors,
-  handleSelectedSizes,
+  selectedColors
+
 }) {
   const toast = useToast();
   const { data: colorsData } = useGetColors();
   const [createColor, { loading: createLoading }] = useCreateColor();
   const [updateColor, { loading: updateLoading }] = useUpdateColor();
   const [deleteColor, { loading: deleteLoading }] = useDeleteColor();
-
-  const { data: sizesData } = useGetSizes();
-  const [createSize, { loading: createLoadingSize }] = useCreateSize();
-  const [updateSize, { loading: updateLoadingSize }] = useUpdateSize();
-  const [deleteSize, { loading: deleteLoadingSize }] = useDeleteSize();
-
   const [colorselect, setColor] = useState("#0000FF");
   const [nameColor, setNameColor] = useState("Azul");
-  const [valueSize, setValueSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [radioValue, setRadioValue] = useState(null);
-  const [radioValueSize, setRadioValueSize] = React.useState(null);
-  const [checkboxValuesSize, setCheckboxValuesSize] = React.useState([]);
-  const [selectedColors, setSelectedColor] = useState([]);
-  const [selectedSizes, setSelectedSize] = useState([]);
-
-  useEffect(() => {
-    handleSelectedSizes(selectedSizes);
-    handleSelectedColors(selectedColors)
-
-  }, [selectedSizes, selectedColors]);
-
-
-  const {
-    isOpen: isOpenSize,
-    onOpen: onOpenSize,
-    onClose: onCloseSize,
-  } = useDisclosure();
 
   const [actionType, setActionType] = useState(null);
 
@@ -95,38 +66,10 @@ function ProductSizeColor({
     setNameColor(colorselect);
   };
 
-  function handleCheckboxChangeSize(e) {
-    const { value } = e.target;
 
-    setCheckboxValuesSize((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((v) => v !== value);
-      } else {
-        return [...prev, value];
-      }
-    });
-  }
 
-  const handleSizeChange = (sizeId) => {
-    if (selectedSizes.includes(sizeId)) {
-      setSelectedSizes(selectedSizes.filter(id => id !== sizeId));
-      handleSelectedSizes(selectedSizes.filter(id => id !== sizeId));
-    } else {
-      setSelectedSizes([...selectedSizes, sizeId]);
-      handleSelectedSizes([...selectedSizes, sizeId]);
-    }
-  };
 
-  const handleColorChange = (colorId) => {
-    if (selectedColors.includes(colorId)) {
-      setSelectedColors(selectedColors.filter(id => id !== colorId));
-      handleSelectedColors(selectedColors.filter(id => id !== colorId));
-    } else {
-      setSelectedColors([...selectedColors, colorId]);
-      handleSelectedColors([...selectedColors, colorId]);
-    }
-  };
-
+ 
   const handleSubmit = async (type, actionType, id = null) => {
     try {
       if (type === "color") {
@@ -173,44 +116,7 @@ function ProductSizeColor({
         setNameColor("");
         setColor("");
         onClose();
-      } else if (type === "size") {
-        if (actionType === "create") {
-          await createSize({ variables: { name: valueSize } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Tamaño creado.",
-            description: `El tamaño ${valueSize} ha sido creado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else if (actionType === "update") {
-          await updateSize({ variables: { id, name: valueSize } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Tamaño actualizado.",
-            description: `El tamaño ${valueSize} ha sido actualizado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else if (actionType === "delete") {
-          await deleteSize({ variables: { id } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Tamaño eliminado.",
-            description: `El tamaño ${valueSize} ha sido eliminado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-
-        setValueSize("");
-        onCloseSize();
+     
       }
     } catch (error) {
       // Muestra un toast de error si algo va mal
@@ -227,10 +133,7 @@ function ProductSizeColor({
 
   return (
     <React.Fragment>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        justifyContent="space-between"
-      >
+   
         <Accordion
           allowToggle
           w={{ base: "100%", md: "50%" }}
@@ -259,7 +162,7 @@ function ProductSizeColor({
                       value={color.id}
                       color={color.hexCode}
                       name={color.name}
-                      //isChecked={formState.productColor.includes(color.id)}
+                      isChecked={selectedColors.includes(color.id)}
                       onCheck={() => {
                         handleSelectedColors(color.id);
                         setSelectedColor(color);
@@ -382,142 +285,9 @@ function ProductSizeColor({
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <Accordion
-          allowToggle
-          w={{ base: "100%", md: "50%" }}
-          pl={{ base: "0", md: "4" }}
-          style={{ border: "none" }}
-        >
-          <AccordionItem>
-            <AccordionButton color="white">
-              <Box flex="1" textAlign="left">
-                <StyledFormLabel>Tamaños</StyledFormLabel>
-              </Box>
-              <AccordionIcon color="white" />
-            </AccordionButton>
-            <AccordionPanel pb={4}>
-              <CheckboxGroup>
-                <RadioGroup onChange={setRadioValueSize} value={radioValueSize}>
-                  {sizesData?.sizes?.map((size) => (
-                    <Flex
-                      key={size.id}
-                      align="center"
-                      justify="space-between"
-                      mb={2}
-                    >
-                      <Checkbox
-                        color="#FFFFFF"
-                        value={size.id}
-                        // onChange={handleCheckboxChangeSize}
-                        onChange={(e) => {
-                          handleSelectedSizes(size.id);
-                          handleCheckboxChangeSize(e);
-                          handleSizeChange(size.id)
-                        }}
-                      >
-                        {size.name}
-                      </Checkbox>
-                      <Radio
-                        value={size.id}
-                        colorScheme="blue"
-                        ml={2}
-                        onChange={(e) => {
-                          setSelectedSize(size);
-                          setRadioValueSize(e.target.value);
-                        }}
-                      />
-                    </Flex>
-                  ))}
-                </RadioGroup>
-
-                <Popover
-                  placement="bottom"
-                  closeOnBlur={false}
-                  isOpen={isOpenSize}
-                  onOpen={onOpenSize}
-                  onClose={onCloseSize}
-                  isLazy
-                >
-                  <Stack direction="row" spacing={2}>
-                    <PopoverTrigger>
-                      <IconButton
-                        aria-label="Add new size"
-                        icon={<AddIcon />}
-                        onClick={() => {
-                          setActionType("create");
-                          onOpenSize();
-                        }}
-                      />
-                    </PopoverTrigger>
-
-                    <IconButton
-                      aria-label="Edit Size"
-                      icon={<EditIcon />}
-                      onClick={() => {
-                        if (selectedSize) {
-                          setValueSize(selectedSize.name);
-                          setActionType("update");
-                          onOpenSize();
-                        }
-                      }}
-                    />
-                    <IconButton
-                      aria-label="Delete Size"
-                      icon={<DeleteIcon />}
-                      onClick={() => {
-                        setActionType("delete");
-                        handleSubmit("size", "delete", radioValueSize);
-                      }}
-                    />
-                  </Stack>
-                  <PopoverContent
-                    color="white"
-                    bg="blue.800"
-                    borderColor="blue.800"
-                  >
-                    <PopoverHeader pt={4} fontWeight="bold" border="0">
-                      Añadir Talla o Tamaño
-                    </PopoverHeader>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>
-                      <Stack spacing={4}>
-                        <Input
-                          name="name"
-                          placeholder="Nombre del Size"
-                          fontSize="sm"
-                          type="text"
-                          color="white"
-                          value={valueSize}
-                          onChange={(e) => setValueSize(e.target.value)}
-                        />
-                      </Stack>
-                    </PopoverBody>
-
-                    <PopoverFooter display="flex" justifyContent="flex-end">
-                      <Button
-                        colorScheme="blue"
-                        onClick={() =>
-                          handleSubmit("size", actionType, radioValueSize)
-                        }
-                        mr={2}
-                        size="sm"
-                      >
-                        {actionType === "create" ? "Add" : "Update"}
-                      </Button>
-                      <Button size="sm" colorScheme="red" onClick={onCloseSize}>
-                        Regresar
-                      </Button>
-                    </PopoverFooter>
-                  </PopoverContent>
-                </Popover>
-              </CheckboxGroup>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      </Flex>
+        
+   
     </React.Fragment>
   );
 }
-
-export default ProductSizeColor;
+export default ProductColor;

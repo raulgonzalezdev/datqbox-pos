@@ -15,7 +15,7 @@ function ImageSection() {
       left="0px"
     >
       <Box
-        bgImage={signUpImage}
+       bgImage={signUpImage}
         w="100%"
         h="1300px"
         bgSize="cover"

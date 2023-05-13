@@ -16,23 +16,33 @@ import {
 
 
 
-function ProductInfo({ formState, handleChange, handleNumberInputChange,  handleCheckboxChange, handleRentalTypeChange }) {
+function ProductInfo({ formState, handleChange, handleNumberInputChange, setFormState, handleCheckboxChange, handleRentalTypeChange }) {
     const { data: categoriesData } = useGetCategories();
+    // const [formState, setFormState] = useState({});
 
     const handleCategoryChange = (event) => {
-        const categoryId = event.target.value;
-        const category = categoriesData.categories.find(
-          (cat) => cat.id === categoryId
-        );
-        setFormState({
-          ...formState,
-          categoryId: categoryId,
-          category: {
-            id: categoryId,
-            name: category.name,
-          },
-        });
-      };
+      const categoryId = event.target.value;
+      const category = categoriesData.categories.find(
+        (cat) => cat.id === categoryId
+      );
+      if (category) {  // verifica si la categoría existe antes de acceder a sus propiedades
+          setFormState({
+            ...formState,
+            categoryId: categoryId,
+            category: {
+              id: categoryId,
+              name: category.name,
+            },
+          });
+      } else { // Si no se encuentra la categoría, podrías configurar el estado a un valor predeterminado o mostrar un error, etc.
+          setFormState({
+            ...formState,
+            categoryId: null,
+            category: null,
+          });
+      }
+  };
+  
   
     return (
     <React.Fragment>

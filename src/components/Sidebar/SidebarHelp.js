@@ -19,7 +19,7 @@ export function SidebarHelp(props) {
     <Flex
       borderRadius='15px'
       flexDirection='column'
-      bgImage={SidebarHelpImage}
+     bgImage={SidebarHelpImage}
       bgSize='cover'
       bgPosition='center'
       justifyContent='flex-start'

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SimpleGrid, Button } from "@chakra-ui/react";
+import { SimpleGrid, Button , Flex, Grid} from "@chakra-ui/react";
 
 import { BiTag, BiSubdirectoryLeft } from "react-icons/bi";
 import { FaBackspace, FaCheck } from "react-icons/fa";
@@ -42,6 +42,18 @@ const NumericButtons = ({
 
 
   return (
+    <Grid
+        templateColumns={{ base: "1fr", md: "2fr 2fr" }}
+        my="26px"
+        gap="18px"
+      >
+    <Flex flexDirection={{ base: "column", md: "row" }}> 
+    <Button width="100%" height="100%" mb={4}>
+                    Enviar Payment
+                  </Button>
+                  </Flex>
+
+     <Flex>             
     <SimpleGrid columns={4} spacing={1} ml={4}>
       <Button onClick={() => handleNumericButtonClick(1)}>1</Button>
       <Button onClick={() => handleNumericButtonClick(2)}>2</Button>
@@ -82,6 +94,8 @@ const NumericButtons = ({
         Enter
       </Button>
     </SimpleGrid>
+    </Flex>
+    </Grid>
   );
 };
 

@@ -49,7 +49,7 @@ const ProductsList = () => {
    
     try {
       const result = await createProduct({ variables: { input: newProduct } });
-      console.log('New product created:', result.data.createProduct);
+     
   
       // Update the UI to reflect the new product
       setRows([...rows, result.data.createProduct]);

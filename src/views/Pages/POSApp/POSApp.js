@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { Box, Flex, Button, Input } from "@chakra-ui/react";
+import { Box, Flex, Button, Input, SimpleGrid, Grid } from "@chakra-ui/react";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeProvider } from "@mui/material/styles";
 import taxTableTheme from "theme/themeTableMUI";
@@ -20,18 +20,14 @@ const POSApp = () => {
   const [selectedOperation, setSelectedOperation] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  const [selectedRows, setSelectedRows] = useState([]); 
- 
-  
-
-  
-  
-  
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleCellClick = (params) => {
     if (selectedRows.includes(params.id)) {
       // Si el ID ya está en la lista de filas seleccionadas, elimínalo
-      setSelectedRows((prevSelectedRows) => prevSelectedRows.filter((id) => id !== params.id));
+      setSelectedRows((prevSelectedRows) =>
+        prevSelectedRows.filter((id) => id !== params.id)
+      );
     } else {
       // Si el ID no está en la lista de filas seleccionadas, agrégalo
       setSelectedRows((prevSelectedRows) => [...prevSelectedRows, params.id]);
@@ -39,12 +35,12 @@ const POSApp = () => {
   };
 
   const handleNumericButtonClick = (number) => {
-    if (number === 'backspace') {
+    if (number === "backspace") {
       // Si el botón es de "Borrar", elimina el último dígito del input
       setInputValue((prevValue) => prevValue.slice(0, -1));
-    } else if (number === '.') {
+    } else if (number === ".") {
       // Si el botón es un punto decimal, verifica que no haya uno ya en el input y lo agrega
-      if (!inputValue.includes('.')) {
+      if (!inputValue.includes(".")) {
         setInputValue((prevValue) => `${prevValue}${number}`);
       }
     } else {
@@ -55,11 +51,11 @@ const POSApp = () => {
       } else {
         // Si hay una fila seleccionada, actualiza la cantidad o el precio de la fila según la operación seleccionada
         const selectedRow = rows.find((row) => row.id === selectedRowId);
-    
+
         if (!selectedRow) {
           return;
         }
-    
+
         const newRows = rows.map((row) => {
           if (row.id === selectedRow.id) {
             if (selectedOperation === "Cant") {
@@ -72,16 +68,13 @@ const POSApp = () => {
           }
           return row;
         });
-    
+
         setRows(newRows);
         updateTotal(newRows);
         setInputValue((prevValue) => `${prevValue}${number}`);
       }
     }
   };
-  
-  
-  
 
   const handleEnterClick = useCallback(() => {
     if (!inputValue) {
@@ -95,9 +88,9 @@ const POSApp = () => {
       }
       return;
     }
-  
+
     const parsedNumber = parseFloat(inputValue);
-  
+
     const newRows = rows.map((row) => {
       if (selectedRows.includes(row.id)) {
         // Aplica los cambios solo a las filas seleccionadas
@@ -110,9 +103,9 @@ const POSApp = () => {
             break;
           case "% Desc":
             const discount = parseFloat(inputValue);
-if (!isNaN(discount)) {
-    row.price = row.price * (1 - discount / 100);
-}
+            if (!isNaN(discount)) {
+              row.price = row.price * (1 - discount / 100);
+            }
             break;
           default:
             break;
@@ -120,16 +113,15 @@ if (!isNaN(discount)) {
       }
       return row;
     });
-  
+
     setRows(newRows);
     updateTotal(newRows);
     setInputValue("");
     setSelectedOperation(null);
     setSelectedRowId(null);
     //setSelectedRows([]);
-
   }, [rows, inputValue, selectedOperation, selectedRows]);
-  
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Enter") {
@@ -229,90 +221,89 @@ if (!isNaN(discount)) {
   };
 
   return (
-
-  
-      <Flex>
-        <Flex
-          direction="column"
-          w="55%"
-          borderRight="1px solid"
-          borderColor="gray.200"
-          p={4}
-        >
-          <Box
-            mt={4}
-            minHeight="340px"
-            maxHeight="calc(100vh - 50px)"
-            overflowY="auto"
-          >
-            <CustomInput value={inputValue} onChange={handleInputChange} />
-
-            <Flex direction="column" pt={{ base: "20px", md: "20px" }}>
-              <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-                <CardBody maxHeight="calc(100vh - 410px)" overflowY="auto">
-                  <Box sx={{ width: "100%" }}>
+    <Flex flexDirection='column' pt={{ base: '120px', md: '75px' }}>
+      <Grid
+        templateColumns={{ sm: "1fr", md: "1fr 1fr" }}
+        my="26px"
+        gap="18px"
+      >
+        {/* <Flex
+          // direction={{ base: "column", lg: "row" }}
+          justifyContent="space-between"
+          p={{ base: "2", lg: "4" }}
+          pl={{ base: "8", lg: "12" }}
+          marginTop={{ base: "0", lg: "-70px" }}
+          overflowY="hidden"
+        > */}
+        <Flex flexDirection='row' align='center' justify='center' w='100%'>
+          <Card gridArea={{ lg: "2 / 2 / 3 / 3", "2xl": "auto" }}>
+            <CardBody maxHeight="calc(100vh )" overflowY="auto">
+              <CategoryTabs
+                handleProductDoubleClick={handleProductDoubleClick}
+              />
+            </CardBody>
+          </Card>
+        </Flex>
+        <Card gridArea={{ lg: "2 / 2 / 3 / 3", "2xl": "auto" }}>
+          <CardBody>
+            <Flex
+              // flexDirection={{ base: "column", lg: "row" }}
+              w="100%"
+              h="100%"
+              justifyContent="space-between"
+            >
+              <Box >
+                <CustomInput value={inputValue} onChange={handleInputChange} />
+                <Card overflowX={{ base: "scroll", xl: "hidden" }} pb="0px">
+                  <CardBody maxHeight="calc(100vh - 310px)" overflowY="auto">
                     <ThemeProvider theme={taxTableTheme}>
-                      <Box
-                        minHeight="calc(100vh - 410px - 16px)"
-                        maxHeight="calc(100vh - 410px - 16px)"
-                      >
+                      <Box sx={{ width: "100%", minHeight: "350px" }} mx="1em">
                         <DataGrid
-
                           rows={rows}
                           columns={columns}
                           pageSize={5}
                           rowsPerPageOptions={[5]}
                           checkboxSelection
-                          onCellClick={handleCellClick} 
-                          selectionModel={selectedRows} 
+                          onCellClick={handleCellClick}
+                          selectionModel={selectedRows}
                           autoHeight
-                          
                         />
                       </Box>
                     </ThemeProvider>
-                  </Box>
-                </CardBody>
-              </Card>
-              <Flex mb={4} justifyContent="space-between" mt={4}>
-                <Button onClick={handleDetailsClick}>Detalles del total</Button>
-                <StyledText mt={4} mb={2} alignSelf="flex-end">
-                  Total: ${total.toFixed(2)}
-                </StyledText>
-              </Flex>
+                  </CardBody>
+                </Card>
+                <Flex
+                  justifyContent="space-between"
+                  mt={4}
+                  mb={4}
+                  alignItems="center"
+                  flexDirection={{ base: "column", lg: "row" }}
+                >
+                  <Flex>
+                    <Button mr={1}>Cliente</Button>
+                    <Button mr={1}>Nota del Cliente</Button>
+                    <Button mr={1}>Descuento</Button>
+                  </Flex>
+                  <Flex alignItems="center">
+                    <Button onClick={handleDetailsClick} mr={4}>
+                      Detalles total
+                    </Button>
+                    <StyledText pr={4}>Total: ${total.toFixed(2)}</StyledText>
+                  </Flex>
+                </Flex>
+
+                <NumericButtons
+                  handleNumericButtonClick={handleNumericButtonClick}
+                  handleEnterClick={handleEnterClick}
+                  selectedOperation={selectedOperation}
+                  setSelectedOperation={setSelectedOperation}
+                />
+              </Box>
             </Flex>
-          </Box>
-          <Flex mb={3}>
-            <Button mr={2}>Cliente</Button>
-            <Button mr={2}>Nota del Cliente</Button>
-            <Button>Descuento</Button>
-          </Flex>
-          <Flex>
-            <Button width="50%" height="100%" mb={4}>
-              Enviar Payment
-            </Button>
-
-            <NumericButtons
-              handleNumericButtonClick={handleNumericButtonClick}
-              handleEnterClick={handleEnterClick}
-              selectedOperation={selectedOperation}
-              setSelectedOperation={setSelectedOperation}
-            />
-          </Flex>
-        </Flex>
-
-        <Flex
-          direction="column"
-          w="60%"
-          justifyContent="space-between"
-          p={4}
-          marginTop="55px"
-          overflowY="hidden"
-        >
-          <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />
-        </Flex>
-      </Flex>
-
-    
+          </CardBody>
+        </Card>
+      </Grid>
+    </Flex>
   );
 };
 

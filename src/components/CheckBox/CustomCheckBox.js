@@ -1,5 +1,4 @@
-import { Box, Text, Flex, Radio, RadioGroup } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Text, Flex, Radio } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 
 export function CustomCheckbox({
@@ -11,18 +10,16 @@ export function CustomCheckbox({
   radioValue,
   setRadioValue,
 }) {
-  const [checked, setChecked] = useState(isChecked);
-
   const toggleCheck = () => {
-    setChecked(!checked);
-    onCheck(!checked);
+    onCheck();
   };
+
 
   return (
     <Flex
       direction="row"
       alignItems="center"
-      onClick={toggleCheck}
+      
       cursor="pointer"
     >
       <Box
@@ -30,12 +27,13 @@ export function CustomCheckbox({
         h="20px"
         border="1px solid"
         borderColor={color}
-        backgroundColor={checked ? color : "transparent"}
+        backgroundColor={isChecked ? color : "transparent"}
         borderRadius="3px"
         mr="10px"
         position="relative"
+        onClick={toggleCheck}
       >
-        {checked && (
+        {isChecked && (
           <CheckIcon
             position="absolute"
             top="50%"
@@ -50,7 +48,7 @@ export function CustomCheckbox({
         h="20px"
         border="1px solid"
         borderColor={color}
-        backgroundColor={checked ? color : "transparent"}
+        backgroundColor={isChecked ? color : "transparent"}
         borderRadius="3px"
         mr="10px"
         position="relative"
@@ -58,7 +56,7 @@ export function CustomCheckbox({
         alignItems="center"
         justifyContent="center"
       >
-        <Text color={color === "#FFFFFF" && checked ? "black" : "white"}>
+        <Text color={color === "#FFFFFF" && isChecked ? "black" : "white"}>
           {name}
         </Text>
       </Box>
