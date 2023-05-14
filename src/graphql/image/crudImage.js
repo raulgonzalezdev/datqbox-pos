@@ -30,11 +30,34 @@ const ADD_IMAGE = gql`
     addImage(input: $input) {
       id
       url
-      product {
+      product{
         id
-        name
       }
     }
+  }
+`;
+
+const ADD_IMAGES = gql`
+  mutation AddImages($input: AddImagesInput!) {
+    addImages(input: $input) {
+      id
+      url
+      product {
+        id
+      }
+    }
+  }
+`;
+
+const REMOVE_IMAGE = gql`
+  mutation RemoveImage($id: ID!) {
+    removeImage(id: $id)
+  }
+`;
+
+const REMOVE_PRODUCT_IMAGES = gql`
+  mutation RemoveProductImages($productId: ID!) {
+    removeProductImages(productId: $productId)
   }
 `;
 
@@ -51,4 +74,22 @@ export function useGetImages() {
       refetchQueries: [{ query: GET_IMAGES }],
     });
   }
+  export function useAddImages() {
+    return useMutation(ADD_IMAGES, {
+      refetchQueries: [{ query: GET_IMAGES }],
+    });
+  }
+  
+  export function useRemoveImage() {
+    return useMutation(REMOVE_IMAGE, {
+      refetchQueries: [{ query: GET_IMAGES }],
+    });
+  }
+  
+  export function useRemoveProductImages() {
+    return useMutation(REMOVE_PRODUCT_IMAGES, {
+      refetchQueries: [{ query: GET_IMAGES }],
+    });
+  }
+  
   

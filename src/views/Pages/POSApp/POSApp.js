@@ -238,8 +238,7 @@ const POSApp = () => {
         marginTop="-15"
         overflowY="hidden"
         width={{base: "auto", md: "100%"}}
-        // display={{ base: "none", md: "flex" }}
-      >
+       >
         <Card width={{base: "auto", md: "100%"}}>
           <CardBody width={{base: "auto", md: "100%"}} h="100%">
             <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />

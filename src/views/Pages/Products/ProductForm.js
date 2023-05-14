@@ -7,12 +7,16 @@ import {
   useToast,
   HStack,
   Spinner,
+  Grid,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import {
   BaseFlex,
   StyledText,
 } from "components/ReusableComponents/ReusableComponents";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import { startUpload } from "redux/actions";
 
 import GradientBorder from "components/GradientBorder/GradientBorder";
 import {
@@ -20,8 +24,8 @@ import {
   useCreateProduct,
   useUpdateProduct,
 } from "graphql/products/crudProducts";
-import { Form, Formik } from 'formik'
-import { InputControl, SelectControl, SubmitButton } from 'formik-chakra-ui'
+import { Form, Formik } from "formik";
+import { InputControl, SelectControl, SubmitButton } from "formik-chakra-ui";
 import {
   useRemoveProductColor,
   useAddMultipleProductColors,
@@ -31,6 +35,8 @@ import {
   useRemoveProductSize,
   useAddMultipleProductSizes,
 } from "graphql/productsize/crudProductSize";
+
+import { useAddImages } from "graphql/image/crudImage"
 
 import ProductInfo from "./ProductInfo";
 import ProductImage from "./ProductImage";
@@ -53,6 +59,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
   const [addMultipleProductSizes] = useAddMultipleProductSizes();
   const [addMultipleProductColors] = useAddMultipleProductColors();
 
+  const [addImages] = useAddImages();
+
   const [removeProductSize] = useRemoveProductSize();
   const [removeProductColor] = useRemoveProductColor();
   const dbSizes =
@@ -63,6 +71,11 @@ function ProductForm({ productId, onCancel, onSuccess }) {
   const [selectedSizes, setSelectedSizes] = useState(dbSizes);
   const [selectedColors, setSelectedColors] = useState(dbColors);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const handleImagesSelect = (images) => {
+    setSelectedImages(images);
+  };
 
   useEffect(() => {
     if (data && data.product) {
@@ -122,6 +135,17 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     });
   };
 
+  const handleAddImages = async (imagesInput, productId) => {
+    const imagesWithProduct = imagesInput.map(image => ({
+      ...image,
+      product: { id: productId },
+    }));
+  
+    const { data } = await addImages({ variables: { input: { images: imagesWithProduct }}});
+    console.log(data.addImages); // Array of newly added images
+  };
+  
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState((prevState) => ({
@@ -137,6 +161,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       setSelectedColors([...selectedColors, colorId]);
     }
   };
+
+ 
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -199,6 +225,15 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
       await addMultipleProductSizes({ variables: { input: productSizes } });
       await addMultipleProductColors({ variables: { input: productColors } });
+  
+      console.log('selectImages', selectedImages, newProductId)
+      
+      handleAddImages(selectedImages, newProductId)
+      const files = selectedImages.map(({ preview, path }) => {
+        return new File([preview], path);
+      });
+      
+      dispatch(startUpload(files));
 
       if (productId) {
         toast({
@@ -231,7 +266,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       });
     }
     setIsLoading(false);
-  
   };
 
   const handleCheckboxChange = (event) => {
@@ -255,61 +289,56 @@ function ProductForm({ productId, onCancel, onSuccess }) {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <GradientBorder p="2px">
-      <Flex
-        background="transparent"
-        borderRadius="30px"
-        w="100%"
-        bg={{ base: "rgb(19,21,56)" }}
-        direction="column"
-        pt={{ base: "120px", md: "75px" }}
-      >
-        {isLoading ? (
-          <Spinner /> // Muestra el spinner si isLoading es true
-        ) : (
-          <BaseFlex>
-            <HStack width="100%" justifyContent="space-between">
+    <>
+      {isLoading ? (
+        <Spinner /> // Muestra el spinner si isLoading es true
+      ) : (
+        <>
+          
+
+          <Formik initialValues={formState} onSubmit={handleSubmit}>
+           
+            <Form>
+              <Grid
+                templateColumns={{ sm: "1fr", md: "2fr 1fr", lg: "1fr 1fr" }}
+                my="26px"
+                gap="18px"
+                marginLeft="10"
+                marginRight="10"
+                marginTop="55"
+              >
+              <Box>
+            
               <StyledText fontSize={{ base: "16px", md: "20px" }}>
                 {productId ? "Editar Producto" : "Añadir Producto"}
               </StyledText>
-              <Box mt={4}>
-                <Button onClick={onCancel} colorScheme="teal" size={{ base: "sm", md: "md" }}>
+           
+            </Box>
+            <Box mt={4}>
+            <HStack width="100%" justifyContent="space-between">
+                <Button
+                  onClick={onCancel}
+                  colorScheme="teal"
+                  size={{ base: "sm", md: "md" }}
+                >
                   Retornar
                 </Button>
+
+              
+                <Button
+                  type="submit"
+                  colorScheme="teal"
+                  size={{ base: "sm", md: "md" }}
+                >
+                  Submit
+                </Button>
+                </HStack>
+             
               </Box>
-            </HStack>
-  
-            <Formik
-              initialValues={formState}
-              onSubmit={handleSubmit}
-            >
-              <Form>
-                <Flex direction={{ base: "column", md: "row" }} gap={4}>
-                  <Box
-                    position="relative"
-                    bg="radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%),
-                        radial-gradient(60% 51.57% at 50% 50%, #582CFF 0%, rgba(88, 44, 255, 0) 100%),
-                        radial-gradient(54.8% 53% at 50% 50%, #151515 0%, rgba(21, 21, 21, 0) 100%)"
-                    p="2px"
-                  >
-                    <BaseFlex>
-                      <ProductImage
-                        formState={formState}
-                        productId={productId}
-                      />
-                    </BaseFlex>
-                  </Box>
-  
-                  <Flex
-                    wrap="wrap"
-                    direction={{ base: "column", md: "row" }} 
-                    maxW={{
-                      base: "100%",
-                      md: "calc(100% - 150px)",
-                      xl: "calc(100% - 150px)",
-                    }}
-                    mr={{ base: "0", md: "8", xl: "16" }}
-                  >
+
+         
+                <Card width={{ base: "auto", md: "100%" }}>
+                  <CardBody width={{ base: "auto", md: "100%" }} h="100%">
                     <ProductInfo
                       formState={formState}
                       handleChange={handleChange}
@@ -318,41 +347,52 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                       handleRentalTypeChange={handleRentalTypeChange}
                       handleCheckboxChange={handleCheckboxChange}
                     />
+                  </CardBody>
+                  <Flex
+                    direction={{ base: "column", md: "row" }}
+                    justifyContent="space-between"
+                    mt="5"
+                  >
+                    <ProductColor
+                      formState={formState}
+                      handleChange={handleChange}
+                      handleCheckboxChange={handleCheckboxChange}
+                      selectedColors={selectedColors}
+                      handleSelectedColors={handleSelectedColors}
+                    />
+                    <ProductSize
+                      formState={formState}
+                      handleChange={handleChange}
+                      selectedSizes={selectedSizes}
+                      handleSelectedSizes={handleSelectedSizes}
+                    />
+                  </Flex>
+                </Card>
+                <Card width={{ base: "auto", md: "100%" }}>
+                  <CardBody width={{ base: "auto", md: "100%" }}>
                     <Flex
                       direction={{ base: "column", md: "row" }}
                       justifyContent="space-between"
-                      w={{ base: "100%", md: "200%" }}
                     >
-                      <ProductColor
+                      <ProductImage
                         formState={formState}
+                        productId={productId}
                         handleChange={handleChange}
-                        handleCheckboxChange={handleCheckboxChange}
-                        selectedColors={selectedColors}
-                        handleSelectedColors={handleSelectedColors}
-                      />
-                      <ProductSize
-                        formState={formState}
-                        handleChange={handleChange}
-                        selectedSizes={selectedSizes}
-                        handleSelectedSizes={handleSelectedSizes}
+                        onImagesSelect={handleImagesSelect} 
+
                       />
                     </Flex>
-                  </Flex>
-                </Flex>
-                <Box mt={4}>
-                <Button type="submit" colorScheme="teal" size={{ base: "sm", md: "md" }}>
-                  {productId ? "Actualizar Producto" : "Añadir Producto"}
-                </Button>
-              </Box>
+                  </CardBody>
+                </Card>
+              </Grid>
+
+             
             </Form>
           </Formik>
-        </BaseFlex>
+        </>
       )}
-    </Flex>
-  </GradientBorder>
-);
-
-  
+    </>
+  );
 }
 
 export default ProductForm;

@@ -33,12 +33,13 @@ export const StyledNumberInput = ({ ...props }) => (
   <NumberInput
     size="md"
     // w={{ base: "100%", md: "546px" }}
-    h="46px"
+    h="40px"
     placeholderTextColor="black"
     focusBorderColor="black"
     borderColor="gray.300"
     bg="white"
     color="black"
+    borderRadius="md"
     defaultValue={0}
     precision={2}
     step={0.1}
