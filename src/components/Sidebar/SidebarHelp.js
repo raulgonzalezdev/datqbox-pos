@@ -38,7 +38,7 @@ export function SidebarHelp(props) {
       </Text>
       <Link
         w='100%'
-        href='https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra/'>
+        href='https://demos.datqbox.com/docs-vision-ui-dashboard-chakra/'>
         <Button
           fontSize='10px'
           fontWeight='bold'

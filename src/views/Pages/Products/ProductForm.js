@@ -8,15 +8,19 @@ import {
   HStack,
   Spinner,
   Grid,
+  space,
 } from "@chakra-ui/react";
-import { useDropzone } from "react-dropzone";
+
 import {
   BaseFlex,
   StyledText,
 } from "components/ReusableComponents/ReusableComponents";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import { startUpload } from "redux/actions";
+
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
+import { gql } from "@apollo/client";
 
 import GradientBorder from "components/GradientBorder/GradientBorder";
 import {
@@ -36,7 +40,7 @@ import {
   useAddMultipleProductSizes,
 } from "graphql/productsize/crudProductSize";
 
-import { useAddImages } from "graphql/image/crudImage"
+import { useAddImages } from "graphql/image/crudImage";
 
 import ProductInfo from "./ProductInfo";
 import ProductImage from "./ProductImage";
@@ -73,7 +77,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
 
-  const handleImagesSelect = (images) => {
+  const onImageSelect = (images) => {
     setSelectedImages(images);
   };
 
@@ -123,28 +127,92 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }));
   };
 
-  const handleSelectedSizes = (sizeId, isChecked) => {
-    setSelectedSizes((prevSizes) => {
-      if (isChecked && !prevSizes.includes(sizeId)) {
-        return [...prevSizes, sizeId];
-      } else if (!isChecked && prevSizes.includes(sizeId)) {
-        return prevSizes.filter((id) => id !== sizeId);
-      } else {
-        return prevSizes;
+  const UPLOAD_FILES = gql`
+    mutation ($files: [Upload!]!) {
+      multipleUpload(files: $files) {
+        filename
       }
-    });
-  };
+    }
+  `;
 
-  const handleAddImages = async (imagesInput, productId) => {
-    const imagesWithProduct = imagesInput.map(image => ({
-      ...image,
-      product: { id: productId },
-    }));
-  
-    const { data } = await addImages({ variables: { input: { images: imagesWithProduct }}});
-    console.log(data.addImages); // Array of newly added images
+  const uploadLink = createUploadLink({
+    uri: "http://localhost:4000/graphql", // Debes reemplazarlo por la URI de tu servidor GraphQL
+    headers: {
+      "keep-alive": "true",
+    },
+  });
+
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: uploadLink,
+  });
+
+  const handleAddImages = async (selectedImages, productId) => {
+    console.log("Origen de Imagenes:", selectedImages);
+
+    // Verificar si selectedImages contiene objetos de archivo o URLs
+    const isNewFiles = selectedImages[0].hasOwnProperty("path");
+    console.log(isNewFiles);
+
+    if (isNewFiles) {
+      // Trata selectedImages como un array de objetos de archivo
+      try {
+        // Antes de subir las imágenes, genera las URLs y asócialas con el producto
+        const imagesWithProduct = selectedImages.map(({ path }) => ({
+          url: `http://localhost:4000/uploads/${path}`,
+          product: { id: productId },
+        }));
+        // Ejecuta la operación addImages
+        const { data } = await addImages({
+          variables: { input: { images: imagesWithProduct } },
+        });
+        console.log(data.addImages); // Array of newly added images
+
+        const files = selectedImages.map(({ preview, path }) => {
+          return new File([preview], path);
+        });
+
+        // Ahora sube los archivos
+        const uploadPromises = selectedImages.map((file) => {
+          return client.mutate({
+            mutation: UPLOAD_FILES,
+            variables: {
+              files: [file],
+            },
+          });
+        });
+
+        const uploadResults = await Promise.all(uploadPromises);
+
+        // Imprime los nombres de los archivos subidos
+        uploadResults.forEach((result) => {
+          console.log(result.data.multipleUpload.filename);
+        });
+      } catch (error) {
+        console.error("Error al añadir imágenes o subir archivos: ", error);
+      }
+    } else {
+      // Trata selectedImages como un array de URLs
+
+      try {
+        let imagesProduct = selectedImages.map(({ url }) => ({
+          url,
+          product: { id: productId },
+        }));
+
+        console.log("imagesProduct", imagesProduct);
+
+        // Ejecuta la operación addImages
+        const { data } = await addImages({
+          variables: { input: { images: imagesProduct } },
+        });
+        console.log(data.addImages); // Array of newly added images
+        setSelectedImages([]);
+      } catch (error) {
+        console.error("Error al añadir imágenes: ", error);
+      }
+    }
   };
-  
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -162,7 +230,17 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }
   };
 
- 
+  const handleSelectedSizes = (sizeId, isChecked) => {
+    setSelectedSizes((prevSizes) => {
+      if (isChecked && !prevSizes.includes(sizeId)) {
+        return [...prevSizes, sizeId];
+      } else if (!isChecked && prevSizes.includes(sizeId)) {
+        return prevSizes.filter((id) => id !== sizeId);
+      } else {
+        return prevSizes;
+      }
+    });
+  };
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -225,15 +303,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
       await addMultipleProductSizes({ variables: { input: productSizes } });
       await addMultipleProductColors({ variables: { input: productColors } });
-  
-      console.log('selectImages', selectedImages, newProductId)
-      
-      handleAddImages(selectedImages, newProductId)
-      const files = selectedImages.map(({ preview, path }) => {
-        return new File([preview], path);
-      });
-      
-      dispatch(startUpload(files));
+
+      handleAddImages(selectedImages, newProductId);
 
       if (productId) {
         toast({
@@ -294,49 +365,55 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         <Spinner /> // Muestra el spinner si isLoading es true
       ) : (
         <>
-          
-
           <Formik initialValues={formState} onSubmit={handleSubmit}>
-           
             <Form>
+              <Card
+                width={{ base: "auto", md: "93.5%", "2xl": "95%" }}
+                marginLeft="10"
+                mt={55}
+                pt={-2} // reduce padding-top if needed
+                pb={-2} // reduce padding-bottom if needed
+              >
+                <Box mt={2}>
+                  {" "}
+                  {/* adjust marginTop as needed */}
+                  <HStack
+                    width="100%"
+                    justifyContent="space-between"
+                    spacing={2}
+                  >
+                    {" "}
+                    {" "}
+                    {/* reduce spacing as needed */}
+                    <StyledText fontSize={{ base: "16px", md: "20px" }}>
+                      {productId ? "Editar Producto" : "Añadir Producto"}
+                    </StyledText>
+                    <Button
+                      onClick={onCancel}
+                      colorScheme="teal"
+                      size={{ base: "sm", md: "md" }}
+                    >
+                      Retornar
+                    </Button>
+                    <Button
+                      type="submit"
+                      colorScheme="teal"
+                      size={{ base: "sm", md: "md" }}
+                    >
+                      Submit
+                    </Button>
+                  </HStack>
+                </Box>
+              </Card>
+
               <Grid
                 templateColumns={{ sm: "1fr", md: "2fr 1fr", lg: "1fr 1fr" }}
                 my="26px"
                 gap="18px"
                 marginLeft="10"
                 marginRight="10"
-                marginTop="55"
+                marginTop="2"
               >
-              <Box>
-            
-              <StyledText fontSize={{ base: "16px", md: "20px" }}>
-                {productId ? "Editar Producto" : "Añadir Producto"}
-              </StyledText>
-           
-            </Box>
-            <Box mt={4}>
-            <HStack width="100%" justifyContent="space-between">
-                <Button
-                  onClick={onCancel}
-                  colorScheme="teal"
-                  size={{ base: "sm", md: "md" }}
-                >
-                  Retornar
-                </Button>
-
-              
-                <Button
-                  type="submit"
-                  colorScheme="teal"
-                  size={{ base: "sm", md: "md" }}
-                >
-                  Submit
-                </Button>
-                </HStack>
-             
-              </Box>
-
-         
                 <Card width={{ base: "auto", md: "100%" }}>
                   <CardBody width={{ base: "auto", md: "100%" }} h="100%">
                     <ProductInfo
@@ -378,15 +455,12 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                         formState={formState}
                         productId={productId}
                         handleChange={handleChange}
-                        onImagesSelect={handleImagesSelect} 
-
+                        onImageSelect={onImageSelect}
                       />
                     </Flex>
                   </CardBody>
                 </Card>
               </Grid>
-
-             
             </Form>
           </Formik>
         </>

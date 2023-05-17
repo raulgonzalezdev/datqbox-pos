@@ -73,6 +73,8 @@ export const StyledFormLabel = ({ ...props }) => (
     ms="4px"
     fontSize="md"
     color="white"
+    pt={-2} // reduce padding-top if needed
+    pb={-2} // reduce padding-bottom if needed
     {...props}
     fontWeight="normal"
   />

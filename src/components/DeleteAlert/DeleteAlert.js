@@ -1,5 +1,7 @@
-import React from 'react'
-import { useMutation } from '@apollo/client'
+import React from "react";
+import { useMutation } from "@apollo/client";
+
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -8,8 +10,8 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  useToast
-} from '@chakra-ui/react'
+  useToast,
+} from "@chakra-ui/react";
 
 const DeleteAlert = ({
   modelName,
@@ -17,33 +19,52 @@ const DeleteAlert = ({
   onClose,
   mutation,
   id,
+  productId,
   handleConfirm,
-  // refetchData,
 }) => {
+
   const [deleteMutation] = useMutation(mutation);
   const cancelRef = React.useRef();
   const toast = useToast();
 
   const handleDeleteClick = async () => {
-  
     try {
-      const result = await deleteMutation({
-        variables: {
-          id: id,
-        },
-      });
-      console.log('Delete result:', result);;
+      let result;
+
+      if (id) {
+        result = await deleteMutation({
+          variables: {
+            id: id,
+          },
+        });
+      } else if (productId) {
+       
+     
+        let query
+        
+        query = {
+          variables: {
+            productId: productId ,
+          },
+        }
+        query.variables = query.variables.productId;
+        
+        result = await deleteMutation(query);
+       
+      } else {
+        console.log("no hay opción");
+      }
+
       onClose();
-      
       handleConfirm();
+
       toast({
         title: modelName + " excluído.",
         status: "info",
         isClosable: true,
       });
-   
-      
     } catch (error) {
+      console.log("Error result:", error);
       onClose();
       toast({
         title: "Houve um erro ao excluir o " + modelName,
@@ -52,7 +73,6 @@ const DeleteAlert = ({
       });
     }
   };
-  
 
   return (
     <AlertDialog
@@ -83,7 +103,7 @@ const DeleteAlert = ({
         </AlertDialogContent>
       </AlertDialogOverlay>
     </AlertDialog>
-  )
-}
+  );
+};
 
-export default DeleteAlert
+export default DeleteAlert;

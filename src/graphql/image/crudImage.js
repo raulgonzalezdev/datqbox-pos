@@ -1,4 +1,18 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
+
+
+const UPLOADED_IMAGES_QUERY = gql`
+  query {
+    uploadedImages {
+      url
+      filename
+    }
+  }
+`;
+
+
+
+
 const GET_IMAGES = gql`
   query GetImages {
     images {
@@ -49,13 +63,13 @@ const ADD_IMAGES = gql`
   }
 `;
 
-const REMOVE_IMAGE = gql`
+export const REMOVE_IMAGE = gql`
   mutation RemoveImage($id: ID!) {
     removeImage(id: $id)
   }
 `;
 
-const REMOVE_PRODUCT_IMAGES = gql`
+export const REMOVE_PRODUCT_IMAGES = gql`
   mutation RemoveProductImages($productId: ID!) {
     removeProductImages(productId: $productId)
   }
@@ -90,6 +104,17 @@ export function useGetImages() {
     return useMutation(REMOVE_PRODUCT_IMAGES, {
       refetchQueries: [{ query: GET_IMAGES }],
     });
+  }
+
+  export function useUploadedImages() {
+    const { data, loading, error, refetch } = useQuery(UPLOADED_IMAGES_QUERY);
+  
+    return {
+      images: data?.uploadedImages,
+      loading,
+      error,
+      refetch,
+    };
   }
   
   

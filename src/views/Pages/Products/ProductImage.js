@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Image,
@@ -10,7 +10,6 @@ import {
   Flex,
   Grid,
   SimpleGrid,
-  Center,
   Button,
 } from "@chakra-ui/react";
 
@@ -20,34 +19,67 @@ import {
   StyledInput,
   StyledFormLabel,
 } from "components/ReusableComponents/ReusableComponents";
+import ImagesUpload from "components/ImagesUpload/ImagesUpload";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import DeleteAlert from "components/DeleteAlert/DeleteAlert";
 import { useDropzone } from "react-dropzone";
-import { useRemoveProductImages,  useRemoveImage } from "graphql/image/crudImage"
+import { REMOVE_PRODUCT_IMAGES, REMOVE_IMAGE } from "graphql/image/crudImage";
 
-function ProductImage({ formState, productId, onImagesSelect, handleChange }) {
+function ProductImage({ formState, productId, onImageSelect, handleChange }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [mainImage, setMainImage] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const [removeImage] = useRemoveImage();
-  const [removeProductImages] = useRemoveProductImages()
   const [imageId, setImageId] = useState();
   const allImages = [...selectedImages, ...(formState.images || [])];
 
+  const [showImagesUpload, setShowImagesUpload] = useState(true);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const [isDeletingAllImages, setIsDeletingAllImages] = useState(false);
 
-
-  const handleRemoveImage = async (imageId) => {
-    const { data } = await removeImage({ variables: { id: imageId }});
-    console.log(data.removeImage); // Should be true
+  const handleRemoveImage = (imageId) => {
+    setImageId(imageId);
+    setIsDeletingAllImages(false);
+    setIsDeleteAlertOpen(true);
   };
 
-  const handleRemoveProductImages = async (productId) => {
-    const { data } = await removeProductImages({ variables: { productId }});
-    console.log(data.removeProductImages); // Should be true
+  const handleRemoveProductImages = (productId) => {
+    setIsDeletingAllImages(true);
+    setIsDeleteAlertOpen(true);
   };
 
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleteAlertOpen(true);
+      if (isDeletingAllImages) {
+        setSelectedImages([]);
+        formState.images = [];
+      } else {
+        setSelectedImages(
+          selectedImages.filter((image) => image.id !== imageId)
+        );
+        const newImages = [...formState.images];
+        const index = newImages.findIndex((image) => image.id === imageId);
 
+        if (index !== -1) {
+          newImages.splice(index, 1);
+        }
+        formState.images = newImages;
+      }
+    } catch (error) {
+      console.error("Refetch error:", error);
+    } finally {
+      setIsDeleteAlertOpen(false);
+      setImageId(null);
+    }
+  };
+
+  const onImageSelects = (image) => {
+    const newImages = image.map((images) => ({ url: images, preview: images }));
+    setSelectedImages([...newImages]);
+    onImageSelect(newImages);
+  };
 
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({
@@ -60,33 +92,37 @@ function ProductImage({ formState, productId, onImagesSelect, handleChange }) {
           })
         );
         setSelectedImages(images);
-        onImagesSelect(images);
+        onImageSelect(images);
       },
     });
 
-    const {
-      getRootProps: getMainRootProps,
-      getInputProps: getMainInputProps,
-      acceptedFiles: mainAcceptedFiles,
-    } = useDropzone({
-      accept: "image/*",
-      maxSize: 5 * 1024 * 1024,
-      maxFiles: 1, // Asegúrate de aceptar solo una imagen
-      onDrop: (acceptedFiles) => {
-        setMainImage(
-          Object.assign(acceptedFiles[0], {
-            preview: URL.createObjectURL(acceptedFiles[0]),
-          })
-        );
-      },
-    });
-    
+  const {
+    getRootProps: getMainRootProps,
+    getInputProps: getMainInputProps,
+    acceptedFiles: mainAcceptedFiles,
+  } = useDropzone({
+    accept: "image/*",
+    maxSize: 5 * 1024 * 1024,
+    maxFiles: 1, // Asegúrate de aceptar solo una imagen
+    onDrop: (acceptedFiles) => {
+      const mainImage = Object.assign(acceptedFiles[0], {
+        preview: URL.createObjectURL(acceptedFiles[0]),
+      });
+      setMainImage(mainImage);
+      // Construir la URL de la imagen con el nombre del archivo
+      const filename = mainImage.name;
+      const imageUrl = `http://localhost:4000/uploads/${filename}`;
+
+      // Actualizar el campo image en tu estado de formulario con la URL de la imagen
+      formState.image = imageUrl;
+    },
+  });
 
   const imageSize = useBreakpointValue({ base: "150px", md: "250px" });
 
   const thumbs = allImages.map((file) => {
     const isExistingImage = Boolean(file.id); // Verifica si la imagen ya existe (es decir, si tiene un id)
-  
+
     return (
       <Box
         key={file.id || file.name} // Usa el id de la imagen si está disponible, o el nombre del archivo si no lo está
@@ -97,15 +133,31 @@ function ProductImage({ formState, productId, onImagesSelect, handleChange }) {
         height="120px"
         overflow="hidden"
         cursor="pointer"
-        border={selectedImage === (file.id || file.name) ? '2px solid white' : null}
+        border={
+          selectedImage === (file.id || file.name) ? "2px solid white" : null
+        }
         onClick={() => {
           setImageId(file.id || file.name); // Selecciona la imagen
-          setSelectedImage(file.id || file.name); 
+          setSelectedImage(file.id || file.name);
         }}
         onDoubleClick={() => {
-          // Muestra la imagen en tamaño grande
-          // Si la imagen ya existe, usa su url. Si no, usa la vista previa del archivo
-          setMainImage({ ...file, preview: isExistingImage ? file.url : file.preview });
+          const imageUrl = isExistingImage ? file.url : file.preview;
+
+          setMainImage({
+            ...file,
+            preview: imageUrl,
+          });
+
+          // Crear un evento falso para pasar a handleChange
+          const fakeEvent = {
+            target: {
+              name: "image",
+              value: imageUrl,
+            },
+          };
+
+          // Actualiza el campo 'image' en el estado del formulario
+          handleChange(fakeEvent);
         }}
       >
         <img
@@ -132,38 +184,41 @@ function ProductImage({ formState, productId, onImagesSelect, handleChange }) {
         </StyledText>
         <Box mt="-0.5" style={{ borderRadius: "8px" }}>
           <Image
-            src={mainImage?.preview || formState.image || "https://via.placeholder.com/350"}
+            src={
+              mainImage?.preview ||
+              formState.image ||
+              "https://via.placeholder.com/350"
+            }
             objectFit="cover"
             boxSize={imageSize}
             style={{ borderRadius: "8px" }}
           />
         </Box>
         <Box>
-        <Box
-          {...getMainRootProps()}
-          border="1px dashed gray"
-          borderRadius="8px"
-          backgroundColor="transparent"
-          cursor="pointer"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StyledFormLabel cursor="pointer">Url Imagen</StyledFormLabel>
-          <input
-            placeholder="Arrastre y suelte aquí las imágenes"
-            {...getMainInputProps()}
-            style={{ display: "none" }}
-          />
-          <StyledInput
-            name="image"
-            value={formState.image ||  ""}
-            type="url"
-            onChange={handleChange}
-            
-            // onChange={handleChange}
-            placeholder="Ingrese el url de la imagen"
-          />
+          <Box
+            {...getMainRootProps()}
+            border="1px dashed gray"
+            borderRadius="8px"
+            backgroundColor="transparent"
+            cursor="pointer"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StyledFormLabel cursor="pointer">Url Imagen</StyledFormLabel>
+            <input
+              placeholder="Arrastre y suelte aquí las imágenes"
+              {...getMainInputProps()}
+              style={{ display: "none" }}
+            />
+            <StyledInput
+              name="image"
+              value={formState.image || ""}
+              type="url"
+              onChange={handleChange}
+              // onChange={handleChange}
+              placeholder="Ingrese el url de la imagen"
+            />
           </Box>
         </Box>
       </VStack>
@@ -185,53 +240,65 @@ function ProductImage({ formState, productId, onImagesSelect, handleChange }) {
             </SimpleGrid>
           </Flex>
         </CardBody>
-        <Box
-          {...getRootProps()}
-          border="1px dashed gray"
-          borderRadius="8px"
-          backgroundColor="transparent"
-          cursor="pointer"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Input
-            placeholder="Cargar Imagenes..."
-            textAlign="center"
-            color="white"
-            border="none"
+
+        <Flex direction="row" justify="space-between">
+          {showImagesUpload && <ImagesUpload onImageSelect={onImageSelects} />}
+          <DeleteAlert
+            modelName="Image"
+            isOpen={isDeleteAlertOpen}
+            onClose={() => setIsDeleteAlertOpen(false)}
+            mutation={
+              isDeletingAllImages ? REMOVE_PRODUCT_IMAGES : REMOVE_IMAGE
+            }
+            id={isDeletingAllImages ? null : imageId}
+            productId={isDeletingAllImages ? { productId } : null}
+            handleConfirm={handleConfirmDelete}
+          />
+          <Box
+            {...getRootProps()}
+            border="1px dashed gray"
+            borderRadius="8px"
+            backgroundColor="transparent"
             cursor="pointer"
-          />
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Input
+              placeholder="Upload Images..."
+              textAlign="center"
+              color="white"
+              border="none"
+              cursor="pointer"
+            />
 
-          <input
-            placeholder="Arrastre y suelte aquí las imágenes"
-            {...getInputProps()}
-            style={{ display: "none" }}
-          />
-        </Box>
+            <input
+              placeholder="Arrastre y suelte aquí las imágenes"
+              {...getInputProps()}
+              style={{ display: "none" }}
+            />
+          </Box>
+        </Flex>
+
         <Box mt={4}>
-            <HStack width="100%" justifyContent="space-between">
-                <Button
-                  
-                  colorScheme="teal"
-                  size={{ base: "sm", md: "md" }}
-                  // onClick={handleRemoveImage(imageId)}
-                >
-                  Remove
-                </Button>
+          <HStack width="100%" justifyContent="space-between">
+            <Button
+              colorScheme="teal"
+              size={{ base: "sm", md: "md" }}
+              onClick={() => handleRemoveImage(imageId)}
+            >
+              Remove
+            </Button>
 
-              
-                <Button
-                  type="submit"
-                  colorScheme="teal"
-                  size={{ base: "sm", md: "md" }}
-                  // onClick={handleRemoveProductImages(productId)}
-                >
-                  Remove All
-                </Button>
-                </HStack>
-             
-              </Box>
+            <Button
+              colorScheme="teal"
+              size={{ base: "sm", md: "md" }}
+              onClick={() => handleRemoveProductImages(productId)}
+            >
+              Remove All
+            </Button>
+          </HStack>
+        </Box>
       </Card>
     </Grid>
   );

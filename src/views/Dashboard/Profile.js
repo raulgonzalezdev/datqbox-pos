@@ -103,7 +103,7 @@ function Profile() {
 									Mark Johnson
 								</Text>
 								<Text fontSize={{ sm: 'sm', md: 'md' }} color='gray.400'>
-									mark@simmmple.com
+									mark@datqbox.com
 								</Text>
 							</Flex>
 						</Flex>
@@ -377,7 +377,7 @@ function Profile() {
 									Email:{' '}
 								</Text>
 								<Text fontSize='sm' color='#fff' fontWeight='400'>
-									mark@simmmple.com
+									mark@datqbox.com
 								</Text>
 							</Flex>
 							<Flex align='center' mb='18px'>

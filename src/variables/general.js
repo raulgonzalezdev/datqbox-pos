@@ -198,7 +198,7 @@ export const tablesTableData = [
   {
     logo: avatar1,
     name: "Esthera Jackson",
-    email: "alexa@simmmple.com",
+    email: "alexa@datqbox.com",
     subdomain: "Manager",
     domain: "Organization",
     status: "Online",
@@ -207,7 +207,7 @@ export const tablesTableData = [
   {
     logo: avatar2,
     name: "Alexa Liras",
-    email: "laurent@simmmple.com",
+    email: "laurent@datqbox.com",
     subdomain: "Programmer",
     domain: "Developer",
     status: "Offline",
@@ -216,7 +216,7 @@ export const tablesTableData = [
   {
     logo: avatar3,
     name: "Laurent Michael",
-    email: "laurent@simmmple.com",
+    email: "laurent@datqbox.com",
     subdomain: "Executive",
     domain: "Projects",
     status: "Online",
@@ -225,7 +225,7 @@ export const tablesTableData = [
   {
     logo: avatar4,
     name: "Freduardo Hill",
-    email: "freduardo@simmmple.com",
+    email: "freduardo@datqbox.com",
     subdomain: "Manager",
     domain: "Organization",
     status: "Online",
@@ -234,7 +234,7 @@ export const tablesTableData = [
   {
     logo: avatar5,
     name: "Daniel Thomas",
-    email: "daniel@simmmple.com",
+    email: "daniel@datqbox.com",
     subdomain: "Programmer",
     domain: "Developer",
     status: "Offline",
@@ -243,7 +243,7 @@ export const tablesTableData = [
   {
     logo: avatar5,
     name: "Mark Wilson",
-    email: "mark@simmmple.com",
+    email: "mark@datqbox.com",
     subdomain: "Designer",
     domain: "UI/UX Design",
     status: "Offline",

@@ -89,7 +89,7 @@ export default function Configurator(props) {
               <Box>
                 <Box>
                   <Link
-                    href='https://www.creative-tim.com/product/vision-ui-dashboard-chakra'
+                    href='https://www.datqbox.com/product/vision-ui-dashboard-chakra'
                     w='100%'
                     mb='16px'>
                     <Button
@@ -104,7 +104,7 @@ export default function Configurator(props) {
                     </Button>
                   </Link>
                   <Link
-                    href='https://demos.creative-tim.com/docs-vision-ui-dashboard-chakra/'
+                    href='https://demos.datqbox.com/docs-vision-ui-dashboard-chakra/'
                     w='100%'>
                     <Button
                       w='100%'
@@ -138,7 +138,7 @@ export default function Configurator(props) {
                     <Flex justifyContent='center' alignContent='center'>
                       <Link
                         isExternal='true'
-                        href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fvision-ui-dashboard-chakra&text=Check%20vision%20UI%20Dashboard%20made%20by%20%40CreativeTim%20and%20%40simmmple_web%20%23webdesign%20%23dashboard%20%23chakra'>
+                        href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fvision-ui-dashboard-chakra&text=Check%20vision%20UI%20Dashboard%20made%20by%20%40CreativeTim%20and%20%40simmmple_web%20%23webdesign%20%23dashboard%20%23chakra'>
                         <Button
                           colorScheme='twitter'
                           leftIcon={<FaTwitter />}
@@ -148,7 +148,7 @@ export default function Configurator(props) {
                       </Link>
                       <Link
                         isExternal='true'
-                        href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fvision-ui-dashboard-chakra'>
+                        href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fvision-ui-dashboard-chakra'>
                         <Button
                           colorScheme='facebook'
                           leftIcon={<FaFacebook />}>

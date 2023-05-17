@@ -27,36 +27,22 @@ export default function AuthFooter(props) {
             ? " مصنوع من ❤️ بواسطة"
             : "Made with ❤️ by "}
         </Text>
-        <Link href='https://www.simmmple.com' target='_blank'>
-          {document.documentElement.dir === "rtl"
-            ? " توقيت الإبداعية"
-            : "Simmmple "}
-        </Link>
-        &
-        <Link href='https://www.creative-tim.com' target='_blank'>
-          {document.documentElement.dir === "rtl" ? "سيممبل " : " Creative Tim"}
+        
+        <Link href='https://www.datqbox.com' target='_blank'>
+          {document.documentElement.dir === "rtl" ? "سيممبل " : " DatqBox Systems"}
         </Link>
         {document.documentElement.dir === "rtl"
           ? "للحصول على ويب أفضل"
           : " for a better web"}
       </Text>
       <List display='flex'>
+     
         <ListItem
           me={{
             base: "20px",
           }}>
-          <Link color='white' fontSize='sm' href='https://www.simmmple.com'>
-            {document.documentElement.dir === "rtl"
-              ? "توقيت الإبداعية"
-              : "Simmmple"}
-          </Link>
-        </ListItem>
-        <ListItem
-          me={{
-            base: "20px",
-          }}>
-          <Link color='white' fontSize='sm' href='https://www.creative-tim.com'>
-            {document.documentElement.dir === "rtl" ? "سيممبل" : "Creative Tim"}
+          <Link color='white' fontSize='sm' href='https://www.datqbox.com'>
+            {document.documentElement.dir === "rtl" ? "سيممبل" : "DatqBox Systems"}
           </Link>
         </ListItem>
         <ListItem
@@ -67,7 +53,7 @@ export default function AuthFooter(props) {
             color='white'
             fontSize='sm'
             href='#blog'
-            href='https://creative-tim.com/blog'>
+            href='https://datqbox.com/blog'>
             {document.documentElement.dir === "rtl" ? "مدونة" : "Blog"}
           </Link>
         </ListItem>
@@ -75,7 +61,7 @@ export default function AuthFooter(props) {
           <Link
             color='white'
             href='#license'
-            href='https://www.creative-tim.com/license'>
+            href='https://www.datqbox.com/license'>
             {document.documentElement.dir === "rtl" ? "رخصة" : "License"}
           </Link>
         </ListItem>

@@ -157,7 +157,7 @@ export default function PosNavbar(props) {
           />
         </Box>
         {linksAuth}
-        {/* <Link href='https://creative-tim.com/product/vision-ui-dashboard-chakra'>
+        {/* <Link href='https://datqbox.com/product/vision-ui-dashboard-chakra'>
           <Button
             fontSize='xs'
             variant='brand'

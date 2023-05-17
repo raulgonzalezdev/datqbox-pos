@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import jwtDecode from "jwt-decode";
+// import { Provider } from 'react-redux';
+// import store from 'redux/store'; 
 // import { QueryClient, QueryClientProvider } from "react-query";
 
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -106,6 +108,7 @@ class App extends Component {
       <HashRouter>
         <ApolloProvider client={client}>
          {/* <QueryClientProvider client={queryClient}> */}
+         {/* <Provider store={store}> */}
           <Switch>
             <Route path={`/auth`} component={AuthLayout} />
              <Route
@@ -134,6 +137,7 @@ class App extends Component {
               to={this.state.isAuthenticated ? "/pos" : "/auth/signin"}
             />
           </Switch>
+          {/* </Provider> */}
           {/* </QueryClientProvider> */}
         </ApolloProvider>
       </HashRouter>
