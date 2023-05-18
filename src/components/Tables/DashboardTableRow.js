@@ -38,13 +38,14 @@ function DashboardTableRow(props) {
       </Td>
 
       <Td borderBottomColor='#56577A' border={lastItem ? "none" : null}>
-        <AvatarGroup size='xs' showBorder={false}>
-          {members.map((member) => {
+        <AvatarGroup size='xs' >
+          {members.map((member, index) => {
             return (
               <Avatar
+                 key={index} 
                 name='Ryan Florence'
                 src={member}
-                showBorder={false}
+                
                 border='none'
                 _hover={{ zIndex: "3", cursor: "pointer" }}
               />

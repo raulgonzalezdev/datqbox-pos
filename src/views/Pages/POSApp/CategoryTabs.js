@@ -61,6 +61,7 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                       )
                       .map((product) => (
                         <ChakraCard
+                          key={product.id}
                           direction={{ base: "column", sm: "row" }}
                           overflow="hidden"
                           variant="outline"

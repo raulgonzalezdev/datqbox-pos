@@ -67,13 +67,36 @@ var dashRoutes = [
   //   //   },
   //   // ],
   // },
+
+  {
+    name: "Productos",
+    path: "/periodsaccounting",
+    category: "account",
+    rtlName: "صفحات",
+    icon: <CreditIcon color="inherit" />,
+    state: "pageArcordion",
+    views: [
+      {
+        path: "/products",
+        name: "Articulos",
+        rtlName: "لوحة القيادة",
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: "/admin",
+      },
+      
+    ],
+  },
   {
     name: "Pedidos",
+    path: "/periodsaccounting",
     category: "account",
     rtlName: "صفحات",
     state: "pageArcordion",
     icon: <CreditIcon color="inherit" />,
     views: [
+     
       {
         path: "/periodsaccounting",
         name: "Clientes",
@@ -101,26 +124,10 @@ var dashRoutes = [
       },
     ],
   },
-  {
-    name: "Productos",
-    category: "account",
-    rtlName: "صفحات",
-    icon: <CreditIcon color="inherit" />,
-    state: "pageArcordion",
-    views: [
-      {
-        path: "/products",
-        name: "Articulos",
-        rtlName: "لوحة القيادة",
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: ProductsList,
-        layout: "/admin",
-      },
-    ],
-  },
+  
   {
     name: "Reportes",
+    path: "/stepperform",
     category: "account",
     rtlName: "صفحات",
     icon: <CreditIcon color="inherit" />,

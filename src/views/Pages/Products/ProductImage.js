@@ -49,6 +49,8 @@ function ProductImage({ formState, productId, onImageSelect, handleChange }) {
     setIsDeleteAlertOpen(true);
   };
 
+  
+
   const handleConfirmDelete = async () => {
     try {
       setIsDeleteAlertOpen(true);
@@ -81,27 +83,32 @@ function ProductImage({ formState, productId, onImageSelect, handleChange }) {
     onImageSelect(newImages);
   };
 
-  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
-    useDropzone({
-      accept: "image/*",
-      maxSize: 5 * 1024 * 1024,
-      onDrop: (acceptedFiles) => {
-        const images = acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        );
-        setSelectedImages(images);
-        onImageSelect(images);
-      },
-    });
+  const {
+    getRootProps,
+    getInputProps,
+    acceptedFiles,
+    fileRejections
+  } = useDropzone({
+    accept: ["image/jpeg", "image/png", "image/gif"],
+    maxSize: 5 * 1024 * 1024,
+    onDrop: (acceptedFiles) => {
+      const images = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      setSelectedImages(images);
+      onImageSelect(images);
+    },
+  });
 
   const {
     getRootProps: getMainRootProps,
     getInputProps: getMainInputProps,
     acceptedFiles: mainAcceptedFiles,
+    fileRejections: mainFileRejections
   } = useDropzone({
-    accept: "image/*",
+    accept: ["image/jpeg", "image/png", "image/gif"],
     maxSize: 5 * 1024 * 1024,
     maxFiles: 1, // Asegúrate de aceptar solo una imagen
     onDrop: (acceptedFiles) => {
@@ -112,11 +119,48 @@ function ProductImage({ formState, productId, onImageSelect, handleChange }) {
       // Construir la URL de la imagen con el nombre del archivo
       const filename = mainImage.name;
       const imageUrl = `http://localhost:4000/uploads/${filename}`;
-
+  
       // Actualizar el campo image en tu estado de formulario con la URL de la imagen
       formState.image = imageUrl;
     },
   });
+  
+  useEffect(() => {
+    mainFileRejections.forEach(({ file, errors }) => {
+      errors.forEach((error) => {
+        switch (error.code) {
+          case 'file-invalid-type':
+            console.error(`'${file.path}' no es un tipo de archivo válido.`);
+            break;
+          case 'file-too-large':
+            console.error(`'${file.path}' es demasiado grande.`);
+            break;
+          default:
+            console.error(`Error desconocido: ${error.code}`);
+            break;
+        }
+      });
+    });
+  }, [mainFileRejections]);
+  
+
+  useEffect(() => {
+    fileRejections.forEach(({ file, errors }) => {
+      errors.forEach((error) => {
+        switch (error.code) {
+          case 'file-invalid-type':
+            console.error(`'${file.path}' no es un tipo de archivo válido.`);
+            break;
+          case 'file-too-large':
+            console.error(`'${file.path}' es demasiado grande.`);
+            break;
+          default:
+            console.error(`Error desconocido: ${error.code}`);
+            break;
+        }
+      });
+    });
+  }, [fileRejections]);
 
   const imageSize = useBreakpointValue({ base: "150px", md: "250px" });
 

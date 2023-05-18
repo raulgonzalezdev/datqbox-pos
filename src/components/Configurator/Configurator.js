@@ -22,7 +22,7 @@ import {
   DarkMode,
   LightMode,
 } from "@chakra-ui/react";
-import GitHubButton from "react-github-btn";
+
 import { Separator } from "components/Separator/Separator";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -54,7 +54,7 @@ export default function Configurator(props) {
           <DrawerHeader pt='24px' px='24px'>
             <DrawerCloseButton color='white' />
             <Text color='white' fontSize='xl' fontWeight='bold' mt='16px'>
-              Vision UI Configurator
+              DatqBox Configurator
             </Text>
             <Text color='white' fontSize='md' mb='16px'>
               See your dashboard options.
@@ -117,19 +117,7 @@ export default function Configurator(props) {
                     </Button>
                   </Link>
                 </Box>
-                <Flex
-                  justifyContent='center'
-                  alignItems='center'
-                  w='100%'
-                  mb='16px'>
-                  <GitHubButton
-                    href='https://github.com/creativetimofficial/vision-ui-dashboard-chakra'
-                    data-icon='octicon-star'
-                    data-show-count='true'
-                    aria-label='Star creativetimofficial/vision-ui-dashboard-chakra on GitHub'>
-                    Star
-                  </GitHubButton>
-                </Flex>
+                
                 <Box w='100%'>
                   <Text color='white' mb='6px' textAlign='center'>
                     Thank you for sharing!
@@ -138,7 +126,7 @@ export default function Configurator(props) {
                     <Flex justifyContent='center' alignContent='center'>
                       <Link
                         isExternal='true'
-                        href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fvision-ui-dashboard-chakra&text=Check%20vision%20UI%20Dashboard%20made%20by%20%40CreativeTim%20and%20%40simmmple_web%20%23webdesign%20%23dashboard%20%23chakra'>
+                        href='https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fdatqbox-pos&text=Conoce%20el%20sistema%20Datqbox%20Pos%20desarrollado%20por%20%40DatqBox.%20Te%20invitamos%20a%20descubrir%20nuestra%20solución%20innovadora.%20%23DatqBoxPos%20%23innovación%20%23tecnología%20%23software'>
                         <Button
                           colorScheme='twitter'
                           leftIcon={<FaTwitter />}
@@ -148,7 +136,8 @@ export default function Configurator(props) {
                       </Link>
                       <Link
                         isExternal='true'
-                        href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fvision-ui-dashboard-chakra'>
+                        href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.datqbox.com%2Fproduct%2Fdatqbox-pos
+'>
                         <Button
                           colorScheme='facebook'
                           leftIcon={<FaFacebook />}>
@@ -168,7 +157,8 @@ export default function Configurator(props) {
 }
 Configurator.propTypes = {
   secondary: PropTypes.bool,
-  isOpen: PropTypes.func,
+  isOpen: PropTypes.bool, // Cambiar de func a bool
   onClose: PropTypes.func,
   fixed: PropTypes.bool,
 };
+

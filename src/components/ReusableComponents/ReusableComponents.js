@@ -20,7 +20,7 @@ export const StyledTextarea = ({ ...props }) => (
     size="md"
     // w={{ base: "100%", md: "346px" }}
     h="46px"
-    placeholderTextColor="black"
+    sx={{ "::placeholder": { color: "black" } }}
     focusBorderColor="black"
     borderColor="gray.300"
     bg="white"
@@ -34,7 +34,7 @@ export const StyledNumberInput = ({ ...props }) => (
     size="md"
     // w={{ base: "100%", md: "546px" }}
     h="40px"
-    placeholderTextColor="black"
+    sx={{ "::placeholder": { color: "black" } }}
     focusBorderColor="black"
     borderColor="gray.300"
     bg="white"
@@ -59,7 +59,7 @@ export const StyledInput = ({ ...props }) => (
     size="md"
     // w={{ base: "100%", md: "546px" }}
     h="46px"
-    placeholderTextColor="black"
+    sx={{ "::placeholder": { color: "black" } }}
     focusBorderColor="black"
     borderColor="gray.300"
     bg="white"
@@ -85,7 +85,7 @@ export const StyledSelect = ({ ...props }) => (
     size="lg"
     //  w={{ base: "100%", md: "346px" }}
     h="46px"
-    placeholderTextColor="black"
+    sx={{ "::placeholder": { color: "black" } }}
     focusBorderColor="black"
     borderColor="gray.300"
     bg="white"

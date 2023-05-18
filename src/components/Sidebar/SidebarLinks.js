@@ -24,6 +24,11 @@ const SidebarLinks = (props) => {
     };
   
     const createLinks = (routes) => {
+
+      if (!routes || routes.length < 1) {
+        console.error('routes array must have at least 3 elements');
+        return;
+      }
         const { sidebarVariant } = props;
         let activeBg = "#1A1F37";
         let inactiveBg = "#1A1F37";
@@ -32,6 +37,7 @@ const SidebarLinks = (props) => {
         let sidebarActiveShadow = "none";
     
         return routes
+        .filter(prop => prop.path !== undefined)
           .map((prop, key) => {
             if (prop.redirect) {
               return null;
@@ -91,7 +97,8 @@ const SidebarLinks = (props) => {
             if (prop.category && prop.state === "pageCollapse") {
               return (
                 <>
-                  <Text
+                  
+                  <Text key={key + 'text'} 
                     color={activeColor}
                     fontWeight="bold"
                     mb={{
