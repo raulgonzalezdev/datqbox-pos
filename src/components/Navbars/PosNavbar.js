@@ -1,11 +1,3 @@
-/*!
-
-   
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 // Chakra imports
 import {
   Box,
@@ -27,18 +19,18 @@ import {
 import SidebarResponsive  from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import routes from "routes.js";
+
 export default function PosNavbar(props) {
   const [open, setOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
   const { logo, logoText, secondary, ...rest } = props;
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return window.location.href.indexOf(routeName) > -1 ? true : false;
-  };
+  
+  const navigate = useNavigate();
+
   // Chakra color mode
   let navbarIcon = "white";
   let mainText = "white";
@@ -70,65 +62,61 @@ export default function PosNavbar(props) {
         bgClip='text'>
         <Text fontSize='md' letterSpacing='3px' mt='3px' color='transparent'>
           {logoText}
-
         </Text>
       </Box>
     </Link>
   );
   var linksAuth = (
     <HStack display={{ sm: "none", lg: "flex" }}>
-      <NavLink to='/admin/dashboard'>
-        <Button
-          fontSize='sm'
-          ms='0px'
-          me='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={<HomeIcon color={navbarIcon} w='12px' h='12px' me='0px' />}>
-          <Text>Dashboard</Text>
-        </Button>
-      </NavLink>
-      <NavLink to='/admin/profile'>
-        <Button
-          fontSize='sm'
-          ms='0px'
-          me='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={
-            <PersonIcon color={navbarIcon} w='12px' h='12px' me='0px' />
-          }>
-          <Text>Profile</Text>
-        </Button>
-      </NavLink>
-     
-      {/* <NavLink to='/auth/signin'> */}
-        <Button
-          fontSize='sm'
-          ms='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={
-            <LogoutIcon color={navbarIcon} w='12px' h='12px' me='0px' />
-          }
-          onClick={props.onLogout}
-          >
-          <Text>Logout</Text>
-        </Button>
-      {/* </NavLink> */}
+      <Button
+        onClick={() => navigate('/admin/dashboard')}
+        fontSize='sm'
+        ms='0px'
+        me='0px'
+        px='0px'
+        me={{ sm: "2px", md: "16px" }}
+        color={navbarIcon}
+        variant='transparent-with-icon'
+        leftIcon={<HomeIcon color={navbarIcon} w='12px' h='12px' me='0px' />}>
+        <Text>Dashboard</Text>
+      </Button>
+
+      <Button
+        onClick={() => navigate('/admin/profile')}
+        fontSize='sm'
+        ms='0px'
+        me='0px'
+        px='0px'
+        me={{ sm: "2px", md: "16px" }}
+        color={navbarIcon}
+        variant='transparent-with-icon'
+        leftIcon={
+          <PersonIcon color={navbarIcon} w='12px' h='12px' me='0px' />
+        }>
+        <Text>Profile</Text>
+      </Button>
+
+      <Button
+        fontSize='sm'
+        ms='0px'
+        px='0px'
+        me={{ sm: "2px", md: "16px" }}
+        color={navbarIcon}
+        variant='transparent-with-icon'
+        leftIcon={
+          <LogoutIcon color={navbarIcon} w='12px' h='12px' me='0px' />
+        }
+        onClick={props.onLogout}
+        >
+        <Text>Logout</Text>
+      </Button>
     </HStack>
   );
   return (
     <Flex
       position={navbarPosition}
       top='16px'
-      right='10' // Cambiar left por right y establecer en 0
+      right='10' 
       background={navbarBg}
       border='2px solid'
       borderColor={navbarBorder}
@@ -139,7 +127,7 @@ export default function PosNavbar(props) {
       px='16px'
       py='22px'
       mx='auto'
-      width='40%' // Cambiar width al 60%
+      width='40%' 
       height='40px'
       maxW='90%'
       alignItems='center'>
@@ -157,19 +145,7 @@ export default function PosNavbar(props) {
           />
         </Box>
         {linksAuth}
-        {/* <Link href='https://datqbox.com/product/vision-ui-dashboard-chakra'>
-          <Button
-            fontSize='xs'
-            variant='brand'
-            borderRadius='12px'
-            px='30px'
-            display={{
-              sm: "none",
-              lg: "flex",
-            }}>
-            Download
-          </Button>
-        </Link> */}
+        
       </Flex>
     </Flex>
   );
@@ -179,3 +155,4 @@ PosNavbar.propTypes = {
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
   brandText: PropTypes.string,
 };
+

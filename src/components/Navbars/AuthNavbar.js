@@ -1,18 +1,9 @@
-/*!
-
-   
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// Chakra imports
 import {
   Box,
   Button,
   Flex,
   HStack,
-  Link,
+  Link as ChakraLink,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -23,22 +14,18 @@ import {
   PersonIcon,
   RocketIcon,
 } from "components/Icons/Icons";
-import  SidebarResponsive  from "components/Sidebar/SidebarResponsive";
+import SidebarResponsive from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import routes from "routes.js";
+
 export default function AuthNavbar(props) {
   const [open, setOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
   const { logo, logoText, secondary, ...rest } = props;
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return window.location.href.indexOf(routeName) > -1 ? true : false;
-  };
-  // Chakra color mode
   let navbarIcon = "white";
   let mainText = "white";
   let navbarBg =
@@ -55,7 +42,7 @@ export default function AuthNavbar(props) {
   let navbarBackdrop = "blur(42px)";
   let navbarPosition = "fixed";
   var brand = (
-    <Link
+    <ChakraLink
       href={`${process.env.PUBLIC_URL}/#/`}
       target='_blank'
       display='flex'
@@ -72,11 +59,11 @@ export default function AuthNavbar(props) {
           DATQBOX
         </Text>
       </Box>
-    </Link>
+    </ChakraLink>
   );
   var linksAuth = (
     <HStack display={{ sm: "none", lg: "flex" }}>
-      <NavLink to='/admin/dashboard'>
+      <Link to='/admin/dashboard'>
         <Button
           fontSize='sm'
           ms='0px'
@@ -88,8 +75,8 @@ export default function AuthNavbar(props) {
           leftIcon={<HomeIcon color={navbarIcon} w='12px' h='12px' me='0px' />}>
           <Text>Dashboard</Text>
         </Button>
-      </NavLink>
-      <NavLink to='/admin/profile'>
+      </Link>
+      <Link to='/admin/profile'>
         <Button
           fontSize='sm'
           ms='0px'
@@ -103,8 +90,8 @@ export default function AuthNavbar(props) {
           }>
           <Text>Profile</Text>
         </Button>
-      </NavLink>
-      <NavLink to='/auth/signup'>
+      </Link>
+      <Link to='/auth/signup'>
         <Button
           fontSize='sm'
           ms='0px'
@@ -118,8 +105,8 @@ export default function AuthNavbar(props) {
           }>
           <Text>Sign Up</Text>
         </Button>
-      </NavLink>
-      <NavLink to='/auth/signin'>
+      </Link>
+      <Link to='/auth/signin'>
         <Button
           fontSize='sm'
           ms='0px'
@@ -132,7 +119,7 @@ export default function AuthNavbar(props) {
           }>
           <Text>Sign In</Text>
         </Button>
-      </NavLink>
+      </Link>
     </HStack>
   );
   return (
@@ -168,19 +155,7 @@ export default function AuthNavbar(props) {
           />
         </Box>
          {linksAuth} 
-        {/* <Link href='https://datqbox.com/product/vision-ui-dashboard-chakra'>
-          <Button
-            fontSize='xs'
-            variant='brand'
-            borderRadius='12px'
-            px='30px'
-            display={{
-              sm: "none",
-              lg: "flex",
-            }}>
-            Download
-          </Button>
-        </Link> */}
+        
       </Flex>
     </Flex>
   );
@@ -190,3 +165,4 @@ AuthNavbar.propTypes = {
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
   brandText: PropTypes.string,
 };
+

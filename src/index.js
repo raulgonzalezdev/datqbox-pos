@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { createRoot } from 'react-dom';
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route, Navigate, useRoutes } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "graphql/client";
 import AuthLayout from "layouts/Auth.js";
-import AdminLayout from "layouts/Admin.js";
+import AdminLayout from "layouts/AdminLayout.js";
 import RTLLayout from "layouts/RTL.js";
 import PosLayout from "layouts/Pos.js";
 
+import Dashboard from "views/Dashboard/Dashboard.js";
+import Tables from "views/Dashboard/Tables.js";
+import Billing from "views/Dashboard/Billing.js";
+import RTLPage from "views/RTL/RTLPage.js";
+import Profile from "views/Dashboard/Profile.js";
+import SignIn from "views/Pages/SignIn.js";
+import SignUp from "views/Pages/SignUp.js";
+import StepperForm from "views/Pages/StepperForm/StepperForm.js";
+import UsersList from "views/Pages/Users/UsersList";
+import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js";
+import POSApp from "views/Pages/POSApp/POSApp.js";
+import ProductsList from "views/Pages/Products/ProductsList.js"
+import dashRoutes from "./routes";
+
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
 
   const handleLogoutEvent = (event) => {
@@ -45,23 +59,48 @@ function App() {
     setIsAuthenticated(false);
   };
 
+  const adminRoutes = dashRoutes.filter(route => route.layout === "/admin");
+  const posRoutes = dashRoutes.filter(route => route.layout === "/pos");
+
+  let routes = [
+    {
+      path: "/admin/*",
+      element: <AdminLayout />,
+      children: adminRoutes.map((route, key) => (
+        { path: route.path, element: route.element, key }
+      )),
+    },
+    {
+      path: "/pos/*",
+      element: <PosLayout />,
+      children: posRoutes.map((route, key) => (
+        { path: route.path, element: route.element, key }
+      )),
+    },
+    {
+      path: '/',
+      element: <Navigate to={isAuthenticated ? "/pos" : "/auth/signin"} />
+    }
+  ];
+
+  let element = useRoutes(routes);
+
   if (isAuthenticating) {
     return null; // Muestra un spinner de carga mientras se verifica la autenticación
   }
 
+  return element;
+}
+
+function RootComponent() {
   return (
-    <Router>
-      <ApolloProvider client={client}>
-        <Routes>
-          <Route path={`/auth/*`} element={<AuthLayout />} />
-          <Route path={`/admin/*`} element={isAuthenticated ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/auth/signin" />} />
-          <Route path={`/pos/*`} element={isAuthenticated ? <PosLayout onLogout={handleLogout} /> : <Navigate to="/auth/signin" />} />
-          <Route path={`/`} element={<Navigate to={isAuthenticated ? "/pos" : "/auth/signin"} />} />
-        </Routes>
-      </ApolloProvider>
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>
   );
 }
 
 const root = createRoot(document.getElementById('root')); 
-root.render(<App />);
+root.render(<RootComponent />);

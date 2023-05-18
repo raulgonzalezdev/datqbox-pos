@@ -10,9 +10,10 @@ import {
   Icon, 
   Text 
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useMatch } from 'react-router-dom';
 import PropTypes from "prop-types";
 import IconBox from "components/Icons/IconBox";
+
 
 
 const SidebarLinks = (props) => {
@@ -20,7 +21,8 @@ const SidebarLinks = (props) => {
     const variantChange = '0.2s linear';
     const [state, setState] = React.useState({});
     const activeRoute = (routeName) => {
-      return location.pathname === routeName ? "active" : "";
+      let match = useMatch(routeName);
+      return match ? "active" : "";
     };
   
     const createLinks = (routes) => {
@@ -247,7 +249,7 @@ const SidebarLinks = (props) => {
         name: PropTypes.string.isRequired,
         rtlName: PropTypes.string,
         icon: PropTypes.element,
-        component: PropTypes.elementType,
+        element: PropTypes.elementType,
         layout: PropTypes.string.isRequired,
         category: PropTypes.string,
         state: PropTypes.string,

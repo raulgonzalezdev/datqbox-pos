@@ -22,7 +22,6 @@
     "@reduxjs/toolkit": "^1.9.5",
     "apexcharts": "^3.27.3",
     "apollo-upload-client": "^17.0.0",
-    "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.1",
@@ -50,9 +49,6 @@
     "react-scripts": "^5.0.1",
     "react-swipeable-views": "0.14.0",
     "react-table": "^7.8.0",
-    "redux": "^4.2.1",
-    "redux-saga": "^1.2.3",
-    "redux-thunk": "^2.4.2",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.0"
   },

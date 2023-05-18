@@ -35,7 +35,7 @@ function SignIn() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [rememberMe, setRememberMe] = React.useState(false);
-  const history = useHistory();
+ 
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -58,7 +58,7 @@ function SignIn() {
       const { token } = data.loginUser
       localStorage.setItem('authToken', token);
 
-      navigate('/pos');
+      navigate('/pos', { replace: true });
       console.log('token', token)
     } catch (err) {
       console.error('Error during sign in:', err);
@@ -86,7 +86,7 @@ function SignIn() {
           <Flex
             direction='column'
             w='100%'
-            background='transparent'
+            // background='transparent'
             mt={{ base: "50px", md: "150px", lg: "160px", xl: "245px" }}
             mb={{ base: "60px", lg: "95px" }}>
             <Heading color={titleColor} fontSize='32px' mb='10px'>

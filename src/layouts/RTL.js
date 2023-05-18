@@ -7,7 +7,7 @@ import Footer from "components/Footer/Footer.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState, useRef } from "react";
-import { useRoutes, Navigate } from "react-router-dom";
+import { useRoutes, Navigate, useLocation } from "react-router-dom";
 import routes from "routes.js";
 // Custom Chakra theme
 import theme from "theme/themeAdmin";
@@ -16,7 +16,6 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
-import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard(props) {
   const { ...rest } = props;
@@ -25,9 +24,10 @@ export default function Dashboard(props) {
   const [fixed, setFixed] = useState(false);
   // ref for main panel div
   const mainPanel = useRef(null);
-
+  const location = useLocation();
+  
   const getRoute = () => {
-    return window.location.pathname !== "/admin/full-screen-maps";
+    return location.pathname !== "/admin/full-screen-maps";
   };
   
   const getActiveRoute = (routes) => {
@@ -74,24 +74,20 @@ export default function Dashboard(props) {
     }
     return activeNavbar;
   };
-  
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return getRoutes(prop.views);
-      }
-      if (prop.category === "account") {
+      if (prop.collapse || prop.category === "account") {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/rtl" || prop.layout === "/admin") {
         return {
           path: prop.layout + prop.path,
-          element: <prop.component />,
+          element: React.createElement(prop.component),
           key: key
         };
-      } else {
-        return null;
       }
+      return null;
     }).filter(Boolean);
   };
   
@@ -102,7 +98,7 @@ export default function Dashboard(props) {
   const routing = useRoutes([
     ...getRoutes(routes),
     {
-      path: "/rtl/*",
+      path: "/*",
       element: <Navigate to="/rtl/rtl-support-page" replace />,
     }
   ]);
@@ -110,7 +106,7 @@ export default function Dashboard(props) {
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <RtlProvider>
-        <Sidebar
+	  <Sidebar
           routes={routes}
           logoText={"DATQBOX"}
           display='none'
@@ -165,4 +161,3 @@ export default function Dashboard(props) {
     </ChakraProvider>
   );
 }
-

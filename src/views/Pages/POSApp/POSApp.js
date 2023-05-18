@@ -10,6 +10,7 @@ import NumericButtons from "./NumericButtons";
 import CategoryTabs from "./CategoryTabs";
 import { createColumns } from "./gridColumns";
 
+
 import CustomInput from "components/CustomInput/CustomInput";
 import { StyledText } from "components/ReusableComponents/ReusableComponents";
 //import backgroundImage from "assets/img/background-body-admin.png";
@@ -221,92 +222,99 @@ const POSApp = () => {
   };
 
   return (
-    <Grid
-      templateColumns={{ sm: "1fr", md: "2fr 1fr", lg: "1fr 1fr" }}
-      my="26px"
-      gap="18px"
-      marginLeft="10"
-      marginRight="10"
-    >
+    <>
+    
+      <Grid
+        templateColumns={{ sm: "1fr", md: "2fr 1fr", lg: "1fr 1fr" }}
+        my="26px"
+        gap="18px"
+        marginLeft="10"
+        marginRight="10"
+      >
+        {/* Seccion 2 */}
+        <Box order={{ lg: 2, md: 1 }}>
+          <Flex
+            direction="column"
+            justifyContent="space-between"
+            marginTop="-15"
+            overflowY="hidden"
+            width={{ base: "auto", md: "100%" }}
+          >
+            <Card width={{ base: "auto", md: "100%" }}>
+              <CardBody width={{ base: "auto", md: "100%" }} h="100%">
+                <CategoryTabs
+                  handleProductDoubleClick={handleProductDoubleClick}
+                />
+              </CardBody>
+            </Card>
+          </Flex>
+        </Box>
+        {/* Seccion 1 */}
 
+        <Box order={{ lg: 2, md: 1 }}>
+          <Flex w="100%" h="100%" justifyContent="space-between">
+            <Card marginTop="50">
+              <CardBody w="100%" h="100%">
+                <Box>
+                  <CustomInput
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  <Card>
+                    <CardBody>
+                      <ThemeProvider theme={taxTableTheme}>
+                        <Box
+                          sx={{ width: "100%", minHeight: "350px" }}
+                          mx="1em"
+                        >
+                          <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            checkboxSelection
+                            onCellClick={handleCellClick}
+                            selectionModel={selectedRows}
+                            autoHeight
+                          />
+                        </Box>
+                      </ThemeProvider>
+                    </CardBody>
+                  </Card>
+                  <Flex
+                    justifyContent="space-between"
+                    mt={4}
+                    mb={4}
+                    alignItems="center"
+                    flexDirection={{ base: "column", lg: "row" }}
+                  >
+                    <Flex>
+                      <Button mr={1}>Cliente</Button>
+                      <Button mr={1}>Nota del Cliente</Button>
+                      <Button mr={1}>Descuento</Button>
+                    </Flex>
+                    <Flex alignItems="center">
+                      <Button onClick={handleDetailsClick} mr={4}>
+                        Detalles total
+                      </Button>
+                      <StyledText pr={4}>Total: ${total.toFixed(2)}</StyledText>
+                    </Flex>
+                  </Flex>
 
-    {/* Seccion 2 */}
-      <Box order={{ lg: 2, md: 1 }}>
-      <Flex
-        direction="column"
-        justifyContent="space-between"
-        marginTop="-15"
-        overflowY="hidden"
-        width={{base: "auto", md: "100%"}}
-       >
-        <Card width={{base: "auto", md: "100%"}}>
-          <CardBody width={{base: "auto", md: "100%"}} h="100%">
-            <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />
-          </CardBody>
-        </Card>
-      </Flex>
-      </Box>
-      {/* Seccion 1 */}
-
-      <Box order={{ lg: 2, md: 1 }}>      
-      <Flex w="100%" h="100%" justifyContent="space-between">
-        <Card marginTop="50">
-          <CardBody w="100%" h="100%">
-            <Box >
-              <CustomInput value={inputValue} onChange={handleInputChange} />
-              <Card >
-                <CardBody >
-                  <ThemeProvider theme={taxTableTheme}>
-                    <Box sx={{ width: "100%", minHeight: "350px" }} mx="1em">
-                      <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
-                        checkboxSelection
-                        onCellClick={handleCellClick}
-                        selectionModel={selectedRows}
-                        autoHeight
-                      />
-                    </Box>
-                  </ThemeProvider>
-                </CardBody>
-              </Card>
-              <Flex
-                justifyContent="space-between"
-                mt={4}
-                mb={4}
-                alignItems="center"
-                flexDirection={{ base: "column", lg: "row" }}
-              >
-                <Flex>
-                  <Button mr={1}>Cliente</Button>
-                  <Button mr={1}>Nota del Cliente</Button>
-                  <Button mr={1}>Descuento</Button>
-                </Flex>
-                <Flex alignItems="center">
-                  <Button onClick={handleDetailsClick} mr={4}>
-                    Detalles total
-                  </Button>
-                  <StyledText pr={4}>Total: ${total.toFixed(2)}</StyledText>
-                </Flex>
-              </Flex>
-
-              <NumericButtons
-                handleNumericButtonClick={handleNumericButtonClick}
-                handleEnterClick={handleEnterClick}
-                selectedOperation={selectedOperation}
-                setSelectedOperation={setSelectedOperation}
-              />
-            </Box>
-          </CardBody>
-        </Card>
-      </Flex>
-      </Box>
-
-      
-
-    </Grid>
+                  <NumericButtons
+                    handleNumericButtonClick={handleNumericButtonClick}
+                    handleEnterClick={handleEnterClick}
+                    selectedOperation={selectedOperation}
+                    setSelectedOperation={setSelectedOperation}
+                  />
+                </Box>
+              </CardBody>
+            </Card>
+          </Flex>
+        </Box>
+      </Grid>
+     
+    </>
   );
 };
 

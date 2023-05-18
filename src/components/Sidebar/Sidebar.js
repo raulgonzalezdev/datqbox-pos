@@ -18,7 +18,7 @@ import Brand from "./Brand";
 import SidebarLinks from "./SidebarLinks";
 
 function Sidebar(props) {
-  const location = useLocation();
+  const location = useLocation().pathname;
   const [state, setState] = React.useState({});
   const mainPanel = React.useRef();
   const variantChange = "0.2s linear";

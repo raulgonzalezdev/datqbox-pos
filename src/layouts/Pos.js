@@ -1,28 +1,21 @@
-// chakra imports
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
-import Footer from "components/Footer/Footer.js";
-// core components
+import { useNavigate, useRoutes, Navigate } from 'react-router-dom';
+import { useRef, useEffect } from "react";
 import PosNavbar from "components/Navbars/PosNavbar.js";
-import React, { useRef, useEffect } from "react";
-import { useRoutes } from 'react-router-dom';
 import routes from "routes.js";
-//import theme from "theme/themeAuth.js";
 import theme from "theme/themeAdmin.js";
-import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-
-export default function Pages(props) {
+const PosLayout = (props) => {
   const { ...rest } = props;
-  // ref for the wrapper div
   const wrapper = useRef(null);
   useEffect(() => {
     document.body.style.overflow = "unset";
-    // Specify how to clean up after this effect:
     return function cleanup() {};
   });
 
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Pos";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -77,7 +70,7 @@ export default function Pages(props) {
       if (prop.layout === "/pos") {
         return {
           path: prop.layout + prop.path,
-          element: <prop.component />,
+          element: <prop.element />,
           key: key
         };
       } else {
@@ -98,6 +91,9 @@ export default function Pages(props) {
   ]);
 
   return (
+    <>
+       <Outlet />
+    
     <ChakraProvider theme={theme} resetCss={false} w='100%'>
       <Box ref={navRef} w='100%'>
         <Portal containerRef={navRef}>
@@ -114,5 +110,8 @@ export default function Pages(props) {
         </Box>
       </Box>
     </ChakraProvider>
+    </>
   );
 }
+
+export default PosLayout;
