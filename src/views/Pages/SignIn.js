@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Chakra imports
 import {
@@ -49,24 +49,21 @@ function SignIn() {
     setRememberMe(event.target.checked);
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-    
       const { data } = await signIn({ variables: { email, password } });
       const { token } = data.loginUser
-     
       localStorage.setItem('authToken', token);
 
-      history.push('/pos');
+      navigate('/pos');
       console.log('token', token)
-      
-
     } catch (err) {
       console.error('Error during sign in:', err);
     }
   };
-
   return (
     <Flex position='relative'>
       <Flex

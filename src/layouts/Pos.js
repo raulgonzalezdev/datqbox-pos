@@ -3,22 +3,24 @@ import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
 import Footer from "components/Footer/Footer.js";
 // core components
 import PosNavbar from "components/Navbars/PosNavbar.js";
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
+import { useRoutes } from 'react-router-dom';
 import routes from "routes.js";
 //import theme from "theme/themeAuth.js";
 import theme from "theme/themeAdmin.js";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Pages(props) {
   const { ...rest } = props;
   // ref for the wrapper div
-  const wrapper = React.createRef();
-  React.useEffect(() => {
+  const wrapper = useRef(null);
+  useEffect(() => {
     document.body.style.overflow = "unset";
     // Specify how to clean up after this effect:
     return function cleanup() {};
   });
+
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -42,6 +44,7 @@ export default function Pages(props) {
     }
     return activeRoute;
   };
+
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
@@ -62,6 +65,7 @@ export default function Pages(props) {
     }
     return activeNavbar;
   };
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -71,20 +75,28 @@ export default function Pages(props) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/pos") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return {
+          path: prop.layout + prop.path,
+          element: <prop.component />,
+          key: key
+        };
       } else {
         return null;
       }
-    });
+    }).filter(Boolean);
   };
-  const navRef = React.useRef();
+
+  const navRef = useRef();
   document.documentElement.dir = "ltr";
+
+  const routing = useRoutes([
+    ...getRoutes(routes),
+    {
+      path: "/pos/*",
+      element: <Navigate to="/pos/pos" replace />,
+    }
+  ]);
+
   return (
     <ChakraProvider theme={theme} resetCss={false} w='100%'>
       <Box ref={navRef} w='100%'>
@@ -93,15 +105,11 @@ export default function Pages(props) {
             secondary={getActiveNavbar(routes)}
             logoText='DATQBOX  -  POS'
             {...props}
-          
           />
         </Portal>
         <Box w='100%'>
           <Box ref={wrapper} w='100%'>
-            <Switch>
-              {getRoutes(routes)}
-              <Redirect from='/pos' to='/pos/pos' />
-            </Switch>
+            {routing}
           </Box>
         </Box>
       </Box>

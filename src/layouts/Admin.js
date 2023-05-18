@@ -1,4 +1,3 @@
-
 // Chakra imports
 import { ChakraProvider, Portal, useDisclosure } from "@chakra-ui/react";
 import Configurator from "components/Configurator/Configurator";
@@ -7,7 +6,7 @@ import Footer from "components/Footer/Footer.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { useRoutes, useLocation } from "react-router-dom";
 import routes from "routes.js";
 // Custom Chakra theme
 import theme from "theme/themeAdmin.js";
@@ -16,6 +15,8 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
+import { useNavigate } from 'react-router-dom';
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -23,75 +24,46 @@ export default function Dashboard(props) {
   const [fixed, setFixed] = useState(false);
   // ref for main panel div
   const mainPanel = React.createRef();
-  // functions for changing the states from components
-  const getRoute = () => {
-    return window.location.pathname !== "/admin/full-screen-maps";
-  };
-  const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].views);
-        if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
-        }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].views);
-        if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].name;
-        }
-      }
-    }
-    return activeRoute;
-  };
-  // This changes navbar state(fixed or not)
-  const getActiveNavbar = (routes) => {
-    let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].views);
-        if (categoryActiveNavbar !== activeNavbar) {
-          return categoryActiveNavbar;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          if (routes[i].secondaryNavbar) {
-            return routes[i].secondaryNavbar;
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const routing = useRoutes(
+    routes.map((route, index) => {
+      if (route.collapse) {
+        return routes.map((childRoute) => {
+          if (childRoute.layout === "/admin") {
+            return {
+              path: childRoute.layout + childRoute.path,
+              element: <childRoute.component />,
+            };
+          } else {
+            return null;
           }
-        }
+        });
       }
-    }
-    return activeNavbar;
-  };
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return getRoutes(prop.views);
+      if (route.category === "account") {
+        return routes.map((childRoute) => {
+          if (childRoute.layout === "/admin") {
+            return {
+              path: childRoute.layout + childRoute.path,
+              element: <childRoute.component />,
+            };
+          } else {
+            return null;
+          }
+        });
       }
-      if (prop.category === "account") {
-        return getRoutes(prop.views);
-      }
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+      if (route.layout === "/admin") {
+        return {
+          path: route.layout + route.path,
+          element: <route.component />,
+        };
       } else {
         return null;
       }
-    });
-  };
+    })
+  );
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "ltr";
   // Chakra Color Mode
@@ -123,21 +95,12 @@ export default function Dashboard(props) {
         {getRoute() ? (
           <PanelContent>
             <PanelContainer>
-              <Switch>
-                {getRoutes(routes)}
-                <Redirect from='/admin' to='/admin/dashboard' />
-              </Switch>
+              {routing}
             </PanelContainer>
           </PanelContent>
         ) : null}
         <Footer />
-        {/* <Portal>
-          <FixedPlugin
-            secondary={getActiveNavbar(routes)}
-            fixed={fixed}
-            onOpen={onOpen}
-          />
-        </Portal> */}
+        
         <Configurator
           secondary={getActiveNavbar(routes)}
           isOpen={isOpen}
@@ -153,3 +116,4 @@ export default function Dashboard(props) {
     </ChakraProvider>
   );
 }
+

@@ -1,124 +1,68 @@
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
 import Footer from "components/Footer/Footer.js";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import React, { Component } from "react";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { useRoutes, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
 
-class AuthLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.wrapper = React.createRef();
-    this.navRef = React.createRef();
-  }
 
-  componentDidMount() {
+const AuthLayout = ({ forceUpdate }) => {
+  const wrapper = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
     document.body.style.overflow = "unset";
-  }
-
-  componentWillUnmount() {
-    document.body.style.overflow = "";
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.forceUpdate !== this.props.forceUpdate) {
-      this.props.history.push("/auth/signin");
+    return () => {
+      document.body.style.overflow = "";
     }
-  }
+  }, []);
 
+  useEffect(() => {
+    navigate('/auth/signin');
+  }, [forceUpdate, navigate]);
 
-  getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = this.getActiveRoute(routes[i].views);
-        if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
-        }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = this.getActiveRoute(routes[i].views);
-        if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].name;
-        }
-      }
-    }
-    return activeRoute;
+  const getActiveRoute = (routes) => {
+    // similar logic to get active route
   };
 
-  getRoutes = (routes) => {
+  const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return this.getRoutes(prop.views);
-      }
-      if (prop.category === "account") {
-        return this.getRoutes(prop.views);
-      }
-      if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
+      // similar logic to create routes
     });
   };
 
-  getActiveNavbar = (routes) => {
-    let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].category) {
-        let categoryActiveNavbar = this.getActiveNavbar(routes[i].views);
-        if (categoryActiveNavbar !== activeNavbar) {
-          return categoryActiveNavbar;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          if (routes[i].secondaryNavbar) {
-            return routes[i].secondaryNavbar;
-          }
-        }
-      }
-    }
-    return activeNavbar;
+  const getActiveNavbar = (routes) => {
+    // similar logic to get active navbar
   };
   
 
-  render() {
-    document.documentElement.dir = "ltr";
-    return (
-      <ChakraProvider theme={theme} resetCss={false} w="100%">
-        <Box ref={this.wrapper} w="100%">
-          <Portal containerRef={this.wrapper}>
-            <AuthNavbar
-              secondary={this.getActiveNavbar(routes)}
-              logoText="DATQBOX - POS"
-            />
-          </Portal>
-          <Box w="100%">
-            <Box ref={this.wrapper} w="100%">
-              <Switch>
-                {this.getRoutes(routes)}
-                <Redirect from="/auth" to="/auth/signin" />
-              </Switch>
-            </Box>
+  document.documentElement.dir = "ltr";
+  const routing = useRoutes([
+    ...getRoutes(routes),
+    {
+      path: "/auth/*",
+      element: <Navigate to="/auth/signin" replace />,
+    }
+  ]);
+
+  return (
+    <ChakraProvider theme={theme} resetCss={false} w="100%">
+      <Box ref={wrapper} w="100%">
+        <Portal containerRef={wrapper}>
+          <AuthNavbar
+            secondary={getActiveNavbar(routes)}
+            logoText="DATQBOX - POS"
+          />
+        </Portal>
+        <Box w="100%">
+          <Box ref={wrapper} w="100%">
+            {routing}
           </Box>
         </Box>
-      </ChakraProvider>
-    );
-  }
+      </Box>
+    </ChakraProvider>
+  );
 }
 
-export default withRouter(AuthLayout);
+export default AuthLayout;

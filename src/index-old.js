@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { createRoot } from 'react-dom/client';
+import ReactDOM from "react-dom";
+import jwtDecode from "jwt-decode";
+// import { Provider } from 'react-redux';
+// import store from 'redux/store'; 
+// import { QueryClient, QueryClientProvider } from "react-query";
 
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
@@ -10,7 +14,7 @@ import RTLLayout from "layouts/RTL.js";
 import PosLayout from "layouts/Pos.js";
 
 class App extends Component {
-
+  // logoutChannel = new BroadcastChannel("logoutChannel");
 
   state = {
     isAuthenticated: false,
@@ -50,7 +54,9 @@ class App extends Component {
       }
     }
   
- 
+    // Agregar el event listener
+    // this.logoutChannel.addEventListener("message", this.handleLogoutEvent);
+    // window.addEventListener("storage", this.handleStorageChange);
   
     this.setState({
       isAuthenticating: false,
@@ -64,7 +70,8 @@ class App extends Component {
       isAuthenticated: false,
     });
     
-
+    // this.logoutChannel.removeEventListener("message", this.handleLogoutEvent);
+    // window.removeEventListener("storage", this.handleStorageChange);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -96,13 +103,15 @@ class App extends Component {
     if (this.state.isAuthenticating) {
       return null; // Muestra un spinner de carga mientras se verifica la autenticación
     }
-   
+    // const queryClient = new QueryClient();
     return (
       <HashRouter>
         <ApolloProvider client={client}>
+         {/* <QueryClientProvider client={queryClient}> */}
+         {/* <Provider store={store}> */}
           <Switch>
             <Route path={`/auth`} component={AuthLayout} />
-            <Route
+             <Route
               path={`/admin`}
               render={(props) =>
                 this.state.isAuthenticated ? (
@@ -111,7 +120,8 @@ class App extends Component {
                   <Redirect to="/auth/signin" />
                 )
               }
-            />
+            /> 
+            
             <Route
               path={`/pos`}
               render={(props) =>
@@ -127,11 +137,12 @@ class App extends Component {
               to={this.state.isAuthenticated ? "/pos" : "/auth/signin"}
             />
           </Switch>
+          {/* </Provider> */}
+          {/* </QueryClientProvider> */}
         </ApolloProvider>
       </HashRouter>
     );
   }
 }
 
-const root = createRoot(document.getElementById('root')); 
-root.render(<App />);
+ReactDOM.render(<App />, document.getElementById("root"));

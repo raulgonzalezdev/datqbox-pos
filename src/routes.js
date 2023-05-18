@@ -42,31 +42,6 @@ var dashRoutes = [
     layout: "/pos",
   },
 
-  // {
-  //   name: "Modulos",
-  //   category: "account",
-  //   rtlName: "صفحات",
-  //   state: "pageCollapse",
-  //   views: [],
-  //   // views: [
-  //   //   {
-  //   //     path: "/Userslist",
-  //   //     name: "User List",
-  //   //     rtlName: "لوحة القيادة",
-  //   //     icon: <StatsIcon color="inherit" />,
-  //   //     component: UsersList,
-  //   //     layout: "/admin",
-  //   //   },
-  //   //   {
-  //   //     path: "/tables",
-  //   //     name: "Tables",
-  //   //     rtlName: "لوحة القيادة",
-  //   //     icon: <StatsIcon color="inherit" />,
-  //   //     component: Tables,
-  //   //     layout: "/admin",
-  //   //   },
-  //   // ],
-  // },
 
   {
     name: "Productos",

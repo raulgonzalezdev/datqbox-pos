@@ -1,5 +1,3 @@
-
-
 // Chakra imports
 import { ChakraProvider, Portal, useDisclosure } from "@chakra-ui/react";
 import { RtlProvider } from "components/RTLProvider/RTLProvider";
@@ -8,8 +6,8 @@ import Footer from "components/Footer/Footer.js";
 // Layout components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useRoutes, Navigate } from "react-router-dom";
 import routes from "routes.js";
 // Custom Chakra theme
 import theme from "theme/themeAdmin";
@@ -18,16 +16,20 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
+import { useNavigate } from 'react-router-dom';
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
   const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const [fixed, setFixed] = useState(false);
   // ref for main panel div
-  const mainPanel = React.createRef();
+  const mainPanel = useRef(null);
+
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
+  
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -51,7 +53,7 @@ export default function Dashboard(props) {
     }
     return activeRoute;
   };
-  // This changes navbar state(fixed or not)
+  
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
@@ -72,6 +74,7 @@ export default function Dashboard(props) {
     }
     return activeNavbar;
   };
+  
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -81,21 +84,29 @@ export default function Dashboard(props) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/rtl" || prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return {
+          path: prop.layout + prop.path,
+          element: <prop.component />,
+          key: key
+        };
       } else {
         return null;
       }
-    });
+    }).filter(Boolean);
   };
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "rtl";
   // Chakra Color Mode
+  
+  const routing = useRoutes([
+    ...getRoutes(routes),
+    {
+      path: "/rtl/*",
+      element: <Navigate to="/rtl/rtl-support-page" replace />,
+    }
+  ]);
+
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <RtlProvider>
@@ -126,10 +137,7 @@ export default function Dashboard(props) {
           {getRoute() ? (
             <PanelContent>
               <PanelContainer>
-                <Switch>
-                  {getRoutes(routes)}
-                  <Redirect from='/rtl' to='/rtl/rtl-support-page' />
-                </Switch>
+                {routing}
               </PanelContainer>
             </PanelContent>
           ) : null}
@@ -157,3 +165,4 @@ export default function Dashboard(props) {
     </ChakraProvider>
   );
 }
+
