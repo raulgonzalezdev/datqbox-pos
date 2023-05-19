@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-
 import { Box, Flex, Button, Input, SimpleGrid, Grid } from '@chakra-ui/react'
 import { DataGrid } from '@mui/x-data-grid'
 import { ThemeProvider } from '@mui/material/styles'
 import taxTableTheme from 'theme/themeTableMUI'
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
+import CustomInput from 'components/CustomInput/CustomInput'
+import { StyledText } from 'components/ReusableComponents/ReusableComponents'
+
 import NumericButtons from './NumericButtons'
 import CategoryTabs from './CategoryTabs'
 import { createColumns } from './gridColumns'
 
-import CustomInput from 'components/CustomInput/CustomInput'
-import { StyledText } from 'components/ReusableComponents/ReusableComponents'
 //import backgroundImage from "assets/img/background-body-admin.png";
 
 const POSApp = () => {

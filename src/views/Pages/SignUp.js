@@ -1,17 +1,10 @@
 import React from 'react'
-
-// Chakra imports
 import { Box, Flex, Button, FormControl, FormLabel, HStack, Input, Link, Switch, Text, Icon, DarkMode, useToast } from '@chakra-ui/react'
-
-// Icons
 import { FaApple, FaFacebook, FaGoogle } from 'react-icons/fa'
-// Custom Components
 import AuthFooter from 'components/Footer/AuthFooter'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 import { useAddUser } from 'graphql/users/crudUser'
 import { useHistory } from 'react-router-dom'
-
-// Assets
 import signUpImage from 'assets/img/signUpImage.png'
 
 function SignUp() {

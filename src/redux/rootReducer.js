@@ -1,5 +1,6 @@
 // rootReducer.js
 import { combineReducers } from '@reduxjs/toolkit'
+
 import uploadReducer from './reducer' // Este es el reducer que ya tienes
 
 const rootReducer = combineReducers({

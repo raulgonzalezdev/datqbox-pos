@@ -13,6 +13,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import routes from 'routes'
 // Custom Chakra theme
 import theme from 'theme/themeAdmin'
+
 import FixedPlugin from '../components/FixedPlugin/FixedPlugin'
 // Custom components
 import MainPanel from '../components/Layout/MainPanel'

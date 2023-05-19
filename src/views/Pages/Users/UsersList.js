@@ -2,6 +2,7 @@
 import React from 'react'
 import DataTable from 'components/Tables/DataTable'
 import { useGetUsers } from 'graphql/users/crudUser'
+
 import { createColumns } from './gridColumns'
 
 

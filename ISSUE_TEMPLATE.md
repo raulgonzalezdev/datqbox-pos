@@ -7,7 +7,7 @@
 -->
 
 <!--
-Love DatqBox Systems? Do you need Angular, React, Vuejs or HTML? You can visit:
+Love DatqBox  ? Do you need Angular, React, Vuejs or HTML? You can visit:
 👉  https://www.datqbox.com/bundles
 👉  https://www.datqbox.com
 -->

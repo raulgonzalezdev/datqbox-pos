@@ -5,6 +5,12 @@ module.exports = override(
     test: /\.js$/,
     enforce: 'pre',
     use: ['source-map-loader'],
-    exclude: [/node_modules\/stylis-plugin-rtl/, /\.jsx?$/],
-  })
+    exclude: [/node_modules\/stylis-plugin-rtl/, /\.jsx?$/, /node_modules\/(@wry\/context)/],
+  }),
+  config => {
+    // ignore @wry/context source map warnings
+    config.devtool = false
+    return config
+  }
 )
+

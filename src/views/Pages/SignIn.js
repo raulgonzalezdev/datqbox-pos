@@ -1,8 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../../AuthContext'
 import { useHistory } from 'react-router-dom'
-
-// Chakra imports
 import {
   Box,
   Flex,
@@ -17,14 +14,12 @@ import {
   DarkMode,
   useToast,
 } from '@chakra-ui/react'
-
-// Assets
 import signInImage from 'assets/img/signInImage.png'
-
-// Custom Components
 import AuthFooter from 'components/Footer/AuthFooter'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 import { useSignIn } from 'graphql/users/crudUser'
+
+import { AuthContext } from '../../AuthContext'
 
 
 
@@ -54,9 +49,10 @@ function SignIn() {
   useEffect(() => {
     if (isAuthenticated) {
       history.push('/pos') 
+    // } else if (!isAuthenticated && currentLocation !== '/auth/signin') {
+    //   history.push('/auth/signin')
       
-    } else {
-      history.push('/auth/signin')
+   
     }
   }, [isAuthenticated, history])
 

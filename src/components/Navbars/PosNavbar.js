@@ -19,10 +19,11 @@ import {
 import SidebarResponsive  from 'components/Sidebar/SidebarResponsive'
 import PropTypes from 'prop-types'
 import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../../AuthContext'
 import { NavLink , useHistory} from 'react-router-dom'
 import routes from 'routes'
 import logo_Brand from 'assets/img/logo.png'
+
+import { AuthContext } from '../../AuthContext'
 
 export default function PosNavbar(props) {
   const [open, setOpen] = React.useState(false)
@@ -52,6 +53,7 @@ export default function PosNavbar(props) {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    localStorage.removeItem('authToken')
   }
 
 

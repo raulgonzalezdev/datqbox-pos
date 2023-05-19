@@ -1,14 +1,5 @@
-/*!
-
-   
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 import React from 'react'
-
-// Chakra imports
 import {
   Flex,
   Table,
@@ -19,21 +10,14 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-
-// Custom components
+import { AiFillCheckCircle } from 'react-icons/ai'
 import Card from 'components/Card/Card'
 import CardHeader from 'components/Card/CardHeader'
 import CardBody from 'components/Card/CardBody'
-
-// Table Components
 import TablesProjectRow from 'components/Tables/TablesProjectRow'
 import TablesTableRow from 'components/Tables/TablesTableRow'
-
-// Data
 import { tablesProjectData, tablesTableData } from 'variables/general'
 
-// Icons
-import { AiFillCheckCircle } from 'react-icons/ai'
 
 function Tables() {
   return (

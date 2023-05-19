@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { SimpleGrid, Button , Flex, Grid} from '@chakra-ui/react'
-
 import { BiTag, BiSubdirectoryLeft } from 'react-icons/bi'
 import { FaBackspace, FaCheck } from 'react-icons/fa'
 import { BsBackspace } from 'react-icons/bs'

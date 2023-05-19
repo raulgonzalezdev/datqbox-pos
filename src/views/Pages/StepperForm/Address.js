@@ -9,7 +9,6 @@ import {
   BaseFlex,
   StyledText,
 } from 'components/ReusableComponents/ReusableComponents'
-
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function Address() {

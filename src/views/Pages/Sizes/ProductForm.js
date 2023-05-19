@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import {
-
+  FormControl,
   Flex,
   Button,
   Box,
@@ -8,10 +8,10 @@ import {
   HStack,
   Spinner,
   Grid,
-
+  space,
 } from '@chakra-ui/react'
 import {
-
+  BaseFlex,
   StyledText,
 } from 'components/ReusableComponents/ReusableComponents'
 import Card from 'components/Card/Card'
@@ -19,12 +19,14 @@ import CardBody from 'components/Card/CardBody'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import { gql } from '@apollo/client'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 import {
   useGetProduct,
   useCreateProduct,
   useUpdateProduct,
 } from 'graphql/products/crudProducts'
 import { Form, Formik } from 'formik'
+import { InputControl, SelectControl, SubmitButton } from 'formik-chakra-ui'
 import {
   useRemoveProductColor,
   useAddMultipleProductColors,
@@ -150,7 +152,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
     // Verificar si selectedImages contiene objetos de archivo o URLs
     const isNewFiles = selectedImages[0].hasOwnProperty('path')
-   
+    console.log(isNewFiles)
 
     if (isNewFiles) {
       // Trata selectedImages como un array de objetos de archivo
@@ -164,7 +166,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         const { data } = await addImages({
           variables: { input: { images: imagesWithProduct } },
         })
-        
+        console.log(data.addImages) // Array of newly added images
 
         const files = selectedImages.map(({ preview, path }) => {
           return new File([preview], path)

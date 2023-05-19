@@ -16,7 +16,6 @@ import {
   InputGroup,
   InputLeftElement,
 } from '@chakra-ui/react'
-
 import { ThemeProvider } from '@mui/material/styles'
 import taxTableTheme from 'theme/themeTableMUI'
 import { SearchIcon } from '@chakra-ui/icons'

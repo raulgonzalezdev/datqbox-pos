@@ -25,10 +25,10 @@ import { ItemContent } from 'components/Menu/ItemContent'
 import SidebarResponsive from 'components/Sidebar/SidebarResponsive'
 import PropTypes from 'prop-types'
 import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../../AuthContext'
 import {  useHistory} from 'react-router-dom'
-
 import routes from 'routes'
+
+import { AuthContext } from '../../AuthContext'
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props
@@ -48,6 +48,7 @@ export default function HeaderLinks(props) {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    localStorage.removeItem('authToken')
   }
 
   // Chakra Color Mode

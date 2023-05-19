@@ -248,7 +248,7 @@ const SidebarLinks = (props) => {
         rtlName: PropTypes.string,
         icon: PropTypes.element,
         component: PropTypes.elementType,
-        layout: PropTypes.string.isRequired,
+        layout: PropTypes.string,
         category: PropTypes.string,
         state: PropTypes.string,
         views: PropTypes.array,

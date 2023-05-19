@@ -10,8 +10,7 @@ import UsersList from 'views/Pages/Users/UsersList'
 import PeriodsAccounting from 'views/Pages/PeriodsAccounting/PeriodsAccounting'
 import POSApp from 'views/Pages/POSApp/POSApp'
 import ProductsList from 'views/Pages/Products/ProductsList'
-
-
+import CategoriesList from 'views/Pages/Categories/CategoriesList'
 import {
   HomeIcon,
   StatsIcon,
@@ -62,12 +61,12 @@ var dashRoutes = [
         layout: '/admin',
       },
       {
-        path: '/products',
+        path: '/categories',
         name: 'Categorias',
         rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: CategoriesList,
         layout: '/admin',
       },
       {

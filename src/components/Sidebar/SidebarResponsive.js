@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { SidebarHelp } from 'components/Sidebar/SidebarHelp'
+
 import Brand from './Brand'
 import SidebarLinks from './SidebarLinks'
 

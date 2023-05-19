@@ -1,12 +1,14 @@
 import React from 'react'
 import Stepper from 'components/Stepper/Stepper'
+
+import UsersList from '../Users/UsersList'
+import ProductsList from '../Products/ProductsList'
+import ProductForm from '../Products/ProductForm'
+
 import UserInfo from './UserInfo'
 import Address from './Address'
 import Social from './Social'
 import Profile from './Profile'
-import UsersList from '../Users/UsersList'
-import ProductsList from '../Products/ProductsList'
-import ProductForm from '../Products/ProductForm'
 
 const steps = [
   // { title: "User Info" },

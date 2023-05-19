@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-
 import { VALIDATE_TOKEN } from 'graphql/users/crudUser'
 import AuthLayout from 'layouts/Auth'
 import AdminLayout from 'layouts/AdminLayout'
 import PosLayout from 'layouts/Pos'
+
 import { AuthContext } from './AuthContext'
 
 const AppContent = ({ onLogout, token }) => {

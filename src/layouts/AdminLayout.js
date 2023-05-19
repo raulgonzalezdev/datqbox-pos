@@ -9,11 +9,12 @@ import React, { useState , useRef} from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import routes from 'routes'
 import theme from 'theme/themeAdmin'
+import { withRouter } from 'react-router-dom'
+
 import FixedPlugin from '../components/FixedPlugin/FixedPlugin'
 import MainPanel from '../components/Layout/MainPanel'
 import PanelContainer from '../components/Layout/PanelContainer'
 import PanelContent from '../components/Layout/PanelContent'
-import { withRouter } from 'react-router-dom'
 
 
 const AdminLayout = ( props ) => {
