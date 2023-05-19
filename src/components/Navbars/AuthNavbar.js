@@ -15,6 +15,7 @@ import {
   Link,
   Text,
   useColorModeValue,
+  Image,
 } from "@chakra-ui/react";
 import {
   CreativeTimLogo,
@@ -29,6 +30,7 @@ import React from 'react';
 
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
+import logo_Brand from 'assets/img/logo.png';
 export default function AuthNavbar(props) {
 
 
@@ -64,10 +66,11 @@ export default function AuthNavbar(props) {
       <Box
         bg='linear-gradient(97.89deg, #FFFFFF 70.67%, rgba(117, 122, 140, 0) 108.55%)'
         bgClip='text'>
-        <Text fontSize='md' letterSpacing='3px' mt='3px' color='transparent'>
-          {/* {logoText} */}
+        {/* <Text fontSize='md' letterSpacing='3px' mt='3px' color='transparent'>
+          
           DATQBOX
-        </Text>
+        </Text> */}
+        <Image src={logo_Brand} width="275px" height="65px" alt="Logo" me='10px' mt='2px' /> 
       </Box>
     </Link>
   );

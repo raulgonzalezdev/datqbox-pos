@@ -1,12 +1,4 @@
-/*!
 
-   
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// Chakra imports
 import {
   Box,
   Button,
@@ -15,6 +7,7 @@ import {
   Link,
   Text,
   useColorModeValue,
+  Image,
 } from "@chakra-ui/react";
 import {
   CreativeTimLogo,
@@ -30,6 +23,7 @@ import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../AuthContext';
 import { NavLink , useHistory} from "react-router-dom";
 import routes from "routes.js";
+import logo_Brand from 'assets/img/logo.png';
 
 export default function PosNavbar(props) {
   const [open, setOpen] = React.useState(false);
@@ -90,10 +84,11 @@ export default function PosNavbar(props) {
       <Box
         bg='linear-gradient(97.89deg, #FFFFFF 70.67%, rgba(117, 122, 140, 0) 108.55%)'
         bgClip='text'>
-        <Text fontSize='md' letterSpacing='3px' mt='3px' color='transparent'>
+        {/* <Text fontSize='md' letterSpacing='3px' mt='3px' color='transparent'>
           {logoText}
 
-        </Text>
+        </Text> */}
+        <Image src={logo_Brand} width="225px" height="55px" alt="Logo" me='10px' mt='2px' /> 
       </Box>
     </Link>
   );
@@ -162,7 +157,7 @@ export default function PosNavbar(props) {
       py='22px'
       mx='auto'
       width='40%' // Cambiar width al 60%
-      height='40px'
+      height='65px'
       maxW='90%'
       alignItems='center'>
       <Flex w='100%' justifyContent={{ sm: "start", lg: "space-between" }}>

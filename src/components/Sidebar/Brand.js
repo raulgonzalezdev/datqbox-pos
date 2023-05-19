@@ -1,8 +1,7 @@
-// Brand.js
 import React from 'react';
-import { Box, Link, Text } from '@chakra-ui/react';
-import { SimmmpleLogoWhite } from 'components/Icons/Icons';
+import { Box, Link, Text, Image } from '@chakra-ui/react';
 import { Separator } from 'components/Separator/Separator';
+import logo from 'assets/img/icon.png'; // Asegúrate de que la ruta sea la correcta
 
 const Brand = ({ logoText }) => {
   return (
@@ -18,7 +17,7 @@ const Brand = ({ logoText }) => {
         alignItems='center'
         fontSize='11px'
       >
-        <SimmmpleLogoWhite w='22px' h='22px' me='10px' mt='2px' />
+        <Image src={logo} width="48px" height="48px" alt="Logo" me='10px' mt='2px' /> 
         <Box
           bg='linear-gradient(97.89deg, #FFFFFF 70.67%, rgba(117, 122, 140, 0) 108.55%)'
           bgClip='text'
@@ -34,3 +33,4 @@ const Brand = ({ logoText }) => {
 };
 
 export default Brand;
+

@@ -53,7 +53,7 @@ function SignIn() {
   useEffect(() => {
     if (isAuthenticated) {
       history.push('/pos'); 
-      localStorage.setItem('authToken', true);
+      
     } else {
       history.push('/auth/signin');
     }
@@ -68,11 +68,11 @@ function SignIn() {
         const { token } = response.data.loginUser;
   
        
-        
+        localStorage.setItem('authToken', token);
         setIsAuthenticated(true);
 
       
-        console.log('token', token);
+        
       } else {
         console.error('Error during sign in: no data received');
       }
