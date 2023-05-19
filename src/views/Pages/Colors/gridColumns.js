@@ -8,6 +8,7 @@ import {
     Badge,
     IconButton,
     Button,
+    Image,
   
   } from '@chakra-ui/react'
 
@@ -34,22 +35,7 @@ import {
       ),
     },
     {
-      field: 'sku',
-      headerName: 'Sku',
-      width: 150,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          
-          <Box ml={2}>
-            <Text >{params.row.sku}</Text>
-          
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'name',
+      field: 'Name',
       headerName: 'Name',
       width: 150,
       sortable: true,
@@ -57,112 +43,48 @@ import {
         <Flex align="center">
           
           <Box ml={2}>
-            <Text>{params.row.name}</Text>
+            <Text >{params.row.name}</Text>
           
           </Box>
         </Flex>
       ),
     },
     {
-      field: 'description',
-      headerName: 'description',
-      width: 150,
+      field: 'hexcode',
+      headerName: 'Hexcode',
+      width: 100,
       sortable: true,
       renderCell: (params) => (
         <Flex align="center">
           
-          <Box ml={2}>
-            <Text>{params.row.description}</Text>
+          <Box  ml={2}>
+            <Text>{params.row.hexCode}</Text>
           
           </Box>
         </Flex>
       ),
     },
     {
-      field: 'vendor',
-      headerName: 'Vendedor',
-      width: 100,
+      field: 'color',
+      headerName: 'Color',
+      width: 450,
       sortable: true,
       renderCell: (params) => (
         <Flex align="center">
-          <Box ml={2}>
-            <Text >
-              {params.row.vendor}
-            </Text>
+          <Box 
+            backgroundColor={params.row.hexCode} 
+            height="48px" 
+            width="48px" 
+            ml={2}>
             
           </Box>
+          <Text>{params.row.name}</Text>
         </Flex>
       ),
     },
-    {
-      field: 'category',
-      headerName: 'Category',
-      width: 100,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          <Box ml={2}>
-            <Text >
-              {params.row.category.name}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'price',
-      headerName: 'price',
-      width: 100,
-      sortable: true,
-      align: 'right',
-      renderCell: (params) => (
-        <Flex align="center" justifyContent="flex-end">
-          <Box ml={2}>
-            <Text >
-            {params.row.price.toLocaleString()}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'taxrate',
-      headerName: 'TaxRate',
-      width: 100,
-      sortable: true,
-      align: 'right',
-      renderCell: (params) => (
-        <Flex align="center" justifyContent="flex-end">
-          <Box ml={2}>
-            <Text >
-            {params.row.price.toLocaleString()}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'newarrivals',
-      headerName: 'New Arrivals',
-      width: 100,
-      sortable: false,
-      renderCell: (params) => (
-        <Badge
-          bg={params.row.newarrivals  ? 'green.400' : 'transparent'}
-          color={params.row.newarrivals ? 'white' : 'gray.400'}
-          fontSize="sm"
-          p="3px 10px"
-          borderRadius="8px"
-          border={params.row.newarrivals  ? 'none' : '1px solid #fff'}
-          fontWeight="normal"
-        >
-          {params.row.newarrivals ? 'Activo' : 'Inactivo'}
-        </Badge>
-      ),
-    },
+    
+   
+   
     {
       field: 'actions',
       headerName: 'Acciones',

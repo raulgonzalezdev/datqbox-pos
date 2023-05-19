@@ -2,63 +2,54 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import DataTable from 'components/Tables/DataTable'
 import {
-  useGetProducts,
-  DELETE_PRODUCT,
-  useCreateProduct,
-} from 'graphql/products/crudProducts'
+  useGetCategories,
+  DELETE_CATEGORY,
+  useCreateCategory,
+} from 'graphql/category/crudCategory'
 import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
 import { createColumns } from './gridColumns'
-import ProductForm from './ProductForm'
+import CategoryForm from './CategoryForm'
 
 
 
-const ProductsList = () => {
-  const [createProduct, { loading: createLoading }] = useCreateProduct()
+const CategoriesList = () => {
+  const [createCategory, { loading: createLoading }] = useCreateCategory()
   const toast = useToast()
 
   const editRow = (rowData) => {
 
-    setShowProductForm(true)
-    setProductId(rowData)
+    setShowCategoryForm(true)
+    setcategoryId(rowData)
   }
   const deleteRow = (rowData) => {
    
-    setProductId(rowData)
+    setcategoryId(rowData)
     setShowDeleteAlert(true)
   }
 
   const handleSelect = async (rowData) => {
     
   
-    const newProduct = { 
+    const newCategory = { 
       name: rowData.row.name,
-      vendor: rowData.row.vendor,
-      sku: rowData.row.sku,
-      description: rowData.row.description,
       image: rowData.row.image,
-      price: parseFloat(rowData.row.price),
-      inventory: parseFloat(rowData.row.inventory),
-      rentalType: rowData.row.rentalType,
-      featured: rowData.row.featured,
-      newarrivals: rowData.row.newarrivals,
-      taxRate: parseFloat(rowData.row.taxRate),
-      categoryId: rowData.row.category.id,
+     
   }
   
   
    
     try {
-      const result = await createProduct({ variables: { input: newProduct } })
+      const result = await createCategory({ variables: { input: newCategory } })
      
   
       // Update the UI to reflect the new product
-      setRows([...rows, result.data.createProduct])
+      setRows([...rows, result.data.createCategory])
 
       // Show success toast
       toast({
         title: 'Success',
-        description: 'New product created successfully',
+        description: 'New Category created successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -82,13 +73,13 @@ const ProductsList = () => {
   const columns = createColumns(editRow, deleteRow, handleSelect)
 
   const [initialLoad, setInitialLoad] = useState(true)
-  const { data, loading, error, refetch } = useGetProducts({
+  const { data, loading, error, refetch } = useGetCategories({
     skip: !initialLoad,
   })
 
-  const [showProductForm, setShowProductForm] = useState(false)
+  const [showCategoryForm, setShowCategoryForm] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
-  const [productId, setProductId] = useState(null)
+  const [categoryId, setcategoryId] = useState(null)
 
 
 
@@ -96,8 +87,8 @@ const ProductsList = () => {
 
 
   useEffect(() => {
-    if (data && data.products) {
-      setRows(data.products)
+    if (data && data.categories) {
+      setRows(data.categories)
       setInitialLoad(false)
     }
   }, [data])
@@ -106,13 +97,13 @@ const ProductsList = () => {
     try {
       const result = await refetch()
      
-      setShowProductForm(false)
+      setShowCategoryForm(false)
      
     } catch (error) {
       console.error('Refetch error:', error)
     } finally {
       setShowDeleteAlert(false)
-      setProductId(null)
+      setcategoryId(null)
     }
   }
   
@@ -120,22 +111,22 @@ const ProductsList = () => {
 
   const handleAdd = () => {
     console.log('Add new record')
-    setProductId(null)
-    setShowProductForm(true)
+    setcategoryId(null)
+    setShowCategoryForm(true)
   }
 
   const handleCancel = () => {
-    setShowProductForm(false)
+    setShowCategoryForm(false)
   }
 
   const handleSuccess = (newProduct) => {
-    setShowProductForm(false)
+    setShowCategoryForm(false)
     refetch()
   }
 
   const handleCloseDeleteAlert = () => {
     setShowDeleteAlert(false)
-    setProductId(null)
+    setcategoryId(null)
   }
 
   // if (loading) return <p>Loading...</p>;
@@ -144,19 +135,19 @@ const ProductsList = () => {
   return (
     <>
       <DeleteAlert
-        modelName="producto"
+        modelName="Categorias"
         isOpen={showDeleteAlert}
         onClose={handleCloseDeleteAlert}
-        mutation={DELETE_PRODUCT}
-        id={productId}
+        mutation={DELETE_CATEGORY}
+        id={categoryId}
         handleConfirm={handleConfirmDelete}
       />
 
-      {showProductForm ? (
-        <ProductForm productId={productId} onCancel={handleCancel} onSuccess={handleSuccess} />
+      {showCategoryForm ? (
+        <CategoryForm categoryId={categoryId} onCancel={handleCancel} onSuccess={handleSuccess} />
       ) : (
         <DataTable
-          title="Lista de Productos o Servicios"
+          title="Lista de Categorias"
           columns={columns}
           data={rows}
           onAdd={handleAdd}
@@ -169,4 +160,4 @@ const ProductsList = () => {
   )
 }
 
-export default ProductsList
+export default CategoriesList

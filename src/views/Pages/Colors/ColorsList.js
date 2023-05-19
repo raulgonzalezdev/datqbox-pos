@@ -2,63 +2,54 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import DataTable from 'components/Tables/DataTable'
 import {
-  useGetProducts,
-  DELETE_PRODUCT,
-  useCreateProduct,
-} from 'graphql/products/crudProducts'
+  useGetColors,
+  DELETE_COLOR,
+  useCreateColor,
+} from 'graphql/color/crudColor'
 import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
 import { createColumns } from './gridColumns'
-import ProductForm from './ProductForm'
+import ColorForm from './ColorForm'
 
 
 
-const ProductsList = () => {
-  const [createProduct, { loading: createLoading }] = useCreateProduct()
+const ColorsList = () => {
+  const [createColor, { loading: createLoading }] = useCreateColor()
   const toast = useToast()
 
   const editRow = (rowData) => {
 
-    setShowProductForm(true)
-    setProductId(rowData)
+    setShowColorForm(true)
+    setcolorId(rowData)
   }
   const deleteRow = (rowData) => {
    
-    setProductId(rowData)
+    setcolorId(rowData)
     setShowDeleteAlert(true)
   }
 
   const handleSelect = async (rowData) => {
     
   
-    const newProduct = { 
+    const newColor = { 
       name: rowData.row.name,
-      vendor: rowData.row.vendor,
-      sku: rowData.row.sku,
-      description: rowData.row.description,
-      image: rowData.row.image,
-      price: parseFloat(rowData.row.price),
-      inventory: parseFloat(rowData.row.inventory),
-      rentalType: rowData.row.rentalType,
-      featured: rowData.row.featured,
-      newarrivals: rowData.row.newarrivals,
-      taxRate: parseFloat(rowData.row.taxRate),
-      categoryId: rowData.row.category.id,
+      hexcode: rowData.row.hexcode,
+     
   }
   
   
    
     try {
-      const result = await createProduct({ variables: { input: newProduct } })
+      const result = await createColor({ variables: { input: newColor } })
      
   
       // Update the UI to reflect the new product
-      setRows([...rows, result.data.createProduct])
+      setRows([...rows, result.data.createColor])
 
       // Show success toast
       toast({
         title: 'Success',
-        description: 'New product created successfully',
+        description: 'New Color created successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -82,13 +73,11 @@ const ProductsList = () => {
   const columns = createColumns(editRow, deleteRow, handleSelect)
 
   const [initialLoad, setInitialLoad] = useState(true)
-  const { data, loading, error, refetch } = useGetProducts({
-    skip: !initialLoad,
-  })
+  const { data, loading, error, refetch } = useGetColors()
 
-  const [showProductForm, setShowProductForm] = useState(false)
+  const [showColorForm, setShowColorForm] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
-  const [productId, setProductId] = useState(null)
+  const [colorId, setcolorId] = useState(null)
 
 
 
@@ -96,8 +85,8 @@ const ProductsList = () => {
 
 
   useEffect(() => {
-    if (data && data.products) {
-      setRows(data.products)
+    if (data && data.colors) {
+      setRows(data.colors)
       setInitialLoad(false)
     }
   }, [data])
@@ -106,36 +95,36 @@ const ProductsList = () => {
     try {
       const result = await refetch()
      
-      setShowProductForm(false)
+      setShowColorForm(false)
      
     } catch (error) {
       console.error('Refetch error:', error)
     } finally {
       setShowDeleteAlert(false)
-      setProductId(null)
+      setcolorId(null)
     }
   }
   
   
 
   const handleAdd = () => {
-    console.log('Add new record')
-    setProductId(null)
-    setShowProductForm(true)
+  
+    setcolorId(null)
+    setShowColorForm(true)
   }
 
   const handleCancel = () => {
-    setShowProductForm(false)
+    setShowColorForm(false)
   }
 
   const handleSuccess = (newProduct) => {
-    setShowProductForm(false)
+    setShowColorForm(false)
     refetch()
   }
 
   const handleCloseDeleteAlert = () => {
     setShowDeleteAlert(false)
-    setProductId(null)
+    setcolorId(null)
   }
 
   // if (loading) return <p>Loading...</p>;
@@ -144,19 +133,19 @@ const ProductsList = () => {
   return (
     <>
       <DeleteAlert
-        modelName="producto"
+        modelName="Colores"
         isOpen={showDeleteAlert}
         onClose={handleCloseDeleteAlert}
-        mutation={DELETE_PRODUCT}
-        id={productId}
+        mutation={DELETE_COLOR}
+        id={colorId}
         handleConfirm={handleConfirmDelete}
       />
 
-      {showProductForm ? (
-        <ProductForm productId={productId} onCancel={handleCancel} onSuccess={handleSuccess} />
+      {showColorForm ? (
+        <ColorForm colorId={colorId} onCancel={handleCancel} onSuccess={handleSuccess} />
       ) : (
         <DataTable
-          title="Lista de Productos o Servicios"
+          title="Lista de Colores"
           columns={columns}
           data={rows}
           onAdd={handleAdd}
@@ -169,4 +158,4 @@ const ProductsList = () => {
   )
 }
 
-export default ProductsList
+export default ColorsList

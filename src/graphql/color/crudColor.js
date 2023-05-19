@@ -44,7 +44,7 @@ const UPDATE_COLOR = gql`
   }
 `
 
-const DELETE_COLOR = gql`
+export const DELETE_COLOR = gql`
   mutation DeleteColor($id: ID!) {
     deleteColor(id: $id) {
       id

@@ -11,6 +11,8 @@ import PeriodsAccounting from 'views/Pages/PeriodsAccounting/PeriodsAccounting'
 import POSApp from 'views/Pages/POSApp/POSApp'
 import ProductsList from 'views/Pages/Products/ProductsList'
 import CategoriesList from 'views/Pages/Categories/CategoriesList'
+import ColorsList from 'views/Pages/Colors/ColorsList'
+
 import {
   HomeIcon,
   StatsIcon,
@@ -79,12 +81,12 @@ var dashRoutes = [
         layout: '/admin',
       },
       {
-        path: '/products',
+        path: '/colores',
         name: 'Colores',
         rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: ColorsList,
         layout: '/admin',
       },
       {
