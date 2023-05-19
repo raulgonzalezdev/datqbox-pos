@@ -5,34 +5,34 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // Chakra imports
-import { Box, Button, Flex, Grid, Icon, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Icon, Spacer, Text } from '@chakra-ui/react'
 
 // Images
-import BackgroundCard1 from "assets/img/billing-background-card.png";
+import BackgroundCard1 from 'assets/img/billing-background-card.png'
 
 // Custom components
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import GradientBorder from "components/GradientBorder/GradientBorder";
-import IconBox from "components/Icons/IconBox";
-import BillingRow from "components/Tables/BillingRow";
-import InvoicesRow from "components/Tables/InvoicesRow";
-import TransactionRow from "components/Tables/TransactionRow";
+import Card from 'components/Card/Card.js'
+import CardBody from 'components/Card/CardBody.js'
+import CardHeader from 'components/Card/CardHeader.js'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
+import IconBox from 'components/Icons/IconBox'
+import BillingRow from 'components/Tables/BillingRow'
+import InvoicesRow from 'components/Tables/InvoicesRow'
+import TransactionRow from 'components/Tables/TransactionRow'
 
 // Icons
-import { FaPencilAlt, FaRegCalendarAlt } from "react-icons/fa";
-import { IoEllipsisHorizontalSharp } from "react-icons/io5";
-import { RiMastercardFill } from "react-icons/ri";
+import { FaPencilAlt, FaRegCalendarAlt } from 'react-icons/fa'
+import { IoEllipsisHorizontalSharp } from 'react-icons/io5'
+import { RiMastercardFill } from 'react-icons/ri'
 import {
   BillIcon,
   GraphIcon,
   MastercardIcon,
   VisaIcon,
-} from "components/Icons/Icons";
+} from 'components/Icons/Icons'
 
 // Data
 import {
@@ -40,18 +40,18 @@ import {
   invoicesData,
   newestTransactions,
   olderTransactions,
-} from "variables/general";
+} from 'variables/general'
 
 function Billing() {
 
   return (
-    <Flex direction='column' pt={{ base: "120px", md: "75px" }} mx='auto'>
-      <Grid templateColumns={{ sm: "1fr", lg: "60% 38%" }}>
+    <Flex direction='column' pt={{ base: '120px', md: '75px' }} mx='auto'>
+      <Grid templateColumns={{ sm: '1fr', lg: '60% 38%' }}>
         <Box>
           <Grid
             templateColumns={{
-              sm: "1fr",
-              md: "1fr 1fr",
+              sm: '1fr',
+              md: '1fr 1fr',
             }}
             gap='26px'>
               {/* Mastercard */}
@@ -83,7 +83,7 @@ function Billing() {
                   <Flex direction='column'>
                     <Box>
                       <Text
-                        fontSize={{ sm: "xl", lg: "lg", xl: "xl" }}
+                        fontSize={{ sm: 'xl', lg: 'lg', xl: 'xl' }}
                         letterSpacing='2px'
                         fontWeight='bold'>
                         7812 2139 0823 XXXX
@@ -190,14 +190,14 @@ function Billing() {
             </CardHeader>
             <CardBody>
               <Flex
-                direction={{ sm: "column", md: "row" }}
+                direction={{ sm: 'column', md: 'row' }}
                 align='center'
                 w='100%'
                 justify='center'
                 py='1rem'>
                 <GradientBorder
-                  mb={{ sm: "24px", md: "0px" }}
-                  me={{ sm: "0px", md: "24px" }}
+                  mb={{ sm: '24px', md: '0px' }}
+                  me={{ sm: '0px', md: '24px' }}
                   w='100%'
                   borderRadius='20px'>
                   <Flex
@@ -256,8 +256,8 @@ function Billing() {
         {/* Invoices List */}
         <Card
           p='22px'
-          my={{ sm: "24px", lg: "0px" }}
-          ms={{ sm: "0px", lg: "24px" }}>
+          my={{ sm: '24px', lg: '0px' }}
+          ms={{ sm: '0px', lg: '24px' }}>
           <CardHeader>
             <Flex
               justify='space-between'
@@ -288,15 +288,15 @@ function Billing() {
                     logo={row.logo}
                     format={row.format}
                   />
-                );
+                )
               })}
             </Flex>
           </CardBody>
         </Card>
       </Grid>
-      <Grid templateColumns={{ sm: "1fr", lg: "60% 38%" }}>
+      <Grid templateColumns={{ sm: '1fr', lg: '60% 38%' }}>
         {/* Billing Information */}
-        <Card my={{ lg: "24px" }} me={{ lg: "24px" }}>
+        <Card my={{ lg: '24px' }} me={{ lg: '24px' }}>
           <Flex direction='column'>
             <CardHeader py='12px'>
               <Text color='#fff' fontSize='lg' fontWeight='bold'>
@@ -313,25 +313,25 @@ function Billing() {
                       email={row.email}
                       number={row.number}
                     />
-                  );
+                  )
                 })}
               </Flex>
             </CardBody>
           </Flex>
         </Card>
         {/* Transactions List */}
-        <Card my='24px' ms={{ lg: "24px" }}>
+        <Card my='24px' ms={{ lg: '24px' }}>
           <CardHeader mb='12px'>
             <Flex direction='column' w='100%'>
               <Flex
-                direction={{ sm: "column", lg: "row" }}
-                justify={{ sm: "center", lg: "space-between" }}
-                align={{ sm: "center" }}
+                direction={{ sm: 'column', lg: 'row' }}
+                justify={{ sm: 'center', lg: 'space-between' }}
+                align={{ sm: 'center' }}
                 w='100%'
-                my={{ md: "12px" }}>
+                my={{ md: '12px' }}>
                 <Text
                   color='#fff'
-                  fontSize={{ sm: "lg", md: "xl", lg: "lg" }}
+                  fontSize={{ sm: 'lg', md: 'xl', lg: 'lg' }}
                   fontWeight='bold'>
                   Your Transactions
                 </Text>
@@ -364,7 +364,7 @@ function Billing() {
                     date={row.date}
                     price={row.price}
                   />
-                );
+                )
               })}
               <Text color='gray.400' fontSize='xs' my='18px'>
                 OLDER
@@ -377,14 +377,14 @@ function Billing() {
                     date={row.date}
                     price={row.price}
                   />
-                );
+                )
               })}
             </Flex>
           </CardBody>
         </Card>
       </Grid>
     </Flex>
-  );
+  )
 }
 
-export default Billing;
+export default Billing

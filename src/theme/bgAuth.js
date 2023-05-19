@@ -20,11 +20,11 @@ export const bgAuth = {
     global: (props) => ({
       body: {
         bg:
-          "linear-gradient(135deg, #0F123B 10%, #2A2F5E 35%, #090D2E 50%, #20244F 65%, #020515 90%)",
-        bgSize: "cover",
-        bgPosition: "center center",
+          'linear-gradient(135deg, #0F123B 10%, #2A2F5E 35%, #090D2E 50%, #20244F 65%, #020515 90%)',
+        bgSize: 'cover',
+        bgPosition: 'center center',
       },
     }),
   },
-};
+}
 

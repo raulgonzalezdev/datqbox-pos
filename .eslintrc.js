@@ -1,18 +1,27 @@
-//.eslintrc.js
 module.exports = {
-  // ...resto de tu configuración ESLint
-  rules: {
-    // ...resto de tus reglas
-    "import/no-webpack-loader-syntax": "off",
-    "no-undef": "off",
+  'parser': '@typescript-eslint/parser',
+  'parserOptions': {
+    'ecmaVersion': 2020,
+    'sourceType': 'module',
+    'requireConfigFile': false, 
+    'ecmaFeatures': {
+      'jsx': true
+    }
   },
-  settings: {
-    "import/resolver": {
-      node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"],
-      },
-    },
+  'plugins': [
+    '@typescript-eslint'
+  ],
+  'rules': {
+    'import/no-webpack-loader-syntax': 'off',
+    'no-undef': 'off',
+    'semi': ['error', 'never'],
+    'quotes': ['error', 'single'],
   },
-};
-
-  
+  'settings': {
+    'import/resolver': {
+      'node': {
+        'extensions': ['.js', '.jsx', '.ts', '.tsx'],
+      }
+    }
+  }
+}

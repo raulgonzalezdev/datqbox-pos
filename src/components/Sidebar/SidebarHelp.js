@@ -6,15 +6,15 @@
 
 */
 
-import { QuestionIcon } from "@chakra-ui/icons";
-import { Button, Flex, Link, Text } from "@chakra-ui/react";
-import SidebarHelpImage from "assets/img/SidebarHelpImage.png";
-import IconBox from "components/Icons/IconBox";
-import React from "react";
+import { QuestionIcon } from '@chakra-ui/icons'
+import { Button, Flex, Link, Text } from '@chakra-ui/react'
+import SidebarHelpImage from 'assets/img/SidebarHelpImage.png'
+import IconBox from 'components/Icons/IconBox'
+import React from 'react'
 
 export function SidebarHelp(props) {
   // Pass the computed styles into the `__css` prop
-  const { children, ...rest } = props;
+  const { children, ...rest } = props
   return (
     <Flex
       borderRadius='15px'
@@ -46,18 +46,18 @@ export function SidebarHelp(props) {
           bg='linear-gradient(126.97deg, rgba(6, 11, 40, 0.74) 28.26%, rgba(10, 14, 35, 0.71) 91.2%)'
           _hover='none'
           _active={{
-            bg: "white",
-            transform: "none",
-            borderColor: "transparent",
+            bg: 'white',
+            transform: 'none',
+            borderColor: 'transparent',
           }}
           _active='none'
           _focus={{
-            boxShadow: "none",
+            boxShadow: 'none',
           }}
           color='white'>
           DOCUMENTATION
         </Button>
       </Link>
     </Flex>
-  );
+  )
 }

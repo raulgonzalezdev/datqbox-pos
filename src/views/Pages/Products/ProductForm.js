@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   FormControl,
   Flex,
@@ -9,77 +9,77 @@ import {
   Spinner,
   Grid,
   space,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 import {
   BaseFlex,
   StyledText,
-} from "components/ReusableComponents/ReusableComponents";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
+} from 'components/ReusableComponents/ReusableComponents'
+import Card from 'components/Card/Card.js'
+import CardBody from 'components/Card/CardBody.js'
 
-import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { createUploadLink } from "apollo-upload-client";
-import { gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
+import { gql } from '@apollo/client'
 
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 import {
   useGetProduct,
   useCreateProduct,
   useUpdateProduct,
-} from "graphql/products/crudProducts";
-import { Form, Formik } from "formik";
-import { InputControl, SelectControl, SubmitButton } from "formik-chakra-ui";
+} from 'graphql/products/crudProducts'
+import { Form, Formik } from 'formik'
+import { InputControl, SelectControl, SubmitButton } from 'formik-chakra-ui'
 import {
   useRemoveProductColor,
   useAddMultipleProductColors,
-} from "graphql/productcolor/crudProductColor";
+} from 'graphql/productcolor/crudProductColor'
 
 import {
   useRemoveProductSize,
   useAddMultipleProductSizes,
-} from "graphql/productsize/crudProductSize";
+} from 'graphql/productsize/crudProductSize'
 
-import { useAddImages } from "graphql/image/crudImage";
+import { useAddImages } from 'graphql/image/crudImage'
 
-import ProductInfo from "./ProductInfo";
-import ProductImage from "./ProductImage";
-import ProductColor from "./ProductColor";
-import ProductSize from "./ProductSize";
+import ProductInfo from './ProductInfo'
+import ProductImage from './ProductImage'
+import ProductColor from './ProductColor'
+import ProductSize from './ProductSize'
 
 function ProductForm({ productId, onCancel, onSuccess }) {
   const [formState, setFormState] = useState({
     sizes: [],
     colors: [],
-  });
+  })
 
-  const toast = useToast();
+  const toast = useToast()
   const { data, loading, error } = useGetProduct(productId, {
     skip: !productId,
-  });
+  })
 
-  const [createProduct, { loading: createLoading }] = useCreateProduct();
-  const [updateProduct, { loading: updateLoading }] = useUpdateProduct();
-  const [addMultipleProductSizes] = useAddMultipleProductSizes();
-  const [addMultipleProductColors] = useAddMultipleProductColors();
+  const [createProduct, { loading: createLoading }] = useCreateProduct()
+  const [updateProduct, { loading: updateLoading }] = useUpdateProduct()
+  const [addMultipleProductSizes] = useAddMultipleProductSizes()
+  const [addMultipleProductColors] = useAddMultipleProductColors()
 
-  const [addImages] = useAddImages();
+  const [addImages] = useAddImages()
 
-  const [removeProductSize] = useRemoveProductSize();
-  const [removeProductColor] = useRemoveProductColor();
+  const [removeProductSize] = useRemoveProductSize()
+  const [removeProductColor] = useRemoveProductColor()
   const dbSizes =
-    formState?.productSizes?.map((sizeObj) => sizeObj.size.id) || [];
+    formState?.productSizes?.map((sizeObj) => sizeObj.size.id) || []
   const dbColors =
-    formState?.productColors?.map((ColorObj) => ColorObj.color.id) || [];
+    formState?.productColors?.map((ColorObj) => ColorObj.color.id) || []
 
-  const [selectedSizes, setSelectedSizes] = useState(dbSizes);
-  const [selectedColors, setSelectedColors] = useState(dbColors);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState(dbSizes)
+  const [selectedColors, setSelectedColors] = useState(dbColors)
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedImages, setSelectedImages] = useState([])
 
   const onImageSelect = (images) => {
-    setSelectedImages(images);
-  };
+    setSelectedImages(images)
+  }
 
   useEffect(() => {
     if (data && data.product) {
@@ -92,40 +92,40 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           data.product.newarrivals === undefined
             ? true
             : data.product.newarrivals,
-      });
+      })
 
       setSelectedSizes(
         data.product.productSizes.map((productSize) => productSize.size.id)
-      );
+      )
       setSelectedColors(
         data.product.productColors.map((productColor) => productColor.color.id)
-      );
+      )
     } else if (!productId) {
       setFormState({
         id: null,
-        name: "",
-        vendor: "",
-        description: "",
-        image: "",
+        name: '',
+        vendor: '',
+        description: '',
+        image: '',
         price: 0,
         inventory: 0,
-        rentalType: "",
+        rentalType: '',
         featured: true,
         newarrivals: true,
         taxRate: 0,
-        categoryId: "",
-      });
-      setSelectedSizes([]);
-      setSelectedColors([]);
+        categoryId: '',
+      })
+      setSelectedSizes([])
+      setSelectedColors([])
     }
-  }, [data, productId]);
+  }, [data, productId])
 
   const handleNumberInputChange = (fieldName, value) => {
     setFormState((prevState) => ({
       ...prevState,
       [fieldName]: Number(value),
-    }));
-  };
+    }))
+  }
 
   const UPLOAD_FILES = gql`
     mutation ($files: [Upload!]!) {
@@ -133,31 +133,31 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         filename
       }
     }
-  `;
+  `
 
 
   
 
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('authToken')
   const uploadLink = createUploadLink({
-    uri: "http://localhost:4000/graphql", // Debes reemplazarlo por la URI de tu servidor GraphQL
+    uri: 'http://localhost:4000/graphql', // Debes reemplazarlo por la URI de tu servidor GraphQL
     headers: {
-      "keep-alive": "true",
-      authorization: token ? `Bearer ${token}` : "",
+      'keep-alive': 'true',
+      authorization: token ? `Bearer ${token}` : '',
     },
-  });
+  })
 
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: uploadLink,
-  });
+  })
 
   const handleAddImages = async (selectedImages, productId) => {
-    console.log("Origen de Imagenes:", selectedImages);
+    console.log('Origen de Imagenes:', selectedImages)
 
     // Verificar si selectedImages contiene objetos de archivo o URLs
-    const isNewFiles = selectedImages[0].hasOwnProperty("path");
-    console.log(isNewFiles);
+    const isNewFiles = selectedImages[0].hasOwnProperty('path')
+    console.log(isNewFiles)
 
     if (isNewFiles) {
       // Trata selectedImages como un array de objetos de archivo
@@ -166,16 +166,16 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         const imagesWithProduct = selectedImages.map(({ path }) => ({
           url: `http://localhost:4000/uploads/${path}`,
           product: { id: productId },
-        }));
+        }))
         // Ejecuta la operación addImages
         const { data } = await addImages({
           variables: { input: { images: imagesWithProduct } },
-        });
-        console.log(data.addImages); // Array of newly added images
+        })
+        console.log(data.addImages) // Array of newly added images
 
         const files = selectedImages.map(({ preview, path }) => {
-          return new File([preview], path);
-        });
+          return new File([preview], path)
+        })
 
         // Ahora sube los archivos
         const uploadPromises = selectedImages.map((file) => {
@@ -184,17 +184,17 @@ function ProductForm({ productId, onCancel, onSuccess }) {
             variables: {
               files: [file],
             },
-          });
-        });
+          })
+        })
 
-        const uploadResults = await Promise.all(uploadPromises);
+        const uploadResults = await Promise.all(uploadPromises)
 
         // Imprime los nombres de los archivos subidos
         uploadResults.forEach((result) => {
-          console.log(result.data.multipleUpload.filename);
-        });
+          console.log(result.data.multipleUpload.filename)
+        })
       } catch (error) {
-        console.error("Error al añadir imágenes o subir archivos: ", error);
+        console.error('Error al añadir imágenes o subir archivos: ', error)
       }
     } else {
       // Trata selectedImages como un array de URLs
@@ -203,53 +203,53 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         let imagesProduct = selectedImages.map(({ url }) => ({
           url,
           product: { id: productId },
-        }));
+        }))
 
-        console.log("imagesProduct", imagesProduct);
+        console.log('imagesProduct', imagesProduct)
 
         // Ejecuta la operación addImages
         const { data } = await addImages({
           variables: { input: { images: imagesProduct } },
-        });
-        console.log(data.addImages); // Array of newly added images
-        setSelectedImages([]);
+        })
+        console.log(data.addImages) // Array of newly added images
+        setSelectedImages([])
       } catch (error) {
-        console.error("Error al añadir imágenes: ", error);
+        console.error('Error al añadir imágenes: ', error)
       }
     }
-  };
+  }
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSelectedColors = (colorId) => {
     if (selectedColors.includes(colorId)) {
-      setSelectedColors(selectedColors.filter((id) => id !== colorId));
+      setSelectedColors(selectedColors.filter((id) => id !== colorId))
     } else {
-      setSelectedColors([...selectedColors, colorId]);
+      setSelectedColors([...selectedColors, colorId])
     }
-  };
+  }
 
   const handleSelectedSizes = (sizeId, isChecked) => {
     setSelectedSizes((prevSizes) => {
       if (isChecked && !prevSizes.includes(sizeId)) {
-        return [...prevSizes, sizeId];
+        return [...prevSizes, sizeId]
       } else if (!isChecked && prevSizes.includes(sizeId)) {
-        return prevSizes.filter((id) => id !== sizeId);
+        return prevSizes.filter((id) => id !== sizeId)
       } else {
-        return prevSizes;
+        return prevSizes
       }
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true)
 
     const adjustedFormState = {
       name: formState.name,
@@ -264,19 +264,19 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       newarrivals: formState.newarrivals,
       taxRate: parseFloat(formState.taxRate),
       categoryId: formState.categoryId,
-    };
-    let newProductId = productId;
+    }
+    let newProductId = productId
 
     try {
       if (productId) {
         await updateProduct({
           variables: { id: productId, input: adjustedFormState },
-        });
+        })
       } else {
         const newProduct = await createProduct({
           variables: { input: adjustedFormState },
-        });
-        newProductId = newProduct.data.createProduct.id;
+        })
+        newProductId = newProduct.data.createProduct.id
       }
 
       const { dataC } = await removeProductColor({
@@ -285,7 +285,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
             ProductId: newProductId,
           },
         },
-      });
+      })
 
       const { dataZ } = await removeProductSize({
         variables: {
@@ -293,76 +293,76 @@ function ProductForm({ productId, onCancel, onSuccess }) {
             ProductId: newProductId,
           },
         },
-      });
+      })
 
       const productSizes = selectedSizes.map((sizeId) => ({
         ProductId: newProductId,
         SizeId: sizeId,
         stock: 10,
-      }));
+      }))
 
       const productColors = selectedColors.map((colorId) => ({
         ProductId: newProductId,
         ColorId: colorId,
-      }));
+      }))
 
-      await addMultipleProductSizes({ variables: { input: productSizes } });
-      await addMultipleProductColors({ variables: { input: productColors } });
+      await addMultipleProductSizes({ variables: { input: productSizes } })
+      await addMultipleProductColors({ variables: { input: productColors } })
 
-      handleAddImages(selectedImages, newProductId);
+      handleAddImages(selectedImages, newProductId)
 
       if (productId) {
         toast({
-          title: "Producto actualizado",
-          description: "El producto ha sido actualizado exitosamente",
-          status: "success",
+          title: 'Producto actualizado',
+          description: 'El producto ha sido actualizado exitosamente',
+          status: 'success',
           duration: 3000,
           isClosable: true,
-        });
+        })
       } else {
         toast({
-          title: "Producto creado",
-          description: "El producto ha sido creado exitosamente",
-          status: "success",
+          title: 'Producto creado',
+          description: 'El producto ha sido creado exitosamente',
+          status: 'success',
           duration: 3000,
           isClosable: true,
-        });
+        })
       }
 
       setTimeout(() => {
-        onSuccess();
-      }, 3000);
+        onSuccess()
+      }, 3000)
     } catch (err) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: err.message,
-        status: "error",
+        status: 'error',
         duration: 3000,
         isClosable: true,
-      });
+      })
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
+    const { name, checked } = event.target
     setFormState((prevState) => ({
       ...prevState,
       [name]: checked,
-    }));
-  };
+    }))
+  }
 
   const handleRentalTypeChange = (event) => {
-    const rentalType = event.target.value;
+    const rentalType = event.target.value
     setFormState({
       ...formState,
       rentalType: rentalType.toLowerCase(),
-    });
-  };
+    })
+  }
 
   if ((productId && loading) || createLoading || updateLoading)
-    return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+    return <p>Cargando...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
@@ -373,37 +373,37 @@ function ProductForm({ productId, onCancel, onSuccess }) {
           <Formik initialValues={formState} onSubmit={handleSubmit}>
             <Form>
               <Card
-                width={{ base: "auto", md: "93.5%", "2xl": "95%" }}
+                width={{ base: 'auto', md: '93.5%', '2xl': '95%' }}
                 marginLeft="10"
                 mt={55}
                 pt={-2} // reduce padding-top if needed
                 pb={-2} // reduce padding-bottom if needed
               >
                 <Box mt={2}>
-                  {" "}
+                  {' '}
                   {/* adjust marginTop as needed */}
                   <HStack
                     width="100%"
                     justifyContent="space-between"
                     spacing={2}
                   >
-                    {" "}
-                    {" "}
+                    {' '}
+                    {' '}
                     {/* reduce spacing as needed */}
-                    <StyledText fontSize={{ base: "16px", md: "20px" }}>
-                      {productId ? "Editar Producto" : "Añadir Producto"}
+                    <StyledText fontSize={{ base: '16px', md: '20px' }}>
+                      {productId ? 'Editar Producto' : 'Añadir Producto'}
                     </StyledText>
                     <Button
                       onClick={onCancel}
                       colorScheme="teal"
-                      size={{ base: "sm", md: "md" }}
+                      size={{ base: 'sm', md: 'md' }}
                     >
                       Retornar
                     </Button>
                     <Button
                       type="submit"
                       colorScheme="teal"
-                      size={{ base: "sm", md: "md" }}
+                      size={{ base: 'sm', md: 'md' }}
                     >
                       Submit
                     </Button>
@@ -412,15 +412,15 @@ function ProductForm({ productId, onCancel, onSuccess }) {
               </Card>
 
               <Grid
-                templateColumns={{ sm: "1fr", md: "2fr 1fr", lg: "1fr 1fr" }}
+                templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }}
                 my="26px"
                 gap="18px"
                 marginLeft="10"
                 marginRight="10"
                 marginTop="2"
               >
-                <Card width={{ base: "auto", md: "100%" }}>
-                  <CardBody width={{ base: "auto", md: "100%" }} h="100%">
+                <Card width={{ base: 'auto', md: '100%' }}>
+                  <CardBody width={{ base: 'auto', md: '100%' }} h="100%">
                     <ProductInfo
                       formState={formState}
                       handleChange={handleChange}
@@ -431,7 +431,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                     />
                   </CardBody>
                   <Flex
-                    direction={{ base: "column", md: "row" }}
+                    direction={{ base: 'column', md: 'row' }}
                     justifyContent="space-between"
                     mt="5"
                   >
@@ -450,10 +450,10 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                     />
                   </Flex>
                 </Card>
-                <Card width={{ base: "auto", md: "100%" }}>
-                  <CardBody width={{ base: "auto", md: "100%" }}>
+                <Card width={{ base: 'auto', md: '100%' }}>
+                  <CardBody width={{ base: 'auto', md: '100%' }}>
                     <Flex
-                      direction={{ base: "column", md: "row" }}
+                      direction={{ base: 'column', md: 'row' }}
                       justifyContent="space-between"
                     >
                       <ProductImage
@@ -471,7 +471,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         </>
       )}
     </>
-  );
+  )
 }
 
-export default ProductForm;
+export default ProductForm

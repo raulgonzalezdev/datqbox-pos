@@ -7,14 +7,14 @@
 */
 
 // chakra imports
-import { Avatar, Flex, Text } from "@chakra-ui/react";
-import { ClockIcon } from "components/Icons/Icons";
-import React from "react";
+import { Avatar, Flex, Text } from '@chakra-ui/react'
+import { ClockIcon } from 'components/Icons/Icons'
+import React from 'react'
 
 export function ItemContent(props) {
-  const navbarIcon = "gray.400";
-  const notificationColor = "white";
-  const spacing = " ";
+  const navbarIcon = 'gray.400'
+  const notificationColor = 'white'
+  const spacing = ' '
   return (
     <>
       <Avatar
@@ -39,5 +39,5 @@ export function ItemContent(props) {
         </Flex>
       </Flex>
     </>
-  );
+  )
 }

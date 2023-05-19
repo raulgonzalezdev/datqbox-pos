@@ -1,20 +1,20 @@
 
-import { Button, useColorModeValue } from "@chakra-ui/react";
+import { Button, useColorModeValue } from '@chakra-ui/react'
 // Custom Icons
-import { SettingsIcon } from "components/Icons/Icons";
-import PropTypes from "prop-types";
-import React from "react";
+import { SettingsIcon } from 'components/Icons/Icons'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 export default function FixedPlugin(props) {
-  const { secondary, onChange, onSwitch, fixed, ...rest } = props;
+  const { secondary, onChange, onSwitch, fixed, ...rest } = props
   // Chakra Color Mode
-  let navbarIcon = "white";
-  let bgButton = "brand.200";
+  let navbarIcon = 'white'
+  let bgButton = 'brand.200'
   // if (props.secondary) {
   //   fixedDisplay = "none";
   // }
 
-  const settingsRef = React.useRef();
+  const settingsRef = React.useRef()
   return (
     <>
       <Button
@@ -24,8 +24,8 @@ export default function FixedPlugin(props) {
         bg={bgButton}
         position='fixed'
         variant='no-hover'
-        left={document.documentElement.dir === "rtl" ? "35px" : ""}
-        right={document.documentElement.dir === "rtl" ? "" : "35px"}
+        left={document.documentElement.dir === 'rtl' ? '35px' : ''}
+        right={document.documentElement.dir === 'rtl' ? '' : '35px'}
         bottom='30px'
         borderRadius='50px'
         boxShadow='0 2px 12px 0 rgb(0 0 0 / 16%)'>
@@ -38,11 +38,11 @@ export default function FixedPlugin(props) {
         />
       </Button>
     </>
-  );
+  )
 }
 
 FixedPlugin.propTypes = {
   fixed: PropTypes.bool,
   onChange: PropTypes.func,
   onSwitch: PropTypes.func,
-};
+}

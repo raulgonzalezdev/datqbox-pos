@@ -1,9 +1,9 @@
-import { Box, Text, Flex, Radio } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { Box, Text, Flex, Radio } from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
 
 export function CustomCheckbox({
   name,
-  color = "black",
+  color = 'black',
   isChecked,
   onCheck,
   index,
@@ -11,8 +11,8 @@ export function CustomCheckbox({
   setRadioValue,
 }) {
   const toggleCheck = () => {
-    onCheck();
-  };
+    onCheck()
+  }
 
 
   return (
@@ -27,7 +27,7 @@ export function CustomCheckbox({
         h="20px"
         border="1px solid"
         borderColor={color}
-        backgroundColor={isChecked ? color : "transparent"}
+        backgroundColor={isChecked ? color : 'transparent'}
         borderRadius="3px"
         mr="10px"
         position="relative"
@@ -39,7 +39,7 @@ export function CustomCheckbox({
             top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
-            color={color === "#FFFFFF" ? "black" : "white"}
+            color={color === '#FFFFFF' ? 'black' : 'white'}
           />
         )}
       </Box>
@@ -48,7 +48,7 @@ export function CustomCheckbox({
         h="20px"
         border="1px solid"
         borderColor={color}
-        backgroundColor={isChecked ? color : "transparent"}
+        backgroundColor={isChecked ? color : 'transparent'}
         borderRadius="3px"
         mr="10px"
         position="relative"
@@ -56,7 +56,7 @@ export function CustomCheckbox({
         alignItems="center"
         justifyContent="center"
       >
-        <Text color={color === "#FFFFFF" && isChecked ? "black" : "white"}>
+        <Text color={color === '#FFFFFF' && isChecked ? 'black' : 'white'}>
           {name}
         </Text>
       </Box>
@@ -69,9 +69,9 @@ export function CustomCheckbox({
             index: index,
             name: name,
             color: color,
-          });
+          })
         }}
       />
     </Flex>
-  );
+  )
 }

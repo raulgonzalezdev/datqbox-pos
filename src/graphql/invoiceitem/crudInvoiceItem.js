@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const GET_INVOICE_ITEMS = gql`
   query GetInvoiceItems {
@@ -10,7 +10,7 @@ const GET_INVOICE_ITEMS = gql`
       price
     }
   }
-`;
+`
 
 const GET_INVOICE_ITEM = gql`
   query GetInvoiceItem($id: ID!) {
@@ -22,7 +22,7 @@ const GET_INVOICE_ITEM = gql`
       price
     }
   }
-`;
+`
 
 const CREATE_INVOICE_ITEM = gql`
   mutation CreateInvoiceItem($input: InvoiceItemInput!) {
@@ -34,7 +34,7 @@ const CREATE_INVOICE_ITEM = gql`
       price
     }
   }
-`;
+`
 
 const UPDATE_INVOICE_ITEM = gql`
   mutation UpdateInvoiceItem($id: ID!, $input: InvoiceItemInput!) {
@@ -46,38 +46,38 @@ const UPDATE_INVOICE_ITEM = gql`
       price
     }
   }
-`;
+`
 
 const DELETE_INVOICE_ITEM = gql`
   mutation DeleteInvoiceItem($id: ID!) {
     deleteInvoiceItem(id: $id)
   }
-`;
+`
 
 
 export function useGetInvoiceItems() {
-    return useQuery(GET_INVOICE_ITEMS);
+    return useQuery(GET_INVOICE_ITEMS)
   }
   
   export function useGetInvoiceItem(id) {
-    return useQuery(GET_INVOICE_ITEM, { variables: { id } });
+    return useQuery(GET_INVOICE_ITEM, { variables: { id } })
   }
   
   export function useCreateInvoiceItem() {
     return useMutation(CREATE_INVOICE_ITEM, {
       refetchQueries: [{ query: GET_INVOICE_ITEMS }],
-    });
+    })
   }
   
   export function useUpdateInvoiceItem() {
     return useMutation(UPDATE_INVOICE_ITEM, {
       refetchQueries: [{ query: GET_INVOICE_ITEMS }],
-    });
+    })
   }
   
   export function useDeleteInvoiceItem() {
     return useMutation(DELETE_INVOICE_ITEM, {
       refetchQueries: [{ query: GET_INVOICE_ITEMS }],
-    });
+    })
   }
   

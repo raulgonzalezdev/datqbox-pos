@@ -1,8 +1,8 @@
-import React from "react";
-import { Flex } from "@chakra-ui/react";
+import React from 'react'
+import { Flex } from '@chakra-ui/react'
 
 export default function GradientBorder(props) {
-  const { variant, children, align = "center", justify = "center", ...rest } = props;
+  const { variant, children, align = 'center', justify = 'center', ...rest } = props
   return (
     <Flex
       p="2px"
@@ -15,6 +15,6 @@ export default function GradientBorder(props) {
     >
       {children}
     </Flex>
-  );
+  )
 }
 

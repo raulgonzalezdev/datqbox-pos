@@ -22,37 +22,37 @@ import {
 	Link,
 	Switch,
 	Text
-} from '@chakra-ui/react';
-import avatar11 from 'assets/img/avatars/avatar11.png';
+} from '@chakra-ui/react'
+import avatar11 from 'assets/img/avatars/avatar11.png'
 // Images
-import avatar2 from 'assets/img/avatars/avatar2.png';
-import avatar3 from 'assets/img/avatars/avatar3.png';
-import avatar4 from 'assets/img/avatars/avatar4.png';
-import avatar6 from 'assets/img/avatars/avatar6.png';
-import bgProfile from 'assets/img/bgProfile.png';
-import ProjectImage1 from 'assets/img/ProjectImage1.png';
-import ProjectImage2 from 'assets/img/ProjectImage2.png';
-import ProjectImage3 from 'assets/img/ProjectImage3.png';
+import avatar2 from 'assets/img/avatars/avatar2.png'
+import avatar3 from 'assets/img/avatars/avatar3.png'
+import avatar4 from 'assets/img/avatars/avatar4.png'
+import avatar6 from 'assets/img/avatars/avatar6.png'
+import bgProfile from 'assets/img/bgProfile.png'
+import ProjectImage1 from 'assets/img/ProjectImage1.png'
+import ProjectImage2 from 'assets/img/ProjectImage2.png'
+import ProjectImage3 from 'assets/img/ProjectImage3.png'
 // Custom components
-import Card from 'components/Card/Card';
-import CardBody from 'components/Card/CardBody';
-import CardHeader from 'components/Card/CardHeader';
-import LineChart from 'components/Charts/LineChart';
-import IconBox from 'components/Icons/IconBox';
-import { CarIcon, FulgerIcon, FulgerWhiteIcon } from 'components/Icons/Icons';
-import { Separator } from 'components/Separator/Separator';
-import React from 'react';
-import { BsArrowRight } from 'react-icons/bs';
-import { FaCube, FaFacebook, FaInstagram, FaPencilAlt, FaPenFancy, FaTwitter } from 'react-icons/fa';
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
+import CardHeader from 'components/Card/CardHeader'
+import LineChart from 'components/Charts/LineChart'
+import IconBox from 'components/Icons/IconBox'
+import { CarIcon, FulgerIcon, FulgerWhiteIcon } from 'components/Icons/Icons'
+import { Separator } from 'components/Separator/Separator'
+import React from 'react'
+import { BsArrowRight } from 'react-icons/bs'
+import { FaCube, FaFacebook, FaInstagram, FaPencilAlt, FaPenFancy, FaTwitter } from 'react-icons/fa'
 // Icons
-import { IoDocumentsSharp } from 'react-icons/io5';
+import { IoDocumentsSharp } from 'react-icons/io5'
 // Data
 import {
 	lineChartDataProfile1,
 	lineChartDataProfile2,
 	lineChartOptionsProfile1,
 	lineChartOptionsProfile2
-} from 'variables/charts';
+} from 'variables/charts'
 
 function Profile() {
 	return (
@@ -612,7 +612,7 @@ function Profile() {
 				</Card>
 			</Grid>
 		</Flex>
-	);
+	)
 }
 
-export default Profile;
+export default Profile

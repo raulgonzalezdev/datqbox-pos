@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { SimpleGrid, Button , Flex, Grid} from "@chakra-ui/react";
+import React, { useState } from 'react'
+import { SimpleGrid, Button , Flex, Grid} from '@chakra-ui/react'
 
-import { BiTag, BiSubdirectoryLeft } from "react-icons/bi";
-import { FaBackspace, FaCheck } from "react-icons/fa";
-import { BsBackspace } from "react-icons/bs";
-import { GrReturn } from "react-icons/gr";
+import { BiTag, BiSubdirectoryLeft } from 'react-icons/bi'
+import { FaBackspace, FaCheck } from 'react-icons/fa'
+import { BsBackspace } from 'react-icons/bs'
+import { GrReturn } from 'react-icons/gr'
 
 
 
@@ -15,40 +15,40 @@ const NumericButtons = ({
   setSelectedOperation,
 }) => {
   const selectedButtonStyle = {
-    border: "2px solid",
-    borderColor: "green.500",
-    backgroundColor: "green.500",
-  };
+    border: '2px solid',
+    borderColor: 'green.500',
+    backgroundColor: 'green.500',
+  }
   
   const handleCantBtnClick = () => {
-    setSelectedOperation(selectedOperation === "Cant" ? null : "Cant");
-  };
+    setSelectedOperation(selectedOperation === 'Cant' ? null : 'Cant')
+  }
 
   const handlePrecioBtnClick = () => {
-    setSelectedOperation(selectedOperation === "Precio" ? null : "Precio");
-  };
+    setSelectedOperation(selectedOperation === 'Precio' ? null : 'Precio')
+  }
 
   const handleDescBtnClick = () => {
-    setSelectedOperation(selectedOperation === "% Desc" ? null : "% Desc");
-  };
+    setSelectedOperation(selectedOperation === '% Desc' ? null : '% Desc')
+  }
 
   const handleDecimalButtonClick = () => {
-    handleNumericButtonClick('.');
-  };
+    handleNumericButtonClick('.')
+  }
 
   const handleBackspaceButtonClick = () => {
-    handleNumericButtonClick('backspace');
-  };
+    handleNumericButtonClick('backspace')
+  }
 
 
   return (
     <Grid
-        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        templateColumns={{ base: '1fr', md: '1fr 1fr' }}
         my="26px"
         gap="18px"
       >
-    <Flex flexDirection={{ base: "row", md: "row" }}> 
-      <Button width={{ base: "auto", md: "100%" }} height="100%" mb={4}>
+    <Flex flexDirection={{ base: 'row', md: 'row' }}> 
+      <Button width={{ base: 'auto', md: '100%' }} height="100%" mb={4}>
         Enviar Payment
      </Button>
     </Flex>
@@ -60,7 +60,7 @@ const NumericButtons = ({
       <Button onClick={() => handleNumericButtonClick(2)}>2</Button>
       <Button onClick={() => handleNumericButtonClick(3)}>3</Button>
       <Button
-        style={selectedOperation === "Cant" ? selectedButtonStyle : {}}
+        style={selectedOperation === 'Cant' ? selectedButtonStyle : {}}
         onClick={handleCantBtnClick}
       >
         Cant
@@ -69,7 +69,7 @@ const NumericButtons = ({
       <Button onClick={() => handleNumericButtonClick(5)}>5</Button>
       <Button onClick={() => handleNumericButtonClick(6)}>6</Button>
       <Button
-        style={selectedOperation === "% Desc" ? selectedButtonStyle : {}}
+        style={selectedOperation === '% Desc' ? selectedButtonStyle : {}}
         onClick={handleDescBtnClick}
       >
         % Desc
@@ -78,7 +78,7 @@ const NumericButtons = ({
       <Button onClick={() => handleNumericButtonClick(8)}>8</Button>
       <Button onClick={() => handleNumericButtonClick(9)}>9</Button>
       <Button
-        style={selectedOperation === "Precio" ? selectedButtonStyle : {}}
+        style={selectedOperation === 'Precio' ? selectedButtonStyle : {}}
         onClick={handlePrecioBtnClick}
       >
         Precio
@@ -97,7 +97,7 @@ const NumericButtons = ({
     </SimpleGrid>
     </Flex>
     </Grid>
-  );
-};
+  )
+}
 
-export default NumericButtons;
+export default NumericButtons

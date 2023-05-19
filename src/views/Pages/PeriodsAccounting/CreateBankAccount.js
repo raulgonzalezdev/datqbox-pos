@@ -1,16 +1,16 @@
 // CreateBankAccount.js
-import React from 'react';
+import React from 'react'
 import {
   FormControl,
   Flex,
-} from '@chakra-ui/react';
-import GradientBorder from "components/GradientBorder/GradientBorder";
+} from '@chakra-ui/react'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 import {
   StyledInput,
   GradientInput,
   StyledFormLabel,
   BaseFlex,
-} from "components/ReusableComponents/ReusableComponents";
+} from 'components/ReusableComponents/ReusableComponents'
 function CreateBankAccount() {
 
   return (
@@ -64,7 +64,7 @@ function CreateBankAccount() {
         </Flex>
       </BaseFlex>
     </GradientBorder>
-  );
+  )
 }
-export default CreateBankAccount;
+export default CreateBankAccount
 

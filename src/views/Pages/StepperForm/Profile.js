@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 import {
   FormControl,
   Flex,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 import {
   StyledInput,
   GradientInput,
@@ -10,9 +10,9 @@ import {
   StyledTextarea,
   BaseFlex,
   StyledText,
-} from "components/ReusableComponents/ReusableComponents";
+} from 'components/ReusableComponents/ReusableComponents'
 
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function Profile() {
 
@@ -63,7 +63,7 @@ function Profile() {
         {/* Agrega los demás campos siguiendo este formato */}
       </BaseFlex>
     </GradientBorder>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

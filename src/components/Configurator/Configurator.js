@@ -21,31 +21,31 @@ import {
   Text,
   DarkMode,
   LightMode,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
-import { Separator } from "components/Separator/Separator";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { FaTwitter, FaFacebook } from "react-icons/fa";
+import { Separator } from 'components/Separator/Separator'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
+import { FaTwitter, FaFacebook } from 'react-icons/fa'
 
 export default function Configurator(props) {
-  const { secondary, isOpen, onClose, fixed, ...rest } = props;
-  const [switched, setSwitched] = useState(props.isChecked);
+  const { secondary, isOpen, onClose, fixed, ...rest } = props
+  const [switched, setSwitched] = useState(props.isChecked)
 
   // Chakra Color Mode
-  let fixedDisplay = "flex";
+  let fixedDisplay = 'flex'
   if (props.secondary) {
-    fixedDisplay = "none";
+    fixedDisplay = 'none'
   }
-  let colorButton = "white";
-  const secondaryButtonColor = "white";
-  const settingsRef = React.useRef();
+  let colorButton = 'white'
+  const secondaryButtonColor = 'white'
+  const settingsRef = React.useRef()
   return (
     <>
       <Drawer
         isOpen={props.isOpen}
         onClose={props.onClose}
-        placement={document.documentElement.dir === "rtl" ? "left" : "right"}
+        placement={document.documentElement.dir === 'rtl' ? 'left' : 'right'}
         finalFocusRef={settingsRef}
         blockScrollOnMount={false}>
         <DrawerContent
@@ -76,11 +76,11 @@ export default function Configurator(props) {
                     isChecked={switched}
                     onChange={(event) => {
                       if (switched === true) {
-                        props.onSwitch(false);
-                        setSwitched(false);
+                        props.onSwitch(false)
+                        setSwitched(false)
                       } else {
-                        props.onSwitch(true);
-                        setSwitched(true);
+                        props.onSwitch(true)
+                        setSwitched(true)
                       }
                     }}
                   />
@@ -153,12 +153,12 @@ export default function Configurator(props) {
         </DrawerContent>
       </Drawer>
     </>
-  );
+  )
 }
 Configurator.propTypes = {
   secondary: PropTypes.bool,
   isOpen: PropTypes.bool, // Cambiar de func a bool
   onClose: PropTypes.func,
   fixed: PropTypes.bool,
-};
+}
 

@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 const GET_SIZES = gql`
   query GetSizes {
     sizes {
@@ -10,7 +10,7 @@ const GET_SIZES = gql`
       }
     }
   }
-`;
+`
 
 const CREATE_SIZE = gql`
   mutation CreateSize($name: String!) {
@@ -19,7 +19,7 @@ const CREATE_SIZE = gql`
       name
     }
   }
-`;
+`
 
 const UPDATE_SIZE = gql`
   mutation UpdateSize($id: ID!, $name: String!) {
@@ -28,34 +28,34 @@ const UPDATE_SIZE = gql`
       name
     }
   }
-`;
+`
 
 const DELETE_SIZE = gql`
   mutation DeleteSize($id: ID!) {
     deleteSize(id: $id) 
   }
-`;
+`
 
 
 export function useGetSizes() {
-    return useQuery(GET_SIZES);
+    return useQuery(GET_SIZES)
   }
   
   export function useCreateSize() {
     return useMutation(CREATE_SIZE, {
       refetchQueries: [{ query: GET_SIZES }],
-    });
+    })
   }
   
   export function useUpdateSize() {
     return useMutation(UPDATE_SIZE, {
       refetchQueries: [{ query: GET_SIZES }],
-    });
+    })
   }
   
   export function useDeleteSize() {
     return useMutation(DELETE_SIZE, {
       refetchQueries: [{ query: GET_SIZES }],
-    });
+    })
   }
   

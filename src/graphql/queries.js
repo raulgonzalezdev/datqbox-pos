@@ -1,5 +1,5 @@
 // queries.js
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const ALL_PRODUCTS_QUERY = gql`
   query AllProductsQuery {
@@ -16,8 +16,8 @@ export const ALL_PRODUCTS_QUERY = gql`
       }
     }
   }
-`;
-ALL_PRODUCTS_QUERY.queryName = "AllProductsQuery";
+`
+ALL_PRODUCTS_QUERY.queryName = 'AllProductsQuery'
 
 export const PRODUCT_QUERY = gql`
   query ProductQuery($id: ID!) {
@@ -42,8 +42,8 @@ export const PRODUCT_QUERY = gql`
       inventory
     }
   }
-`;
-PRODUCT_QUERY.queryName = "ProductQuery";
+`
+PRODUCT_QUERY.queryName = 'ProductQuery'
 
 export const ALL_CATEGORIES_QUERY = gql`
   query AllCategoriesQuery {
@@ -53,8 +53,8 @@ export const ALL_CATEGORIES_QUERY = gql`
       image
     }
   }
-`;
-ALL_CATEGORIES_QUERY.queryName ="AllCategoriesQuery";
+`
+ALL_CATEGORIES_QUERY.queryName ='AllCategoriesQuery'
 
 export const CATEGORY_QUERY = gql`
   query CategoryQuery($id: ID!) {
@@ -71,8 +71,8 @@ export const CATEGORY_QUERY = gql`
       }
     }
   }
-`;
-CATEGORY_QUERY.queryName = "CategoryQuery";
+`
+CATEGORY_QUERY.queryName = 'CategoryQuery'
 
 export const FEATURED_PRODUCTS_QUERY = gql`
   query FeaturedProductsQuery {
@@ -89,8 +89,8 @@ export const FEATURED_PRODUCTS_QUERY = gql`
         }
     }
   }
-`;
-FEATURED_PRODUCTS_QUERY.queryName = "FeaturedProductsQuery";
+`
+FEATURED_PRODUCTS_QUERY.queryName = 'FeaturedProductsQuery'
 
 export const NEW_ARRIVALS_PRODUCTS_QUERY = gql`
   query NewArrivalsProductsQuery {
@@ -107,5 +107,5 @@ export const NEW_ARRIVALS_PRODUCTS_QUERY = gql`
         }
     }
   }
-`;
-NEW_ARRIVALS_PRODUCTS_QUERY.queryName = "NewArrivalsProductsQuery";
+`
+NEW_ARRIVALS_PRODUCTS_QUERY.queryName = 'NewArrivalsProductsQuery'

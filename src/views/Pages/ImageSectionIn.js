@@ -1,15 +1,15 @@
 // ImageSection.js
-import React from "react";
-import { Box, Text } from "@chakra-ui/react";
-import signUpImage from "assets/img/signUpImage.png";
+import React from 'react'
+import { Box, Text } from '@chakra-ui/react'
+import signUpImage from 'assets/img/signUpImage.png'
 
 function ImageSection() {
   return (
     <Box
-      display={{ base: "none", lg: "block" }}
+      display={{ base: 'none', lg: 'block' }}
       overflowX="hidden"
       h="1300px"
-      maxW={{ md: "50vw", lg: "48vw" }}
+      maxW={{ md: '50vw', lg: '48vw' }}
       w="1000px"
       position="absolute"
       left="0px"
@@ -49,7 +49,7 @@ function ImageSection() {
         </Text>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default ImageSection;
+export default ImageSection

@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 const GET_REVIEWS = gql`
   query GetReviews {
@@ -16,7 +16,7 @@ const GET_REVIEWS = gql`
       comment
     }
   }
-`;
+`
 
 const CREATE_REVIEW = gql`
   mutation CreateReview($input: ReviewInput!) {
@@ -34,16 +34,16 @@ const CREATE_REVIEW = gql`
       comment
     }
   }
-`;
+`
 
 
 export function useGetReviews() {
-    return useQuery(GET_REVIEWS);
+    return useQuery(GET_REVIEWS)
   }
   
   export function useCreateReview() {
     return useMutation(CREATE_REVIEW, {
       refetchQueries: [{ query: GET_REVIEWS }],
-    });
+    })
   }
   

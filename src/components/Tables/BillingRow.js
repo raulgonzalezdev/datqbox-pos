@@ -6,12 +6,12 @@
 
 */
 
-import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
-import React from "react";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react'
+import React from 'react'
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 
 function BillingRow(props) {
-  const { name, company, email, number } = props;
+  const { name, company, email, number } = props
 
   return (
     <Box
@@ -31,24 +31,24 @@ function BillingRow(props) {
             </Text>
           </Text>
           <Text color='gray.400' fontSize='xs'>
-            Email Address:{" "}
+            Email Address:{' '}
             <Text as='span' color='gray.500'>
               {email}
             </Text>
           </Text>
           <Text color='gray.400' fontSize='xs'>
-            VAT Number:{" "}
+            VAT Number:{' '}
             <Text as='span' color='gray.500'>
               {number}
             </Text>
           </Text>
         </Flex>
-        <Flex direction={{ sm: "column", md: "row" }} align='flex-start'>
+        <Flex direction={{ sm: 'column', md: 'row' }} align='flex-start'>
           <Button
             p='0px'
             variant='no-hover'
-            mb={{ sm: "10px", md: "0px" }}
-            me={{ md: "12px" }}>
+            mb={{ sm: '10px', md: '0px' }}
+            me={{ md: '12px' }}>
             <Flex color='red.500' cursor='pointer' align='center' p='12px'>
               <Icon as={FaTrashAlt} me='4px' w='16px' h='16px' />
               <Text fontSize='xs'>DELETE</Text>
@@ -65,7 +65,7 @@ function BillingRow(props) {
         </Flex>
       </Flex>
     </Box>
-  );
+  )
 }
 
-export default BillingRow;
+export default BillingRow

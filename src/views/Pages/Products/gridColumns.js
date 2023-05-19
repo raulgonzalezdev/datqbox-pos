@@ -1,5 +1,5 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { GridColDef } from '@mui/x-data-grid'
+import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
     Flex,
     Text,
@@ -9,7 +9,7 @@ import {
     IconButton,
     Button,
   
-  } from "@chakra-ui/react";
+  } from '@chakra-ui/react'
 
 
    export const createColumns = (
@@ -19,8 +19,8 @@ import {
     
   ): GridColDef[] => [
     {
-      field: "id",
-      headerName: "Id",
+      field: 'id',
+      headerName: 'Id',
       width: 50,
       sortable: true,
       renderCell: (params) => (
@@ -34,8 +34,8 @@ import {
       ),
     },
     {
-      field: "sku",
-      headerName: "Sku",
+      field: 'sku',
+      headerName: 'Sku',
       width: 150,
       sortable: true,
       renderCell: (params) => (
@@ -49,8 +49,8 @@ import {
       ),
     },
     {
-      field: "name",
-      headerName: "Name",
+      field: 'name',
+      headerName: 'Name',
       width: 150,
       sortable: true,
       renderCell: (params) => (
@@ -64,8 +64,8 @@ import {
       ),
     },
     {
-      field: "description",
-      headerName: "description",
+      field: 'description',
+      headerName: 'description',
       width: 150,
       sortable: true,
       renderCell: (params) => (
@@ -79,8 +79,8 @@ import {
       ),
     },
     {
-      field: "vendor",
-      headerName: "Vendedor",
+      field: 'vendor',
+      headerName: 'Vendedor',
       width: 100,
       sortable: true,
       renderCell: (params) => (
@@ -95,8 +95,8 @@ import {
       ),
     },
     {
-      field: "category",
-      headerName: "Category",
+      field: 'category',
+      headerName: 'Category',
       width: 100,
       sortable: true,
       renderCell: (params) => (
@@ -111,11 +111,11 @@ import {
       ),
     },
     {
-      field: "price",
-      headerName: "price",
+      field: 'price',
+      headerName: 'price',
       width: 100,
       sortable: true,
-      align: "right",
+      align: 'right',
       renderCell: (params) => (
         <Flex align="center" justifyContent="flex-end">
           <Box ml={2}>
@@ -128,11 +128,11 @@ import {
       ),
     },
     {
-      field: "taxrate",
-      headerName: "TaxRate",
+      field: 'taxrate',
+      headerName: 'TaxRate',
       width: 100,
       sortable: true,
-      align: "right",
+      align: 'right',
       renderCell: (params) => (
         <Flex align="center" justifyContent="flex-end">
           <Box ml={2}>
@@ -145,29 +145,29 @@ import {
       ),
     },
     {
-      field: "newarrivals",
-      headerName: "New Arrivals",
+      field: 'newarrivals',
+      headerName: 'New Arrivals',
       width: 100,
       sortable: false,
       renderCell: (params) => (
         <Badge
-          bg={params.row.newarrivals  ? "green.400" : "transparent"}
-          color={params.row.newarrivals ? "white" : "gray.400"}
+          bg={params.row.newarrivals  ? 'green.400' : 'transparent'}
+          color={params.row.newarrivals ? 'white' : 'gray.400'}
           fontSize="sm"
           p="3px 10px"
           borderRadius="8px"
-          border={params.row.newarrivals  ? "none" : "1px solid #fff"}
+          border={params.row.newarrivals  ? 'none' : '1px solid #fff'}
           fontWeight="normal"
         >
-          {params.row.newarrivals ? "Activo" : "Inactivo"}
+          {params.row.newarrivals ? 'Activo' : 'Inactivo'}
         </Badge>
       ),
     },
     {
-      field: "actions",
-      headerName: "Acciones",
-      headerAlign: "right",
-      align: "right",
+      field: 'actions',
+      headerName: 'Acciones',
+      headerAlign: 'right',
+      align: 'right',
       width: 200,
       sortable: false,
       renderCell: (params) => (
@@ -193,4 +193,4 @@ import {
         </Flex>
       ),
     },
-  ];
+  ]

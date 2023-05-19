@@ -1,26 +1,26 @@
-import { extendTheme } from "@chakra-ui/react";
-import { globalStyles } from "./styles";
-import { bgAdmin } from "./bgAdmin";
-import { buttonStyles } from "./components/button";
-import { badgeStyles } from "./components/badge";
-import { linkStyles } from "./components/link";
-import { drawerStyles } from "./components/drawer";
-import { switchStyles } from "./components/switch";
-import { CardComponent } from "./additions/card/Card";
-import { CardBodyComponent } from "./additions/card/CardBody";
-import { CardHeaderComponent } from "./additions/card/CardHeader";
-import { MainPanelComponent } from "./additions/layout/MainPanel";
-import { PanelContentComponent } from "./additions/layout/PanelContent";
-import { PanelContainerComponent } from "./additions/layout/PanelContainer";
-import { mode } from "@chakra-ui/theme-tools";
+import { extendTheme } from '@chakra-ui/react'
+import { globalStyles } from './styles'
+import { bgAdmin } from './bgAdmin'
+import { buttonStyles } from './components/button'
+import { badgeStyles } from './components/badge'
+import { linkStyles } from './components/link'
+import { drawerStyles } from './components/drawer'
+import { switchStyles } from './components/switch'
+import { CardComponent } from './additions/card/Card'
+import { CardBodyComponent } from './additions/card/CardBody'
+import { CardHeaderComponent } from './additions/card/CardHeader'
+import { MainPanelComponent } from './additions/layout/MainPanel'
+import { PanelContentComponent } from './additions/layout/PanelContent'
+import { PanelContainerComponent } from './additions/layout/PanelContainer'
+import { mode } from '@chakra-ui/theme-tools'
 
 const breakpoints = {
-  sm: "320px",
-  md: "768px",
-  lg: "1024px",
-  xl: "1200px",
-  "2xl": "1700px",
-};
+  sm: '320px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1200px',
+  '2xl': '1700px',
+}
 
 export default extendTheme(
   { breakpoints }, // Breakpoints
@@ -37,6 +37,6 @@ export default extendTheme(
   MainPanelComponent, // Main Panel component
   PanelContentComponent, // Panel Content component
   PanelContainerComponent // Panel Container component
-);
+)
 
 

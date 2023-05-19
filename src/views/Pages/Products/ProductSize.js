@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyledFormLabel } from "components/ReusableComponents/ReusableComponents";
+import React, { useState, useEffect } from 'react'
+import { StyledFormLabel } from 'components/ReusableComponents/ReusableComponents'
 import {
   Box,
   Checkbox,
@@ -25,29 +25,29 @@ import {
   useDisclosure,
   RadioGroup,
   Radio,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
-import { IconButton, Icon } from "@chakra-ui/react";
-import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { IconButton, Icon } from '@chakra-ui/react'
+import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 
 import {
   useGetSizes,
   useCreateSize,
   useUpdateSize,
   useDeleteSize,
-} from "graphql/sizes/crudSizes";
+} from 'graphql/sizes/crudSizes'
 
 function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSizes }) {
-  const toast = useToast();
+  const toast = useToast()
 
-  const { data: sizesData } = useGetSizes();
-  const [createSize, { loading: createLoadingSize }] = useCreateSize();
-  const [updateSize, { loading: updateLoadingSize }] = useUpdateSize();
-  const [deleteSize, { loading: deleteLoadingSize }] = useDeleteSize();
+  const { data: sizesData } = useGetSizes()
+  const [createSize, { loading: createLoadingSize }] = useCreateSize()
+  const [updateSize, { loading: updateLoadingSize }] = useUpdateSize()
+  const [deleteSize, { loading: deleteLoadingSize }] = useDeleteSize()
 
-  const [valueSize, setValueSize] = useState("");
-  const [radioValueSize, setRadioValueSize] = React.useState(null);
-  const [currentSize, setcurrentSize] = useState([]);
+  const [valueSize, setValueSize] = useState('')
+  const [radioValueSize, setRadioValueSize] = React.useState(null)
+  const [currentSize, setcurrentSize] = useState([])
 
 
 
@@ -55,72 +55,72 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
     isOpen: isOpenSize,
     onOpen: onOpenSize,
     onClose: onCloseSize,
-  } = useDisclosure();
+  } = useDisclosure()
 
-  const [actionType, setActionType] = useState(null);
+  const [actionType, setActionType] = useState(null)
 
 
   const handleSubmit = async (type, actionType, id = null) => {
     try {
-      if (type === "size") {
-        if (actionType === "create") {
-          await createSize({ variables: { name: valueSize } });
+      if (type === 'size') {
+        if (actionType === 'create') {
+          await createSize({ variables: { name: valueSize } })
 
           // Muestra un toast de éxito
           toast({
-            title: "Tamaño creado.",
+            title: 'Tamaño creado.',
             description: `El tamaño ${valueSize} ha sido creado con éxito.`,
-            status: "success",
+            status: 'success',
             duration: 3000,
             isClosable: true,
-          });
-        } else if (actionType === "update") {
-          await updateSize({ variables: { id, name: valueSize } });
+          })
+        } else if (actionType === 'update') {
+          await updateSize({ variables: { id, name: valueSize } })
 
           // Muestra un toast de éxito
           toast({
-            title: "Tamaño actualizado.",
+            title: 'Tamaño actualizado.',
             description: `El tamaño ${valueSize} ha sido actualizado con éxito.`,
-            status: "success",
+            status: 'success',
             duration: 3000,
             isClosable: true,
-          });
-        } else if (actionType === "delete") {
-          await deleteSize({ variables: { id } });
+          })
+        } else if (actionType === 'delete') {
+          await deleteSize({ variables: { id } })
 
           // Muestra un toast de éxito
           toast({
-            title: "Tamaño eliminado.",
+            title: 'Tamaño eliminado.',
             description: `El tamaño ${valueSize} ha sido eliminado con éxito.`,
-            status: "success",
+            status: 'success',
             duration: 3000,
             isClosable: true,
-          });
+          })
         }
 
-        setValueSize("");
-        onCloseSize();
+        setValueSize('')
+        onCloseSize()
       }
     } catch (error) {
       // Muestra un toast de error si algo va mal
 
       toast({
-        title: "Error al realizar la acción.",
+        title: 'Error al realizar la acción.',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 5000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   return (
     <React.Fragment>
       <Accordion
         allowToggle
-        w={{ base: "100%", md: "50%" }}
-        pl={{ base: "0", md: "4" }}
-        style={{ border: "none" }}
+        w={{ base: '100%', md: '50%' }}
+        pl={{ base: '0', md: '4' }}
+        style={{ border: 'none' }}
       >
         <AccordionItem>
           <AccordionButton color="white">
@@ -152,8 +152,8 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                       colorScheme="blue"
                       ml={2}
                       onChange={(e) => {
-                        setcurrentSize(size);
-                        setRadioValueSize(e.target.value);
+                        setcurrentSize(size)
+                        setRadioValueSize(e.target.value)
                       }}
                     /> 
                   </Flex>
@@ -174,8 +174,8 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                       aria-label="Add new size"
                       icon={<AddIcon />}
                       onClick={() => {
-                        setActionType("create");
-                        onOpenSize();
+                        setActionType('create')
+                        onOpenSize()
                       }}
                     />
                   </PopoverTrigger>
@@ -185,9 +185,9 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                     icon={<EditIcon />}
                     onClick={() => {
                       if (selectedSize) {
-                        setValueSize(selectedSize.name);
-                        setActionType("update");
-                        onOpenSize();
+                        setValueSize(selectedSize.name)
+                        setActionType('update')
+                        onOpenSize()
                       }
                     }}
                   />
@@ -195,8 +195,8 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                     aria-label="Delete Size"
                     icon={<DeleteIcon />}
                     onClick={() => {
-                      setActionType("delete");
-                      handleSubmit("size", "delete", radioValueSize);
+                      setActionType('delete')
+                      handleSubmit('size', 'delete', radioValueSize)
                     }}
                   />
                 </Stack>
@@ -228,12 +228,12 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                     <Button
                       colorScheme="blue"
                       onClick={() =>
-                        handleSubmit("size", actionType, radioValueSize)
+                        handleSubmit('size', actionType, radioValueSize)
                       }
                       mr={2}
                       size="sm"
                     >
-                      {actionType === "create" ? "Add" : "Update"}
+                      {actionType === 'create' ? 'Add' : 'Update'}
                     </Button>
                     <Button size="sm" colorScheme="red" onClick={onCloseSize}>
                       Regresar
@@ -246,7 +246,7 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
         </AccordionItem>
       </Accordion>
     </React.Fragment>
-  );
+  )
 }
 
-export default ProductSize;
+export default ProductSize

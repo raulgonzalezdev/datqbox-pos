@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { useTable } from "react-table";
+import React, { useMemo, useState, useEffect } from 'react'
+import { useTable } from 'react-table'
 import {
   Flex,
   Text,
@@ -8,15 +8,15 @@ import {
   Button,
   InputGroup,
   InputLeftElement,
-} from "@chakra-ui/react";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
-import { SearchIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react'
+import Card from 'components/Card/Card.js'
+import CardHeader from 'components/Card/CardHeader.js'
+import CardBody from 'components/Card/CardBody.js'
+import { SearchIcon } from '@chakra-ui/icons'
 
 const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [rows, setRows] = useState(data);
+  const [searchValue, setSearchValue] = useState('')
+  const [rows, setRows] = useState(data)
 
 
   // useEffect(() => {
@@ -25,24 +25,24 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
 
 
   const handleSearch = (event) => {
-    setSearchValue(event.target.value);
-    if (event.target.value === "") {
-      refetchData();
-      setRows(data);
+    setSearchValue(event.target.value)
+    if (event.target.value === '') {
+      refetchData()
+      setRows(data)
     } else {
       const filteredData = data.filter((row) =>
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(event.target.value.toLowerCase())
         )
-      );
-      setRows(filteredData);
+      )
+      setRows(filteredData)
     }
-  };
+  }
 
   const tableInstance = useTable({
     columns,
     data: rows,
-  });
+  })
 
   const {
     getTableProps,
@@ -50,11 +50,11 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
     headerGroups,
     rows: tableRows,
     prepareRow,
-  } = tableInstance;
+  } = tableInstance
 
   return (
-    <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
-      <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+    <Flex direction="column" pt={{ base: '120px', md: '75px' }}>
+      <Card overflowX={{ sm: 'scroll', xl: 'hidden' }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <Flex justifyContent="space-between" alignItems="center" w="100%">
             <Text fontSize="lg" color="#fff" fontWeight="bold" flex="1">
@@ -72,7 +72,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
                 onChange={handleSearch}
                 color="white"
                 borderColor="gray.300"
-                _placeholder={{ color: "gray.300" }}
+                _placeholder={{ color: 'gray.300' }}
               />
             </InputGroup>
             <Button colorScheme="teal" onClick={onAdd} flex="1" ml={8}>
@@ -81,10 +81,10 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
           </Flex>
         </CardHeader>
         <CardBody>
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: '100%' }}>
             <table
               {...getTableProps()}
-              style={{ width: "100%", borderCollapse: "collapse" }}
+              style={{ width: '100%', borderCollapse: 'collapse' }}
             >
               <thead>
                 {headerGroups.map((headerGroup) => (
@@ -93,13 +93,13 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
                       <th
                         {...column.getHeaderProps()}
                         style={{
-                          borderBottom: "solid 3px teal",
-                          background: "#374151",
-                          color: "white",
-                          fontWeight: "bold",
+                          borderBottom: 'solid 3px teal',
+                          background: '#374151',
+                          color: 'white',
+                          fontWeight: 'bold',
                         }}
                       >
-                        {column.render("Header")}
+                        {column.render('Header')}
                       </th>
                     ))}
                   </tr>
@@ -107,14 +107,14 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
               </thead>
               <tbody {...getTableBodyProps()}>
                 {tableRows.map((row) => {
-                  prepareRow(row);
+                  prepareRow(row)
                   return (
                     <tr
                       {...row.getRowProps()}
                       onClick={() => onSelect(row.original)}
                       style={{
-                        cursor: "pointer",
-                        borderBottom: "1px solid #e5e4a5",
+                        cursor: 'pointer',
+                        borderBottom: '1px solid #e5e4a5',
                       }}
                     >
                       {row.cells.map((cell) => {
@@ -122,17 +122,17 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
                           <td
                             {...cell.getCellProps()}
                             style={{
-                              padding: "10px",
-                              textAlign: "left",
-                              verticalAlign: "middle",
+                              padding: '10px',
+                              textAlign: 'left',
+                              verticalAlign: 'middle',
                             }}
                           >
-                            {cell.render("Cell")}
+                            {cell.render('Cell')}
                           </td>
-                        );
+                        )
                       })}
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -140,7 +140,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
         </CardBody>
       </Card>
     </Flex>
-  );
-};
+  )
+}
 
-export default DataTable;
+export default DataTable

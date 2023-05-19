@@ -1,107 +1,107 @@
-import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
-import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import React, { useEffect, useRef } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import routes from "routes.js";
-import theme from "theme/themeAuth.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
+import { Box, ChakraProvider, Portal } from '@chakra-ui/react'
+import AuthNavbar from 'components/Navbars/AuthNavbar.js'
+import React, { useEffect, useRef } from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import routes from 'routes.js'
+import theme from 'theme/themeAuth.js'
+import SignIn from 'views/Pages/SignIn.js'
+import SignUp from 'views/Pages/SignUp.js'
 
 const AuthLayout = (props) => {
-  const wrapper = useRef(null);
+  const wrapper = useRef(null)
  
 
   useEffect(() => {
-    document.body.style.overflow = "unset";
+    document.body.style.overflow = 'unset'
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = ''
     }
-  }, []);
+  }, [])
 
  
 
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = 'Default Brand Text'
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].views);
+        let collapseActiveRoute = getActiveRoute(routes[i].views)
         if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
+          return collapseActiveRoute
         }
       } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].views);
+        let categoryActiveRoute = getActiveRoute(routes[i].views)
         if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
+          return categoryActiveRoute
         }
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
-          return routes[i].name;
+          return routes[i].name
         }
       }
     }
-    return activeRoute;
-  };
+    return activeRoute
+  }
 
  
    
   var dashRoutes = [
     {
-      path: "/signin",
+      path: '/signin',
       component: SignIn,
-      layout: "/auth",
+      layout: '/auth',
     },
     {
-       path: "/signup",
+       path: '/signup',
       component: SignUp,
-      layout: "/auth",
+      layout: '/auth',
     },
   ]  
    
   const getRoutes = (routes) => {
     // Combine routes and dashRoutes into one array
-    const allRoutes = [...routes, ...dashRoutes];
+    const allRoutes = [...routes, ...dashRoutes]
     
     return allRoutes.map((prop, key) => {
-      if (prop.layout === "/auth") {
+      if (prop.layout === '/auth') {
         return (
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
-        );
+        )
       } else {
-        return null;
+        return null
       }
-    });
-  };
+    })
+  }
   
   
   const getActiveNavbar = (routes) => {
-    let activeNavbar = false;
+    let activeNavbar = false
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].views);
+        let categoryActiveNavbar = getActiveNavbar(routes[i].views)
         if (categoryActiveNavbar !== activeNavbar) {
-          return categoryActiveNavbar;
+          return categoryActiveNavbar
         }
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           if (routes[i].secondaryNavbar) {
-            return routes[i].secondaryNavbar;
+            return routes[i].secondaryNavbar
           }
         }
       }
     }
-    return activeNavbar;
-  };
+    return activeNavbar
+  }
 
-  document.documentElement.dir = "ltr";
+  document.documentElement.dir = 'ltr'
   return (
     <ChakraProvider theme={theme} resetCss={false} w="100%">
       <Box ref={wrapper} w="100%">
@@ -121,7 +121,7 @@ const AuthLayout = (props) => {
         </Box>
       </Box>
     </ChakraProvider>
-  );
+  )
 }
 
-export default AuthLayout;
+export default AuthLayout

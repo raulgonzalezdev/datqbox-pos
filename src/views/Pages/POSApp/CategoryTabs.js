@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Box,
   SimpleGrid,
@@ -14,12 +14,12 @@ import {
   Stack,
   Heading,
   Divider,
-} from "@chakra-ui/react";
-import { productosRows as productsList, categories } from "variables/products";
+} from '@chakra-ui/react'
+import { productosRows as productsList, categories } from 'variables/products'
 
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import Card from 'components/Card/Card.js'
+import CardBody from 'components/Card/CardBody.js'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 const CategoryTabs = ({ handleProductDoubleClick }) => {
   return (
@@ -27,9 +27,9 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
       isLazy
       variant="enclosed"
       colorScheme="gray"
-      width={{ base: "auto", md: "100%" }}
+      width={{ base: 'auto', md: '100%' }}
     >
-      <TabList width={{ base: "auto", md: "100%" }}>
+      <TabList width={{ base: 'auto', md: '100%' }}>
         {categories.map((category) => (
           <Tab key={category.id} color="white">
             {category.categoryName}
@@ -38,21 +38,21 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
       </TabList>
 
       <Box>
-        <TabPanels width={{ base: "auto", md: "100%" }} mt={4}>
+        <TabPanels width={{ base: 'auto', md: '100%' }} mt={4}>
           {categories.map((category) => (
             <TabPanel key={category.id}>
               {/* <GradientBorder p="2px"> */}
-              <Card marginLeft="-5" marginRight="5" w={{ base: "100%", md: "108%", "2xl": "100%" }} h="100%">
+              <Card marginLeft="-5" marginRight="5" w={{ base: '100%', md: '108%', '2xl': '100%' }} h="100%">
   
 
                 <CardBody
                   overflowY="auto"
-                  maxH={{ base: "150px", md: "600px" }}
-                  width={{ base: "auto", md: "100%" }}
+                  maxH={{ base: '150px', md: '600px' }}
+                  width={{ base: 'auto', md: '100%' }}
                 >
                   {/* <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 5 }} spacing={4}> */}
                   <SimpleGrid
-                    columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3, "2xl": 4 }}
+                    columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3, '2xl': 4 }}
                     spacing={4}
                   >
                     {productsList
@@ -62,11 +62,11 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                       .map((product) => (
                         <ChakraCard
                           key={product.id}
-                          direction={{ base: "column", sm: "row" }}
+                          direction={{ base: 'column', sm: 'row' }}
                           overflow="hidden"
                           variant="outline"
                           onDoubleClick={() => {
-                            handleProductDoubleClick(product);
+                            handleProductDoubleClick(product)
                           }}
                           maxW="sm"
                           bg="white"
@@ -74,8 +74,8 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                           boxShadow="lg"
                           borderRadius="8px"
                           p={2}
-                          height={{ md: "100px", "2xl": "130px" }}
-                          width={{ md: "150px", "2xl": "180px" }}
+                          height={{ md: '100px', '2xl': '130px' }}
+                          width={{ md: '150px', '2xl': '180px' }}
                           minHeight="100px"
                         >
                           <Image
@@ -83,7 +83,7 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                             fallbackSrc="https://via.placeholder.com/350"
                             alt="Product Image"
                             objectFit="cover"
-                            maxW={{ base: "100%", sm: "70px" }}
+                            maxW={{ base: '100%', sm: '70px' }}
                             borderRadius="8px"
                           />
 
@@ -118,7 +118,7 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
         </TabPanels>
       </Box>
     </Tabs>
-  );
-};
+  )
+}
 
-export default CategoryTabs;
+export default CategoryTabs

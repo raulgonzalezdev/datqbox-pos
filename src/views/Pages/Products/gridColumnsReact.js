@@ -1,4 +1,4 @@
-import { AddIcon, MinusIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, MinusIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Flex,
   Text,
@@ -7,12 +7,12 @@ import {
   Badge,
   IconButton,
   Button,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 export const createColumns = (editRow, deleteRow, onSelect) => [
   {
-    Header: "Id",
-    accessor: "id",
+    Header: 'Id',
+    accessor: 'id',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -22,8 +22,8 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "Name",
-    accessor: "name",
+    Header: 'Name',
+    accessor: 'name',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -33,8 +33,8 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "Vendedor",
-    accessor: "vendor",
+    Header: 'Vendedor',
+    accessor: 'vendor',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -46,8 +46,8 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "Category",
-    accessor: "category",
+    Header: 'Category',
+    accessor: 'category',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -59,8 +59,8 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "Price",
-    accessor: "price",
+    Header: 'Price',
+    accessor: 'price',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -72,8 +72,8 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "TaxRate",
-    accessor: "taxRate",
+    Header: 'TaxRate',
+    accessor: 'taxRate',
     Cell: ({ row }) => (
       <Flex align="center">
         <Box ml={2}>
@@ -85,25 +85,25 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
     ),
   },
   {
-    Header: "New Arrivals",
-    accessor: "newarrivals",
+    Header: 'New Arrivals',
+    accessor: 'newarrivals',
     Cell: ({ row }) => (
       <Badge
-        bg={row.original.newarrivals ? "green.400" : "transparent"}
-        color={row.original.newarrivals ? "white" : "gray.400"}
+        bg={row.original.newarrivals ? 'green.400' : 'transparent'}
+        color={row.original.newarrivals ? 'white' : 'gray.400'}
         fontSize="sm"
         p="3px 10px"
         borderRadius="8px"
-        border={row.original.newarrivals ? "none" : "1px solid #fff"}
+        border={row.original.newarrivals ? 'none' : '1px solid #fff'}
         fontWeight="normal"
       >
-        {row.original.newarrivals ? "Activo" : "Inactivo"}
+        {row.original.newarrivals ? 'Activo' : 'Inactivo'}
       </Badge>
     ),
   },
   {
-    Header: "Acciones",
-    accessor: "actions",
+    Header: 'Acciones',
+    accessor: 'actions',
     Cell: ({ row }) => (
       <Flex justifyContent="space-around">
         <IconButton
@@ -126,5 +126,5 @@ export const createColumns = (editRow, deleteRow, onSelect) => [
   </Flex>
 ),
 },
-];
+]
 

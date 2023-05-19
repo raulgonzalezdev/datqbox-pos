@@ -1,5 +1,5 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { AddIcon, MinusIcon, DeleteIcon } from "@chakra-ui/icons";
+import { GridColDef } from '@mui/x-data-grid'
+import { AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
     Flex,
     Text,
@@ -9,7 +9,7 @@ import {
     IconButton,
     Button,
   
-  } from "@chakra-ui/react";
+  } from '@chakra-ui/react'
 
 
   export const createColumns = (
@@ -20,8 +20,8 @@ import {
     
   ): GridColDef[] => [
     {
-      field: "userData",
-      headerName: "AUTHOR",
+      field: 'userData',
+      headerName: 'AUTHOR',
       width: 300,
       sortable: false,
       renderCell: (params) => (
@@ -29,7 +29,7 @@ import {
           <Avatar
           bg='teal.500'
           size='lg'
-          src={params.row.logo || ""}
+          src={params.row.logo || ''}
           name={params.row.name}
         />
           <Box ml={2}>
@@ -40,8 +40,8 @@ import {
       ),
     },
     {
-      field: "role",
-      headerName: "FUNCTION",
+      field: 'role',
+      headerName: 'FUNCTION',
       width: 200,
       sortable: false,
       renderCell: (params) => (
@@ -56,29 +56,29 @@ import {
       ),
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: 'status',
+      headerName: 'Status',
       width: 150,
       sortable: false,
       renderCell: (params) => (
         <Badge
-          bg={params.row.status  ? "green.400" : "transparent"}
-          color={params.row.status ? "white" : "gray.400"}
+          bg={params.row.status  ? 'green.400' : 'transparent'}
+          color={params.row.status ? 'white' : 'gray.400'}
           fontSize="sm"
           p="3px 10px"
           borderRadius="8px"
-          border={params.row.status  ? "none" : "1px solid #fff"}
+          border={params.row.status  ? 'none' : '1px solid #fff'}
           fontWeight="normal"
         >
-          {params.row.status ? "Activo" : "Inactivo"}
+          {params.row.status ? 'Activo' : 'Inactivo'}
         </Badge>
       ),
     },
     {
-      field: "actions",
-      headerName: "Acciones",
-      headerAlign: "right",
-      align: "right",
+      field: 'actions',
+      headerName: 'Acciones',
+      headerAlign: 'right',
+      align: 'right',
       width: 200,
       sortable: false,
       renderCell: (params) => (
@@ -110,4 +110,4 @@ import {
         </Flex>
       ),
     },
-  ];
+  ]

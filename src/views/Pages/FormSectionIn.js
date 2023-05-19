@@ -1,5 +1,5 @@
 // FormSection.js
-import React from "react";
+import React from 'react'
 import {
     Box,
     Button,
@@ -11,27 +11,27 @@ import {
     Text,
     Icon,
     Flex
-} from "@chakra-ui/react";
-import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
-import GradientBorder from "components/GradientBorder/GradientBorder";
+} from '@chakra-ui/react'
+import { FaApple, FaFacebook, FaGoogle } from 'react-icons/fa'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function FormSection() {
-    const titleColor = "white";
-    const textColor = "gray.400";
+    const titleColor = 'white'
+    const textColor = 'gray.400'
 
     return (
-        <GradientBorder p="2px" me={{ base: "none", lg: "30px", xl: "none" }}>
+        <GradientBorder p="2px" me={{ base: 'none', lg: '30px', xl: 'none' }}>
             <Flex
            
                 background="transparent"
                 borderRadius="30px"
                 direction="column"
                 p="40px"
-                minW={{ base: "unset", md: "430px", xl: "450px" }}
+                minW={{ base: 'unset', md: '430px', xl: '450px' }}
                 w="100%"
-                mx={{ base: "0px" }}
+                mx={{ base: '0px' }}
                 bg={{
-                    base: "rgb(19,21,56)",
+                    base: 'rgb(19,21,56)',
                 }}
                 alignItems="center"
          
@@ -51,7 +51,7 @@ function FormSection() {
                     </FormLabel>
                     <GradientBorder
                         mb="24px"
-                        w={{ base: "100%", lg: "fit-content" }}
+                        w={{ base: '100%', lg: 'fit-content' }}
                         borderRadius="20px"
                     >
                         <Input
@@ -61,7 +61,7 @@ function FormSection() {
                             borderRadius="20px"
                             fontSize="sm"
                             size="lg"
-                            w={{ base: "100%", md: "346px" }}
+                            w={{ base: '100%', md: '346px' }}
                             maxW="100%"
                             h="46px"
                             placeholder="Your email address"
@@ -74,7 +74,7 @@ function FormSection() {
                     </FormLabel>
                     <GradientBorder
                         mb="24px"
-                        w={{ base: "100%", lg: "fit-content" }}
+                        w={{ base: '100%', lg: 'fit-content' }}
                         borderRadius="20px"
                     >
                         <Input
@@ -84,7 +84,7 @@ function FormSection() {
                             borderRadius="20px"
                             fontSize="sm"
                             size="lg"
-                            w={{ base: "100%", md: "346px" }}
+                            w={{ base: '100%', md: '346px' }}
                             maxW="100%"
                             type="password"
                             h="46px"
@@ -134,8 +134,8 @@ function FormSection() {
                 </Text>
             </Flex>
         </GradientBorder>
-    );
+    )
 }
 
-export default FormSection;
+export default FormSection
 

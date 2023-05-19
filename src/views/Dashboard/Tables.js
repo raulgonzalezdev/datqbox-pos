@@ -6,7 +6,7 @@
 
 */
 
-import React from "react";
+import React from 'react'
 
 // Chakra imports
 import {
@@ -18,28 +18,28 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 // Custom components
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
+import Card from 'components/Card/Card.js'
+import CardHeader from 'components/Card/CardHeader.js'
+import CardBody from 'components/Card/CardBody.js'
 
 // Table Components
-import TablesProjectRow from "components/Tables/TablesProjectRow";
-import TablesTableRow from "components/Tables/TablesTableRow";
+import TablesProjectRow from 'components/Tables/TablesProjectRow'
+import TablesTableRow from 'components/Tables/TablesTableRow'
 
 // Data
-import { tablesProjectData, tablesTableData } from "variables/general";
+import { tablesProjectData, tablesTableData } from 'variables/general'
 
 // Icons
-import { AiFillCheckCircle } from "react-icons/ai";
+import { AiFillCheckCircle } from 'react-icons/ai'
 
 function Tables() {
   return (
-    <Flex direction='column' pt={{ base: "120px", md: "75px" }}>
+    <Flex direction='column' pt={{ base: '120px', md: '75px' }}>
       {/* Authors Table */}
-      <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb='0px'>
+      <Card overflowX={{ sm: 'scroll', xl: 'hidden' }} pb='0px'>
         <CardHeader p='6px 0px 22px 0px'>
           <Text fontSize='lg' color='#fff' fontWeight='bold'>
             Authors Table
@@ -90,14 +90,14 @@ function Tables() {
                     date={row.date}
                     lastItem={index === arr.length - 1 ? true : false}
                   />
-                );
+                )
               })}
             </Tbody>
           </Table>
         </CardBody>
       </Card>
       {/* Projects Table */}
-      <Card my='22px' overflowX={{ sm: "scroll", xl: "hidden" }} pb='0px'>
+      <Card my='22px' overflowX={{ sm: 'scroll', xl: 'hidden' }} pb='0px'>
         <CardHeader p='6px 0px 22px 0px'>
           <Flex direction='column'>
             <Text fontSize='lg' color='#fff' fontWeight='bold' mb='.5rem'>
@@ -114,7 +114,7 @@ function Tables() {
               <Text fontSize='sm' color='gray.400' fontWeight='normal'>
                 <Text fontWeight='bold' as='span' color='gray.400'>
                   +30%
-                </Text>{" "}
+                </Text>{' '}
                 this month
               </Text>
             </Flex>
@@ -163,14 +163,14 @@ function Tables() {
                     progression={row.progression}
                     lastItem={index === arr.length - 1 ? true : false}
                   />
-                );
+                )
               })}
             </Tbody>
           </Table>
         </CardBody>
       </Card>
     </Flex>
-  );
+  )
 }
 
-export default Tables;
+export default Tables

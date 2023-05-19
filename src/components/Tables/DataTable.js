@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   DataGrid,
   GridColDef,
   GridValueGetterParams,
   GridRowSelectedParams,
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid'
 import {
   Flex,
   Text,
@@ -15,41 +15,41 @@ import {
   Button,
   InputGroup,
   InputLeftElement,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
-import { ThemeProvider } from "@mui/material/styles";
-import taxTableTheme from "theme/themeTableMUI";
-import { SearchIcon } from "@chakra-ui/icons";
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import { ThemeProvider } from '@mui/material/styles'
+import taxTableTheme from 'theme/themeTableMUI'
+import { SearchIcon } from '@chakra-ui/icons'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 
 const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [rows, setRows] = useState(data);
+  const [searchValue, setSearchValue] = useState('')
+  const [rows, setRows] = useState(data)
 
   useEffect(() => {
-    setRows(data);
-  }, [data]);
+    setRows(data)
+  }, [data])
 
   const handleSearch = (event) => {
-    setSearchValue(event.target.value);
-    if (event.target.value === "") {
-      refetchData();
+    setSearchValue(event.target.value)
+    if (event.target.value === '') {
+      refetchData()
     } else {
       const filteredData = data.filter((row) =>
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(event.target.value.toLowerCase())
         )
-      );
-      setRows(filteredData);
+      )
+      setRows(filteredData)
     }
-  };
+  }
 
   const handleRowSelected = (params) => {
-    refetchData();
+    refetchData()
 
-    onSelect(params.data);
-  };
+    onSelect(params.data)
+  }
 
   return (
     <GradientBorder p="2px">
@@ -58,10 +58,10 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
       borderRadius="30px"
       w="100%"
       bg={{
-        base: "rgb(19,21,56)",
+        base: 'rgb(19,21,56)',
       }}
       direction="column"
-      pt={{ base: "120px", md: "75px" }}
+      pt={{ base: '120px', md: '75px' }}
     >
     
       <Flex justifyContent="space-between" alignItems="center" w="95%">
@@ -80,7 +80,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
             onChange={handleSearch}
             color="white"
             borderColor="gray.300"
-            _placeholder={{ color: "gray.300" }}
+            _placeholder={{ color: 'gray.300' }}
           />
         </InputGroup>
         <Button colorScheme="teal" onClick={onAdd} flex="1" ml={8}>
@@ -88,7 +88,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
         </Button>
       </Flex>
   
-      <Box sx={{ width: "97%", minHeight: { md: "650px", "2xl": "800px" }}} mx="1em">
+      <Box sx={{ width: '97%', minHeight: { md: '650px', '2xl': '800px' }}} mx="1em">
 
 
         <ThemeProvider theme={taxTableTheme}>
@@ -112,7 +112,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {
     
     </Flex>
     </GradientBorder>
-  );
-};
+  )
+}
 
-export default DataTable;
+export default DataTable

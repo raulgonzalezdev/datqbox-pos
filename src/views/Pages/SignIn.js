@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { AuthContext } from '../../AuthContext';
-import { useHistory } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react'
+import { AuthContext } from '../../AuthContext'
+import { useHistory } from 'react-router-dom'
 
 // Chakra imports
 import {
@@ -15,98 +15,117 @@ import {
   Switch,
   Text,
   DarkMode,
-} from "@chakra-ui/react";
+  useToast,
+} from '@chakra-ui/react'
 
 // Assets
-import signInImage from "assets/img/signInImage.png";
+import signInImage from 'assets/img/signInImage.png'
 
 // Custom Components
-import AuthFooter from "components/Footer/AuthFooter";
-import GradientBorder from "components/GradientBorder/GradientBorder";
-import { useSignIn } from 'graphql/users/crudUser';
+import AuthFooter from 'components/Footer/AuthFooter'
+import GradientBorder from 'components/GradientBorder/GradientBorder'
+import { useSignIn } from 'graphql/users/crudUser'
 
 
 
 function SignIn() {
-  const titleColor = "white";
-  const textColor = "gray.400";
+  const titleColor = 'white'
+  const textColor = 'gray.400'
 
-  const [signIn, { data, loading, error }] = useSignIn();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [rememberMe, setRememberMe] = React.useState(false);
-  const history = useHistory();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-
+  const [signIn, { data, loading, error }] = useSignIn()
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [rememberMe, setRememberMe] = React.useState(false)
+  const history = useHistory()
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+  const toast = useToast()
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+    setEmail(event.target.value)
+  }
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+    setPassword(event.target.value)
+  }
 
   const handleRememberMeChange = (event) => {
-    setRememberMe(event.target.checked);
-  };
+    setRememberMe(event.target.checked)
+  }
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/pos'); 
+      history.push('/pos') 
       
     } else {
-      history.push('/auth/signin');
+      history.push('/auth/signin')
     }
-  }, [isAuthenticated, history]);
+  }, [isAuthenticated, history])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      const response = await signIn({ variables: { email, password } });
+      const response = await signIn({ variables: { email, password } })
   
       if (response && response.data && response.data.loginUser) {
-        const { token } = response.data.loginUser;
-  
-       
-        localStorage.setItem('authToken', token);
-        setIsAuthenticated(true);
+        const { token } = response.data.loginUser
+        localStorage.setItem('authToken', token)
+        setIsAuthenticated(true)
 
-      
-        
+        // Aquí agregamos un mensaje de toast para el éxito
+        toast({
+          title: 'Inicio de sesión exitoso.',
+          description: 'Ha iniciado sesión con éxito.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
       } else {
-        console.error('Error during sign in: no data received');
+        
+        toast({
+          title: 'Error durante el inicio de sesión.',
+          description: 'No se recibieron datos. Usuario o clave invalidos',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
       }
     } catch (err) {
-      console.error('Error during sign in:', err);
+     
+      toast({
+        title: 'Error durante el inicio de sesión.',
+        description: `Mensaje: ${err.message}. Nombre: ${err.name}. Errores GraphQL: ${err.graphQLErrors.map(e => e.message).join(', ')}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
     }
-  };
+  }
   
 
   return (
     <Flex position='relative'>
       <Flex
         minH='100vh'
-        h={{ base: "120vh", lg: "fit-content" }}
+        h={{ base: '120vh', lg: 'fit-content' }}
         w='100%'
         maxW='1044px'
         mx='auto'
-        pt={{ sm: "100px", md: "0px" }}
+        pt={{ sm: '100px', md: '0px' }}
         flexDirection='column'
-        me={{ base: "auto", lg: "50px", xl: "auto" }}>
+        me={{ base: 'auto', lg: '50px', xl: 'auto' }}>
         <Flex
           alignItems='center'
           justifyContent='start'
-          style={{ userSelect: "none" }}
-          mx={{ base: "auto", lg: "unset" }}
-          ms={{ base: "auto", lg: "auto" }}
-          w={{ base: "100%", md: "50%", lg: "450px" }}
+          style={{ userSelect: 'none' }}
+          mx={{ base: 'auto', lg: 'unset' }}
+          ms={{ base: 'auto', lg: 'auto' }}
+          w={{ base: '100%', md: '50%', lg: '450px' }}
           px='50px'>
           <Flex
             direction='column'
             w='100%'
             // background='transparent'
-            mt={{ base: "50px", md: "150px", lg: "160px", xl: "245px" }}
-            mb={{ base: "60px", lg: "95px" }}>
+            mt={{ base: '50px', md: '150px', lg: '160px', xl: '245px' }}
+            mb={{ base: '60px', lg: '95px' }}>
             <Heading color={titleColor} fontSize='32px' mb='10px'>
               Nice to see you!
             </Heading>
@@ -128,7 +147,7 @@ function SignIn() {
               </FormLabel>
               <GradientBorder
                 mb='24px'
-                w={{ base: "100%", lg: "fit-content" }}
+                w={{ base: '100%', lg: 'fit-content' }}
                 borderRadius='20px'>
                 <Input
                   color='white'
@@ -137,7 +156,7 @@ function SignIn() {
                   borderRadius='20px'
                   fontSize='sm'
                   size='lg'
-                  w={{ base: "100%", md: "346px" }}
+                  w={{ base: '100%', md: '346px' }}
                   maxW='100%'
                   h='46px'
                   value={email}
@@ -156,7 +175,7 @@ function SignIn() {
               </FormLabel>
               <GradientBorder
                 mb='24px'
-                w={{ base: "100%", lg: "fit-content" }}
+                w={{ base: '100%', lg: 'fit-content' }}
                 borderRadius='20px'>
                 <Input
                   color='white'
@@ -165,7 +184,7 @@ function SignIn() {
                   borderRadius='20px'
                   fontSize='sm'
                   size='lg'
-                  w={{ base: "100%", md: "346px" }}
+                  w={{ base: '100%', md: '346px' }}
                   maxW='100%'
                   value={password}
                   onChange={handlePasswordChange}
@@ -221,17 +240,17 @@ function SignIn() {
           </Flex>
         </Flex>
         <Box
-          w={{ base: "335px", md: "450px" }}
-          mx={{ base: "auto", lg: "unset" }}
-          ms={{ base: "auto", lg: "auto" }}
+          w={{ base: '335px', md: '450px' }}
+          mx={{ base: 'auto', lg: 'unset' }}
+          ms={{ base: 'auto', lg: 'auto' }}
           mb='80px'>
           <AuthFooter />
         </Box>
         <Box
-          display={{ base: "none", lg: "block" }}
+          display={{ base: 'none', lg: 'block' }}
           overflowX='hidden'
           h='100%'
-          maxW={{ md: "50vw", lg: "50vw" }}
+          maxW={{ md: '50vw', lg: '50vw' }}
           minH='100vh'
           w='960px'
           position='absolute'
@@ -270,7 +289,7 @@ function SignIn() {
         </Box>
       </Flex>
     </Flex>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn

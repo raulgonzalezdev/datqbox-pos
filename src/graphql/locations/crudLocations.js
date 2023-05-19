@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const GET_LOCATIONS = gql`
   query GetLocations {
@@ -8,7 +8,7 @@ const GET_LOCATIONS = gql`
       lng
     }
   }
-`;
+`
 
 const GET_LOCATION = gql`
   query GetLocation($id: ID!) {
@@ -18,7 +18,7 @@ const GET_LOCATION = gql`
       lng
     }
   }
-`;
+`
 
 const CREATE_LOCATION = gql`
   mutation CreateLocation($input: LocationInput!) {
@@ -28,7 +28,7 @@ const CREATE_LOCATION = gql`
       lng
     }
   }
-`;
+`
 
 const UPDATE_LOCATION = gql`
   mutation UpdateLocation($id: ID!, $input: LocationInput!) {
@@ -38,37 +38,37 @@ const UPDATE_LOCATION = gql`
       lng
     }
   }
-`;
+`
 
 const DELETE_LOCATION = gql`
   mutation DeleteLocation($id: ID!) {
     deleteLocation(id: $id)
   }
-`;
+`
 
 export function useGetLocations() {
-    return useQuery(GET_LOCATIONS);
+    return useQuery(GET_LOCATIONS)
   }
   
   export function useGetLocation(id) {
-    return useQuery(GET_LOCATION, { variables: { id } });
+    return useQuery(GET_LOCATION, { variables: { id } })
   }
   
   export function useCreateLocation() {
     return useMutation(CREATE_LOCATION, {
       refetchQueries: [{ query: GET_LOCATIONS }],
-    });
+    })
   }
   
   export function useUpdateLocation() {
     return useMutation(UPDATE_LOCATION, {
       refetchQueries: [{ query: GET_LOCATIONS }],
-    });
+    })
   }
   
   export function useDeleteLocation() {
     return useMutation(DELETE_LOCATION, {
       refetchQueries: [{ query: GET_LOCATIONS }],
-    });
+    })
   }
   

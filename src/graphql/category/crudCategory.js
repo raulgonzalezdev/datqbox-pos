@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 const GET_CATEGORIES = gql`
   query GetCategories {
@@ -12,7 +12,7 @@ const GET_CATEGORIES = gql`
       }
     }
   }
-`;
+`
 
 const GET_CATEGORY = gql`
   query GetCategory($id: ID!) {
@@ -26,7 +26,7 @@ const GET_CATEGORY = gql`
       }
     }
   }
-`;
+`
 
 const CREATE_CATEGORY = gql`
   mutation CreateCategory($input: CategoryInput!) {
@@ -36,7 +36,7 @@ const CREATE_CATEGORY = gql`
       image
     }
   }
-`;
+`
 
 const UPDATE_CATEGORY = gql`
   mutation UpdateCategory($id: ID!, $input: CategoryInput!) {
@@ -46,37 +46,37 @@ const UPDATE_CATEGORY = gql`
       image
     }
   }
-`;
+`
 
 const DELETE_CATEGORY = gql`
   mutation DeleteCategory($id: ID!) {
     deleteCategory(id: $id)
   }
-`;
+`
 
 export function useGetCategories() {
-    return useQuery(GET_CATEGORIES);
+    return useQuery(GET_CATEGORIES)
   }
   
   export function useGetCategory(id) {
-    return useQuery(GET_CATEGORY, { variables: { id } });
+    return useQuery(GET_CATEGORY, { variables: { id } })
   }
   
   export function useCreateCategory() {
     return useMutation(CREATE_CATEGORY, {
       refetchQueries: [{ query: GET_CATEGORIES }],
-    });
+    })
   }
   
   export function useUpdateCategory() {
     return useMutation(UPDATE_CATEGORY, {
       refetchQueries: [{ query: GET_CATEGORIES }],
-    });
+    })
   }
   
   export function useDeleteCategory() {
     return useMutation(DELETE_CATEGORY, {
       refetchQueries: [{ query: GET_CATEGORIES }],
-    });
+    })
   }
   

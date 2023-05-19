@@ -1,15 +1,15 @@
-import Dashboard from "views/Dashboard/Dashboard.js";
-import Tables from "views/Dashboard/Tables.js";
-import Billing from "views/Dashboard/Billing.js";
-import RTLPage from "views/RTL/RTLPage.js";
-import Profile from "views/Dashboard/Profile.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
-import StepperForm from "views/Pages/StepperForm/StepperForm.js";
-import UsersList from "views/Pages/Users/UsersList";
-import PeriodsAccounting from "views/Pages/PeriodsAccounting/PeriodsAccounting.js";
-import POSApp from "views/Pages/POSApp/POSApp.js";
-import ProductsList from "views/Pages/Products/ProductsList.js"
+import Dashboard from 'views/Dashboard/Dashboard.js'
+import Tables from 'views/Dashboard/Tables.js'
+import Billing from 'views/Dashboard/Billing.js'
+import RTLPage from 'views/RTL/RTLPage.js'
+import Profile from 'views/Dashboard/Profile.js'
+import SignIn from 'views/Pages/SignIn.js'
+import SignUp from 'views/Pages/SignUp.js'
+import StepperForm from 'views/Pages/StepperForm/StepperForm.js'
+import UsersList from 'views/Pages/Users/UsersList'
+import PeriodsAccounting from 'views/Pages/PeriodsAccounting/PeriodsAccounting.js'
+import POSApp from 'views/Pages/POSApp/POSApp.js'
+import ProductsList from 'views/Pages/Products/ProductsList.js'
 
 
 import {
@@ -21,121 +21,170 @@ import {
   RocketIcon,
   SupportIcon,
   
-} from "components/Icons/Icons";
+} from 'components/Icons/Icons'
 
 
 var dashRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
+    path: '/dashboard',
+    name: 'Dashboard',
+    rtlName: 'لوحة القيادة',
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
-    layout: "/admin",
+    layout: '/admin',
   },
   {
-    path: "/pos",
-    name: "POS",
-    rtlName: "لوحة القيادة",
+    path: '/pos',
+    name: 'POS',
+    rtlName: 'لوحة القيادة',
     icon: <CreditIcon color="inherit" />,
     component: POSApp,
-    layout: "/pos",
+    layout: '/pos',
   },
 
  
 
   {
-    name: "Productos",
-    path: "/products",
-    category: "account",
-    rtlName: "صفحات",
+    name: 'Productos',
+    path: '/products',
+    category: 'account',
+    rtlName: 'صفحات',
     icon: <CreditIcon color="inherit" />,
-    state: "pageArcordion",
+    state: 'pageArcordion',
     views: [
       {
-        path: "/products",
-        name: "Articulos",
-        rtlName: "لوحة القيادة",
+        path: '/products',
+        name: 'Articulos',
+        rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
         component: ProductsList,
-        layout: "/admin",
+        layout: '/admin',
+      },
+      {
+        path: '/products',
+        name: 'Categorias',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: '/admin',
+      },
+      {
+        path: '/products',
+        name: 'Tallas',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: '/admin',
+      },
+      {
+        path: '/products',
+        name: 'Colores',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: '/admin',
+      },
+      {
+        path: '/products',
+        name: 'Reviews',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: '/admin',
       },
       
     ],
   },
   {
-    name: "Pedidos",
-    path: "/periodsaccounting",
-    category: "account",
-    rtlName: "صفحات",
-    state: "pageArcordion",
+    name: 'Pedidos',
+    path: '/periodsaccounting',
+    category: 'account',
+    rtlName: 'صفحات',
+    state: 'pageArcordion',
     icon: <CreditIcon color="inherit" />,
     views: [
      
       {
-        path: "/periodsaccounting",
-        name: "Clientes",
-        rtlName: "آرتيإل",
+        path: '/periodsaccounting',
+        name: 'Clientes',
+        rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
         secondaryNavbar: true,
         component: PeriodsAccounting,
-        layout: "/auth",
+        layout: '/auth',
       },
       {
-        path: "/rtl-support-page",
-        name: "Pedidos",
-        rtlName: "آرتيإل",
+        path: '/rtl-support-page',
+        name: 'Pedidos',
+        rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
         component: RTLPage,
-        layout: "/admin",
+        layout: '/admin',
       },
       {
-        path: "/rtl-support",
-        name: "Pagos",
-        rtlName: "آرتيإل",
+        path: '/rtl-support',
+        name: 'Pagos',
+        rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
         component: ProductsList,
-        layout: "/admin",
+        layout: '/admin',
       },
     ],
   },
   
   {
-    name: "Reportes",
-    path: "/stepperform",
-    category: "account",
-    rtlName: "صفحات",
+    name: 'Reportes',
+    path: '/stepperform',
+    category: 'account',
+    rtlName: 'صفحات',
     icon: <CreditIcon color="inherit" />,
-    state: "pageArcordion",
+    state: 'pageArcordion',
     views: [
       {
-        path: "/stepperform",
-        name: "Detalle de Ventas",
-        rtlName: "لوحة القيادة",
+        path: '/stepperform',
+        name: 'Detalle de Ventas',
+        rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
         component: StepperForm,
-        layout: "/admin",
+        layout: '/admin',
       },
-      {
-        //path: "/signin",
-        // name: "Pedidos",
-        // rtlName: "لوحة القيادة",
-        // icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
-        layout: "/auth",
-      },
-      {
-         //path: "/signup",
-        // name: "Formas de Pago",
-        // rtlName: "لوحة القيادة",
-        // icon: <RocketIcon color="inherit" />,
-        // secondaryNavbar: true,
-        component: SignUp,
-        layout: "/auth",
-      },
+     
     ],
   },
-];
-export default dashRoutes;
+  {
+    name: 'Usuarios',
+    path: '/stepperform',
+    category: 'account',
+    rtlName: 'صفحات',
+    icon: <CreditIcon color="inherit" />,
+    state: 'pageArcordion',
+    views: [
+      {
+        path: '/stepperform',
+        name: 'Usuarios',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: StepperForm,
+        layout: '/admin',
+      },
+      {
+        path: '/stepperform',
+        name: 'Mi Perfil',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: StepperForm,
+        layout: '/admin',
+      },
+     
+    ],
+  },
+]
+export default dashRoutes

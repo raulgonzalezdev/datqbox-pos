@@ -1,6 +1,6 @@
 // BankAccountsList.js
-import React from 'react';
-import { Box, Text, VStack, Button } from '@chakra-ui/react';
+import React from 'react'
+import { Box, Text, VStack, Button } from '@chakra-ui/react'
 
 function BankAccountsList() {
   const accounts = [
@@ -8,7 +8,7 @@ function BankAccountsList() {
     { name: 'Stripe', code: 'Stripe' },
     { name: 'Wise', code: 'Wise' },
     // ... Agrega el resto de las cuentas
-  ];
+  ]
 
   return (
     <VStack spacing={4} alignItems="start">
@@ -24,7 +24,7 @@ function BankAccountsList() {
         ¿Su banco no está aquí? Crearlo
       </Button>
     </VStack>
-  );
+  )
 }
 
-export default BankAccountsList;
+export default BankAccountsList

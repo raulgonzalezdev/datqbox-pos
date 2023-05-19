@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 
 const UPLOADED_IMAGES_QUERY = gql`
@@ -8,7 +8,7 @@ const UPLOADED_IMAGES_QUERY = gql`
       filename
     }
   }
-`;
+`
 
 
 
@@ -24,7 +24,7 @@ const GET_IMAGES = gql`
       }
     }
   }
-`;
+`
 
 const GET_IMAGE = gql`
   query GetImage($id: ID!) {
@@ -37,7 +37,7 @@ const GET_IMAGE = gql`
       }
     }
   }
-`;
+`
 
 const ADD_IMAGE = gql`
   mutation AddImage($input: AddImageInput!) {
@@ -49,7 +49,7 @@ const ADD_IMAGE = gql`
       }
     }
   }
-`;
+`
 
 const ADD_IMAGES = gql`
   mutation AddImages($input: AddImagesInput!) {
@@ -61,60 +61,60 @@ const ADD_IMAGES = gql`
       }
     }
   }
-`;
+`
 
 export const REMOVE_IMAGE = gql`
   mutation RemoveImage($id: ID!) {
     removeImage(id: $id)
   }
-`;
+`
 
 export const REMOVE_PRODUCT_IMAGES = gql`
   mutation RemoveProductImages($productId: ID!) {
     removeProductImages(productId: $productId)
   }
-`;
+`
 
 export function useGetImages() {
-    return useQuery(GET_IMAGES);
+    return useQuery(GET_IMAGES)
   }
   
   export function useGetImage(id) {
-    return useQuery(GET_IMAGE, { variables: { id } });
+    return useQuery(GET_IMAGE, { variables: { id } })
   }
   
   export function useAddImage() {
     return useMutation(ADD_IMAGE, {
       refetchQueries: [{ query: GET_IMAGES }],
-    });
+    })
   }
   export function useAddImages() {
     return useMutation(ADD_IMAGES, {
       refetchQueries: [{ query: GET_IMAGES }],
-    });
+    })
   }
   
   export function useRemoveImage() {
     return useMutation(REMOVE_IMAGE, {
       refetchQueries: [{ query: GET_IMAGES }],
-    });
+    })
   }
   
   export function useRemoveProductImages() {
     return useMutation(REMOVE_PRODUCT_IMAGES, {
       refetchQueries: [{ query: GET_IMAGES }],
-    });
+    })
   }
 
   export function useUploadedImages() {
-    const { data, loading, error, refetch } = useQuery(UPLOADED_IMAGES_QUERY);
+    const { data, loading, error, refetch } = useQuery(UPLOADED_IMAGES_QUERY)
   
     return {
       images: data?.uploadedImages,
       loading,
       error,
       refetch,
-    };
+    }
   }
   
   

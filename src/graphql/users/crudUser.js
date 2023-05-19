@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 // Queries y Mutations
 const GET_USERS = gql`
@@ -15,7 +15,7 @@ const GET_USERS = gql`
       is_active
     }
   }
-`;
+`
 
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
@@ -29,13 +29,13 @@ const LOGIN_USER = gql`
       }
     }
   }
-`;
+`
 
 export const VALIDATE_TOKEN = gql`
   query ValidateToken($token: String!) {
     validateToken(token: $token)
   }
-`;
+`
 
 
 
@@ -58,7 +58,7 @@ const ADD_USER = gql`
       }
     }
   }
-`;
+`
 
 const UPDATE_USER = gql`
   mutation UpdateUser($id: ID!, $input: UserInput!) {
@@ -73,31 +73,31 @@ const UPDATE_USER = gql`
       is_active
     }
   }
-`;
+`
 
 const DELETE_USER = gql`
   mutation DeleteUser($id: ID!) {
     deleteUser(id: $id)
   }
-`;
+`
 
 // Funciones CRUD
 export function useGetUsers() {
-  return useQuery(GET_USERS);
+  return useQuery(GET_USERS)
 }
 
 export function useAddUser() {
-  return useMutation(ADD_USER);
+  return useMutation(ADD_USER)
 }
 
 export function useUpdateUser() {
-  return useMutation(UPDATE_USER);
+  return useMutation(UPDATE_USER)
 }
 
 export function useDeleteUser() {
-  return useMutation(DELETE_USER);
+  return useMutation(DELETE_USER)
 }
 
 export function useSignIn() {
-  return useMutation(LOGIN_USER);
+  return useMutation(LOGIN_USER)
 }

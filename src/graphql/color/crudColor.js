@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 const GET_COLORS = gql`
   query GetColors {
@@ -10,7 +10,7 @@ const GET_COLORS = gql`
       updatedAt
     }
   }
-`;
+`
 
 const GET_COLOR = gql`
   query GetColor($id: ID!) {
@@ -22,7 +22,7 @@ const GET_COLOR = gql`
       updatedAt
     }
   }
-`;
+`
 
 const CREATE_COLOR = gql`
   mutation CreateColor($input: ColorInput!) {
@@ -32,7 +32,7 @@ const CREATE_COLOR = gql`
       hexCode
     }
   }
-`;
+`
 
 const UPDATE_COLOR = gql`
   mutation UpdateColor($id: ID!, $input: ColorInput) {
@@ -42,7 +42,7 @@ const UPDATE_COLOR = gql`
       hexCode
     }
   }
-`;
+`
 
 const DELETE_COLOR = gql`
   mutation DeleteColor($id: ID!) {
@@ -50,31 +50,31 @@ const DELETE_COLOR = gql`
       id
     }
   }
-`;
+`
 
 export function useGetColors() {
-  return useQuery(GET_COLORS);
+  return useQuery(GET_COLORS)
 }
 
 export function useGetColor(id) {
-  return useQuery(GET_COLOR, { variables: { id } });
+  return useQuery(GET_COLOR, { variables: { id } })
 }
   
 export function useCreateColor() {
   return useMutation(CREATE_COLOR, {
     refetchQueries: [{ query: GET_COLORS }],
-  });
+  })
 }
   
 export function useUpdateColor() {
   return useMutation(UPDATE_COLOR, {
     refetchQueries: [{ query: GET_COLORS }],
-  });
+  })
 }
   
 export function useDeleteColor() {
   return useMutation(DELETE_COLOR, {
     refetchQueries: [{ query: GET_COLORS }],
-  });
+  })
 }
 

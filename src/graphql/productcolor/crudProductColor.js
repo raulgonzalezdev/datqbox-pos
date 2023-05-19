@@ -1,4 +1,4 @@
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, useQuery, gql } from '@apollo/client'
 
 const GET_PRODUCT_COLORS_BY_PRODUCT_ID = gql`
   query GetProductColorsByProductId($ProductId: ID!) {
@@ -13,7 +13,7 @@ const GET_PRODUCT_COLORS_BY_PRODUCT_ID = gql`
       }
     }
   }
-`;
+`
 
 const ADD_PRODUCT_COLOR = gql`
   mutation AddProductColor($ProductId: ID!, $ColorId: ID!) {
@@ -28,13 +28,13 @@ const ADD_PRODUCT_COLOR = gql`
         }
     }
   }
-`;
+`
 
 const REMOVE_PRODUCT_COLOR = gql`
   mutation RemoveProductColor($input: RemoveProductColorInput!) {
     removeProductColor(input: $input)
   }
-`;
+`
 
 const ADD_MULTIPLE_PRODUCT_COLORS = gql`
   mutation AddMultipleProductColors($input: [ProductColorInput!]!) {
@@ -44,23 +44,23 @@ const ADD_MULTIPLE_PRODUCT_COLORS = gql`
       ColorId
     }
   }
-`;
+`
 
 
 export function useGetProductColorsByProductId(ProductId) {
     return useQuery(GET_PRODUCT_COLORS_BY_PRODUCT_ID, {
       variables: { ProductId },
-    });
+    })
   }
 
 export function useAddProductColor() {
-  return useMutation(ADD_PRODUCT_COLOR);
+  return useMutation(ADD_PRODUCT_COLOR)
 }
 
 export function useRemoveProductColor() {
-  return useMutation(REMOVE_PRODUCT_COLOR);
+  return useMutation(REMOVE_PRODUCT_COLOR)
 }
 
 export function useAddMultipleProductColors() {
-    return useMutation(ADD_MULTIPLE_PRODUCT_COLORS);
+    return useMutation(ADD_MULTIPLE_PRODUCT_COLORS)
   }

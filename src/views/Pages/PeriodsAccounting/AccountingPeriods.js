@@ -1,9 +1,9 @@
 // AccountingPeriods.js
-import React from "react";
+import React from 'react'
 import {
   FormControl,
   Flex,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 import {
   StyledInput,
   StyledSelect,
@@ -11,13 +11,13 @@ import {
   StyledFormLabel,
   BaseFlex,
   StyledText,
-} from "components/ReusableComponents/ReusableComponents";
+} from 'components/ReusableComponents/ReusableComponents'
 
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function AccountingPeriods() {
-  const textColor = "gray.400";
-  const titleColor = "white";
+  const textColor = 'gray.400'
+  const titleColor = 'white'
 
   return (
     <GradientBorder p="2px">
@@ -36,7 +36,7 @@ function AccountingPeriods() {
               Fecha de apertura
             </StyledFormLabel>
             <StyledInput
-              w={{ base: "100%", md: "160px" }}
+              w={{ base: '100%', md: '160px' }}
               type="date"
               placeholder="01/01/2023"
             />
@@ -61,7 +61,7 @@ function AccountingPeriods() {
             </StyledFormLabel>
             <Flex>
               <StyledInput
-                w={{ base: "100%", md: "160px" }}
+                w={{ base: '100%', md: '160px' }}
                 type="number"
                 placeholder="31"
                 min="1"
@@ -70,7 +70,7 @@ function AccountingPeriods() {
 
               <StyledSelect
                 placeholder="Mes"
-                w={{ base: "100%", md: "160px" }}
+                w={{ base: '100%', md: '160px' }}
               >
                 <option value="enero">Enero</option>
                 <option value="febrero">Febrero</option>
@@ -92,7 +92,7 @@ function AccountingPeriods() {
             <StyledFormLabel >
               Recordatorio
             </StyledFormLabel>
-            <StyledInput type="text" placeholder="7 días después período" w={{ base: "100%", md: "240px" }} />
+            <StyledInput type="text" placeholder="7 días después período" w={{ base: '100%', md: '240px' }} />
           </FormControl>
         </Flex>
         <FormControl>
@@ -108,8 +108,8 @@ function AccountingPeriods() {
         </FormControl>
       </BaseFlex>
     </GradientBorder>
-  );
+  )
 }
-export default AccountingPeriods;
+export default AccountingPeriods
 
 

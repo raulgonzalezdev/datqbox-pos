@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Link, Text, Image } from '@chakra-ui/react';
-import { Separator } from 'components/Separator/Separator';
-import logo from 'assets/img/icon.png'; // Asegúrate de que la ruta sea la correcta
+import React from 'react'
+import { Box, Link, Text, Image } from '@chakra-ui/react'
+import { Separator } from 'components/Separator/Separator'
+import logo from 'assets/img/icon.png' // Asegúrate de que la ruta sea la correcta
 
 const Brand = ({ logoText }) => {
   return (
@@ -29,8 +29,8 @@ const Brand = ({ logoText }) => {
       </Link>
       <Separator></Separator>
     </Box>
-  );
-};
+  )
+}
 
-export default Brand;
+export default Brand
 

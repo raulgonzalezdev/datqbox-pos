@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const GET_PAYMENT_METHODS = gql`
   query GetPaymentMethods {
@@ -8,7 +8,7 @@ const GET_PAYMENT_METHODS = gql`
       description
     }
   }
-`;
+`
 
 const GET_PAYMENT_METHOD = gql`
   query GetPaymentMethod($id: ID!) {
@@ -18,7 +18,7 @@ const GET_PAYMENT_METHOD = gql`
       description
     }
   }
-`;
+`
 
 const CREATE_PAYMENT_METHOD = gql`
   mutation CreatePaymentMethod($input: PaymentMethodInput!) {
@@ -28,7 +28,7 @@ const CREATE_PAYMENT_METHOD = gql`
       description
     }
   }
-`;
+`
 
 const UPDATE_PAYMENT_METHOD = gql`
   mutation UpdatePaymentMethod($id: ID!, $input: PaymentMethodInput!) {
@@ -38,38 +38,38 @@ const UPDATE_PAYMENT_METHOD = gql`
       description
     }
   }
-`;
+`
 
 const DELETE_PAYMENT_METHOD = gql`
   mutation DeletePaymentMethod($id: ID!) {
     deletePaymentMethod(id: $id)
   }
-`;
+`
 
 
 export function useGetPaymentMethods() {
-    return useQuery(GET_PAYMENT_METHODS);
+    return useQuery(GET_PAYMENT_METHODS)
   }
   
   export function useGetPaymentMethod(id) {
-    return useQuery(GET_PAYMENT_METHOD, { variables: { id } });
+    return useQuery(GET_PAYMENT_METHOD, { variables: { id } })
   }
   
   export function useCreatePaymentMethod() {
     return useMutation(CREATE_PAYMENT_METHOD, {
       refetchQueries: [{ query: GET_PAYMENT_METHODS }],
-    });
+    })
   }
   
   export function useUpdatePaymentMethod() {
     return useMutation(UPDATE_PAYMENT_METHOD, {
       refetchQueries: [{ query: GET_PAYMENT_METHODS }],
-    });
+    })
   }
   
   export function useDeletePaymentMethod() {
     return useMutation(DELETE_PAYMENT_METHOD, {
       refetchQueries: [{ query: GET_PAYMENT_METHODS }],
-    });
+    })
   }
   

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, useQuery, gql } from '@apollo/client'
 
 
 
@@ -14,7 +14,7 @@ const GET_PRODUCT_SIZES_BY_PRODUCT_ID = gql`
       }
     }
   }
-`;
+`
 
 const ADD_PRODUCT_SIZE = gql`
   mutation AddProductSize($ProductId: ID!, $SizeId: ID!) {
@@ -28,7 +28,7 @@ const ADD_PRODUCT_SIZE = gql`
         }
     }
   }
-`;
+`
 
 const ADD_MULTIPLE_PRODUCT_SIZES = gql`
   mutation AddMultipleProductSizes($input: [ProductSizeInput!]!) {
@@ -39,29 +39,29 @@ const ADD_MULTIPLE_PRODUCT_SIZES = gql`
       stock
     }
   }
-`;
+`
 
 
 const REMOVE_PRODUCT_SIZE = gql`
   mutation RemoveProductSize($input: RemoveProductSizeInput!) {
     removeProductSize(input: $input)
   }
-`;
+`
 
 export function useGetProductSizesByProductId(ProductId) {
     return useQuery(GET_PRODUCT_SIZES_BY_PRODUCT_ID, {
       variables: { ProductId },
-    });
+    })
   }
 
 export function useAddProductSize() {
-  return useMutation(ADD_PRODUCT_SIZE);
+  return useMutation(ADD_PRODUCT_SIZE)
 }
 
 export function useRemoveProductSize() {
-  return useMutation(REMOVE_PRODUCT_SIZE);
+  return useMutation(REMOVE_PRODUCT_SIZE)
 }
 
 export function useAddMultipleProductSizes() {
-    return useMutation(ADD_MULTIPLE_PRODUCT_SIZES);
+    return useMutation(ADD_MULTIPLE_PRODUCT_SIZES)
   }

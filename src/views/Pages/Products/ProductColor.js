@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyledFormLabel } from "components/ReusableComponents/ReusableComponents";
+import React, { useState, useEffect } from 'react'
+import { StyledFormLabel } from 'components/ReusableComponents/ReusableComponents'
 import {
   Box,
   CheckboxGroup,
@@ -24,20 +24,20 @@ import {
   useToast,
   useDisclosure,
 
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
-import { IconButton, Icon } from "@chakra-ui/react";
-import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
-import { CustomCheckbox } from "components/CheckBox/CustomCheckBox";
+import { IconButton, Icon } from '@chakra-ui/react'
+import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { CustomCheckbox } from 'components/CheckBox/CustomCheckBox'
 
 import {
   useGetColors,
   useCreateColor,
   useUpdateColor,
   useDeleteColor,
-} from "graphql/color/crudColor";
+} from 'graphql/color/crudColor'
 
-import ColorPicker from "components/ColorPicker/colorPiker";
+import ColorPicker from 'components/ColorPicker/colorPiker'
 
 function ProductColor({
   formState,
@@ -47,24 +47,24 @@ function ProductColor({
   selectedColors
 
 }) {
-  const toast = useToast();
-  const { data: colorsData } = useGetColors();
-  const [createColor, { loading: createLoading }] = useCreateColor();
-  const [updateColor, { loading: updateLoading }] = useUpdateColor();
-  const [deleteColor, { loading: deleteLoading }] = useDeleteColor();
-  const [colorselect, setColor] = useState("#0000FF");
-  const [nameColor, setNameColor] = useState("Azul");
-  const [selectedColor, setSelectedColor] = useState([]);
+  const toast = useToast()
+  const { data: colorsData } = useGetColors()
+  const [createColor, { loading: createLoading }] = useCreateColor()
+  const [updateColor, { loading: updateLoading }] = useUpdateColor()
+  const [deleteColor, { loading: deleteLoading }] = useDeleteColor()
+  const [colorselect, setColor] = useState('#0000FF')
+  const [nameColor, setNameColor] = useState('Azul')
+  const [selectedColor, setSelectedColor] = useState([])
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [radioValue, setRadioValue] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [radioValue, setRadioValue] = useState(null)
 
-  const [actionType, setActionType] = useState(null);
+  const [actionType, setActionType] = useState(null)
 
   const handleColor = (colorselect) => {
-    setColor(colorselect);
-    setNameColor(colorselect);
-  };
+    setColor(colorselect)
+    setNameColor(colorselect)
+  }
 
 
 
@@ -72,73 +72,73 @@ function ProductColor({
  
   const handleSubmit = async (type, actionType, id = null) => {
     try {
-      if (type === "color") {
+      if (type === 'color') {
         const input = {
           name: nameColor,
           hexCode: colorselect,
-        };
-
-        if (actionType === "create") {
-          await createColor({ variables: { input } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Color creado.",
-            description: `El color ${nameColor} ha sido creado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else if (actionType === "update") {
-          await updateColor({ variables: { id, input } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Color actualizado.",
-            description: `El color ${nameColor} ha sido actualizado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        } else if (actionType === "delete") {
-          await deleteColor({ variables: { id } });
-
-          // Muestra un toast de éxito
-          toast({
-            title: "Color eliminado.",
-            description: `El color ${nameColor} ha sido eliminado con éxito.`,
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
         }
 
-        setNameColor("");
-        setColor("");
-        onClose();
+        if (actionType === 'create') {
+          await createColor({ variables: { input } })
+
+          // Muestra un toast de éxito
+          toast({
+            title: 'Color creado.',
+            description: `El color ${nameColor} ha sido creado con éxito.`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+        } else if (actionType === 'update') {
+          await updateColor({ variables: { id, input } })
+
+          // Muestra un toast de éxito
+          toast({
+            title: 'Color actualizado.',
+            description: `El color ${nameColor} ha sido actualizado con éxito.`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+        } else if (actionType === 'delete') {
+          await deleteColor({ variables: { id } })
+
+          // Muestra un toast de éxito
+          toast({
+            title: 'Color eliminado.',
+            description: `El color ${nameColor} ha sido eliminado con éxito.`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+        }
+
+        setNameColor('')
+        setColor('')
+        onClose()
      
       }
     } catch (error) {
       // Muestra un toast de error si algo va mal
 
       toast({
-        title: "Error al realizar la acción.",
+        title: 'Error al realizar la acción.',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 5000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   return (
     <React.Fragment>
    
         <Accordion
           allowToggle
-          w={{ base: "100%", md: "50%" }}
-          pr={{ base: "0", md: "4" }}
-          style={{ border: "none" }}
+          w={{ base: '100%', md: '50%' }}
+          pr={{ base: '0', md: '4' }}
+          style={{ border: 'none' }}
         >
           <AccordionItem>
             <AccordionButton color="white">
@@ -155,7 +155,7 @@ function ProductColor({
                     w="120%"
                     h="auto" // ajusta la altura para que sea automática y se adapte al contenido
                     mb={1}
-                    pr={{ base: "0", md: "4", xl: "4" }}
+                    pr={{ base: '0', md: '4', xl: '4' }}
                     p={1} // añade un poco de padding para dar más espacio alrededor del contenido
                   >
                     <CustomCheckbox
@@ -164,9 +164,9 @@ function ProductColor({
                       name={color.name}
                       isChecked={selectedColors.includes(color.id)}
                       onCheck={() => {
-                        handleSelectedColors(color.id);
-                        setSelectedColor(color);
-                        setRadioValue(color.id);
+                        handleSelectedColors(color.id)
+                        setSelectedColor(color)
+                        setRadioValue(color.id)
                       }}
                       index={color.id}
                       radioValue={radioValue}
@@ -188,8 +188,8 @@ function ProductColor({
                         aria-label="Add new color"
                         icon={<AddIcon />}
                         onClick={() => {
-                          setActionType("create");
-                          onOpen();
+                          setActionType('create')
+                          onOpen()
                         }}
                       />
                     </PopoverTrigger>
@@ -199,11 +199,11 @@ function ProductColor({
                       icon={<EditIcon />}
                       onClick={() => {
                         if (radioValue) {
-                          console.log(selectedColor.name);
-                          setNameColor(radioValue.name);
-                          setColor(radioValue.color);
-                          setActionType("update");
-                          onOpen();
+                          console.log(selectedColor.name)
+                          setNameColor(radioValue.name)
+                          setColor(radioValue.color)
+                          setActionType('update')
+                          onOpen()
                         }
                       }}
                     />
@@ -211,8 +211,8 @@ function ProductColor({
                       aria-label="Delete color"
                       icon={<DeleteIcon />}
                       onClick={() => {
-                        setActionType("delete");
-                        handleSubmit("color", "delete", radioValue.index);
+                        setActionType('delete')
+                        handleSubmit('color', 'delete', radioValue.index)
                       }}
                     />
                   </Stack>
@@ -233,9 +233,9 @@ function ProductColor({
                             handleColor={handleColor}
                             boxProps={{
                               bg: colorselect,
-                              boxSize: "5.7rem",
-                              border: "1px solid #c4c4c4",
-                              marginTop: "10px",
+                              boxSize: '5.7rem',
+                              border: '1px solid #c4c4c4',
+                              marginTop: '10px',
                             }}
                           />
                         </Box>
@@ -268,12 +268,12 @@ function ProductColor({
                       <Button
                         colorScheme="blue"
                         onClick={() =>
-                          handleSubmit("color", actionType, radioValue.index)
+                          handleSubmit('color', actionType, radioValue.index)
                         }
                         mr={2} // Añade margen a la derecha
                         size="sm"
                       >
-                        {actionType === "create" ? "Add" : "Update"}
+                        {actionType === 'create' ? 'Add' : 'Update'}
                       </Button>
                       <Button colorScheme="red" onClick={onClose} size="sm">
                         Regresar
@@ -288,6 +288,6 @@ function ProductColor({
         
    
     </React.Fragment>
-  );
+  )
 }
-export default ProductColor;
+export default ProductColor

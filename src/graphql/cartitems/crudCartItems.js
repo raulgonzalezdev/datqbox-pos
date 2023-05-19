@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const GET_CART_ITEMS = gql`
   query GetCartItems($cartId: ID!) {
@@ -15,7 +15,7 @@ const GET_CART_ITEMS = gql`
       price
     }
   }
-`;
+`
 
 const ADD_CART_ITEM = gql`
   mutation AddCartItem($cartId: ID!, $productId: ID!, $quantity: Int!, $price: Float!) {
@@ -32,7 +32,7 @@ const ADD_CART_ITEM = gql`
       price
     }
   }
-`;
+`
 
 const UPDATE_CART_ITEM = gql`
   mutation UpdateCartItem($id: ID!, $quantity: Int!) {
@@ -49,28 +49,28 @@ const UPDATE_CART_ITEM = gql`
       price
     }
   }
-`;
+`
 
 const DELETE_CART_ITEM = gql`
   mutation DeleteCartItem($id: ID!) {
     deleteCartItem(id: $id)
   }
-`;
+`
 
 
 export function useGetCartItems(cartId) {
-    return useQuery(GET_CART_ITEMS, { variables: { cartId } });
+    return useQuery(GET_CART_ITEMS, { variables: { cartId } })
   }
   
   export function useAddCartItem() {
-    return useMutation(ADD_CART_ITEM);
+    return useMutation(ADD_CART_ITEM)
   }
   
   export function useUpdateCartItem() {
-    return useMutation(UPDATE_CART_ITEM);
+    return useMutation(UPDATE_CART_ITEM)
   }
   
   export function useDeleteCartItem() {
-    return useMutation(DELETE_CART_ITEM);
+    return useMutation(DELETE_CART_ITEM)
   }
   

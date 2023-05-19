@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Box,
   Image,
@@ -13,29 +13,29 @@ import {
   ModalFooter,
   Checkbox,
   IconButton,
-} from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { useUploadedImages } from "graphql/image/crudImage";
+} from '@chakra-ui/react'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { useUploadedImages } from 'graphql/image/crudImage'
 
-const IMAGES_PER_PAGE = 8; // 3 filas de 4 imágenes
+const IMAGES_PER_PAGE = 8 // 3 filas de 4 imágenes
 
 function ImagesUpload({ onImageSelect }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const { images: imagesUpload, loading: createLoading } = useUploadedImages();
+  const [isOpen, setIsOpen] = useState(false)
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [previewImage, setPreviewImage] = useState(null)
+  const [selectedImages, setSelectedImages] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
+  const { images: imagesUpload, loading: createLoading } = useUploadedImages()
 
   const onImageClick = (imageUrl, isChecked) => {
     if (isChecked) {
-      setSelectedImages((prevImages) => [...prevImages, imageUrl]);
+      setSelectedImages((prevImages) => [...prevImages, imageUrl])
     } else {
-      setSelectedImages(selectedImages.filter((image) => image !== imageUrl));
+      setSelectedImages(selectedImages.filter((image) => image !== imageUrl))
     }
-  };
+  }
 
-  let thumbs = [];
+  let thumbs = []
   if (imagesUpload) {
     thumbs = imagesUpload
       .slice(currentPage * IMAGES_PER_PAGE, (currentPage + 1) * IMAGES_PER_PAGE)
@@ -62,40 +62,40 @@ function ImagesUpload({ onImageSelect }) {
           <Image
             src={image.url}
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              borderRadius: "8px",
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '8px',
 
             }}
             cursor="pointer"
             onClick={() => {
-              setPreviewImage(image.url);
-              setPreviewOpen(true);
+              setPreviewImage(image.url)
+              setPreviewOpen(true)
             }}
           />
         </Box>
-      ));
+      ))
   }
 
   const onSubmit = () => {
-    onImageSelect(selectedImages);
-    setSelectedImages([]);
-    setIsOpen(false);
-  };
+    onImageSelect(selectedImages)
+    setSelectedImages([])
+    setIsOpen(false)
+  }
 
   const goToNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
+    setCurrentPage((prevPage) => prevPage + 1)
+  }
 
   const goToPreviousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
+    setCurrentPage((prevPage) => prevPage - 1)
+  }
 
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>View All</Button>
-      <Modal size={"xl"} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal size={'xl'} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay
           bg="none"
           backdropFilter="auto"
@@ -119,7 +119,7 @@ function ImagesUpload({ onImageSelect }) {
               isDisabled={currentPage === 0}
             />
             <SimpleGrid
-              columns={{ base:1, sm: 4, md: 4, lg: 4, xl: 4, "2xl": 4 }}
+              columns={{ base:1, sm: 4, md: 4, lg: 4, xl: 4, '2xl': 4 }}
               spacing={4}
             >
               {thumbs}
@@ -158,8 +158,8 @@ function ImagesUpload({ onImageSelect }) {
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }
 
-export default ImagesUpload;
+export default ImagesUpload
  

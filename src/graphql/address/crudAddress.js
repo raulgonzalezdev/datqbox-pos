@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 const GET_ADDRESSES = gql`
   query GetAddresses {
@@ -12,7 +12,7 @@ const GET_ADDRESSES = gql`
       userId
     }
   }
-`;
+`
 
 const GET_ADDRESS = gql`
   query GetAddress($id: ID!) {
@@ -26,7 +26,7 @@ const GET_ADDRESS = gql`
       userId
     }
   }
-`;
+`
 
 const CREATE_ADDRESS = gql`
   mutation CreateAddress($street: String!, $city: String!, $state: String!, $zipCode: String!, $country: String!, $userId: ID!) {
@@ -40,7 +40,7 @@ const CREATE_ADDRESS = gql`
       userId
     }
   }
-`;
+`
 
 const UPDATE_ADDRESS = gql`
   mutation UpdateAddress($id: ID!, $street: String, $city: String, $state: String, $zipCode: String, $country: String) {
@@ -54,7 +54,7 @@ const UPDATE_ADDRESS = gql`
       userId
     }
   }
-`;
+`
 
 const DELETE_ADDRESS = gql`
   mutation DeleteAddress($id: ID!) {
@@ -62,32 +62,32 @@ const DELETE_ADDRESS = gql`
       id
     }
   }
-`;
+`
 
 
 export function useGetAddresses() {
-    return useQuery(GET_ADDRESSES);
+    return useQuery(GET_ADDRESSES)
   }
   
   export function useGetAddress(id) {
-    return useQuery(GET_ADDRESS, { variables: { id } });
+    return useQuery(GET_ADDRESS, { variables: { id } })
   }
   
   export function useCreateAddress() {
     return useMutation(CREATE_ADDRESS, {
       refetchQueries: [{ query: GET_ADDRESSES }],
-    });
+    })
   }
   
   export function useUpdateAddress() {
     return useMutation(UPDATE_ADDRESS, {
       refetchQueries: [{ query: GET_ADDRESSES }],
-    });
+    })
   }
   
   export function useDeleteAddress() {
     return useMutation(DELETE_ADDRESS, {
       refetchQueries: [{ query: GET_ADDRESSES }],
-    });
+    })
   }
   

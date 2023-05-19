@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react'
 import {
   FormControl,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 import {
   StyledInput,
   GradientInput,
   StyledFormLabel,
   BaseFlex,
   StyledText,
-} from "components/ReusableComponents/ReusableComponents";
+} from 'components/ReusableComponents/ReusableComponents'
 
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function Address() {
-  const textColor = "gray.400";
-  const titleColor = "white";
+  const textColor = 'gray.400'
+  const titleColor = 'white'
 
   return (
     <GradientBorder p="2px">
@@ -40,7 +40,7 @@ function Address() {
         </FormControl>
       </BaseFlex>
     </GradientBorder>
-  );
+  )
 }
 
-export default Address;
+export default Address

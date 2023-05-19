@@ -1,8 +1,8 @@
 
-import React from "react";
-import DataTable from "components/Tables/DataTable";
-import { useGetUsers } from 'graphql/users/crudUser';
-import { createColumns } from "./gridColumns";
+import React from 'react'
+import DataTable from 'components/Tables/DataTable'
+import { useGetUsers } from 'graphql/users/crudUser'
+import { createColumns } from './gridColumns'
 
 
 
@@ -11,40 +11,40 @@ import { createColumns } from "./gridColumns";
 const incrementQuantity = (params) => {
   const newRows = rows.map((row) => {
     if (row.id === params.id) {
-      row.cant += 1;
+      row.cant += 1
     }
-    return row;
-  });
-  setRows(newRows);
-  updateTotal(newRows);
-};
+    return row
+  })
+  setRows(newRows)
+  updateTotal(newRows)
+}
 
 const decrementQuantity = (params) => {
   const newRows = rows.map((row) => {
     if (row.id === params.id && row.cant > 0) {
-      row.cant -= 1;
+      row.cant -= 1
     }
-    return row;
-  });
-  setRows(newRows);
-  updateTotal(newRows);
-};
+    return row
+  })
+  setRows(newRows)
+  updateTotal(newRows)
+}
 
 const deleteRow = (params) => {
-  const newRows = rows.filter((row) => row.id !== params.id);
-  setRows(newRows);
-  updateTotal(newRows);
-};
+  const newRows = rows.filter((row) => row.id !== params.id)
+  setRows(newRows)
+  updateTotal(newRows)
+}
 
 const handleAdd = () => {
-  console.log("Add new record");
+  console.log('Add new record')
   // Implement the logic to add a new record
-};
+}
 
 const handleSelect = (rowData) => {
-  console.log("Selected row data:", rowData);
+  console.log('Selected row data:', rowData)
   // Implement the logic to handle the selected row data
-};
+}
 
   
 // inicio componenete
@@ -55,14 +55,14 @@ const handleSelect = (rowData) => {
       decrementQuantity,
       deleteRow,
       handleSelect,
-    );
+    )
 
-    const { data, loading, error } = useGetUsers();
+    const { data, loading, error } = useGetUsers()
 
   
   
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   const rows = data.users.map((row, index) => {
      return {
@@ -73,8 +73,8 @@ const handleSelect = (rowData) => {
       role: row.role,
       status: row.is_active,
     
-    };
-   });
+    }
+   })
 
 
 
@@ -89,7 +89,7 @@ const handleSelect = (rowData) => {
       onAdd={handleAdd}
       onSelect={handleSelect}
     />
-  );
-};
+  )
+}
 
-export default UsersList;
+export default UsersList

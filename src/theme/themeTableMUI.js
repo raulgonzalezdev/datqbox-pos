@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles'
 
 const taxTableTheme = createTheme({
   components: {
@@ -37,8 +37,8 @@ const taxTableTheme = createTheme({
           '& .MuiDataGrid-sortIcon': {
             color: '#fff',
           },
-          "& .MuiDataGrid-pages": {
-            color: "#000", 
+          '& .MuiDataGrid-pages': {
+            color: '#000', 
           },
           row: {
             paddingTop: '20px',
@@ -55,16 +55,16 @@ const taxTableTheme = createTheme({
   },
   palette: {
     primary: {
-      main: "#fff",
+      main: '#fff',
     },
     text: {
-      primary: "#56577A",
+      primary: '#56577A',
     },
   },
-});
+})
 
 
 
 
 
-export default taxTableTheme;
+export default taxTableTheme

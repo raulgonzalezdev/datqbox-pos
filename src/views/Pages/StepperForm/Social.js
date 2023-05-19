@@ -1,24 +1,24 @@
-import React from "react";
+import React from 'react'
 import {
   FormControl,
   FormLabel,
   Input,
   Flex,
   Text,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 import {
   GradientInput,
   StyledFormLabel,
   StyledInput,
   BaseFlex,
   StyledText,
-} from "components/ReusableComponents/ReusableComponents";
+} from 'components/ReusableComponents/ReusableComponents'
 
-import GradientBorder from "components/GradientBorder/GradientBorder";
+import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 function Social() {
-  const textColor = "gray.400";
-  const titleColor = "white";
+  const textColor = 'gray.400'
+  const titleColor = 'white'
 
   return (
     <GradientBorder p="2px">
@@ -44,7 +44,7 @@ function Social() {
         {/* Agrega los demás campos siguiendo este formato */}
       </BaseFlex>
     </GradientBorder>
-  );
+  )
 }
 
-export default Social;
+export default Social

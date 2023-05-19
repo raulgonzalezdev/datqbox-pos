@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useToast } from "@chakra-ui/react";
-import DataTable from "components/Tables/DataTable";
+import React, { useState, useEffect } from 'react'
+import { useToast } from '@chakra-ui/react'
+import DataTable from 'components/Tables/DataTable'
 import {
   useGetProducts,
   DELETE_PRODUCT,
   useCreateProduct,
-} from "graphql/products/crudProducts";
-import { createColumns } from "./gridColumns";
-import ProductForm from "./ProductForm";
-import DeleteAlert from "components/DeleteAlert/DeleteAlert";
+} from 'graphql/products/crudProducts'
+import { createColumns } from './gridColumns'
+import ProductForm from './ProductForm'
+import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
 
 
 const ProductsList = () => {
-  const [createProduct, { loading: createLoading }] = useCreateProduct();
-  const toast = useToast();
+  const [createProduct, { loading: createLoading }] = useCreateProduct()
+  const toast = useToast()
 
   const editRow = (rowData) => {
 
-    setShowProductForm(true);
-    setProductId(rowData);
-  };
+    setShowProductForm(true)
+    setProductId(rowData)
+  }
   const deleteRow = (rowData) => {
    
-    setProductId(rowData);
-    setShowDeleteAlert(true);
-  };
+    setProductId(rowData)
+    setShowDeleteAlert(true)
+  }
 
   const handleSelect = async (rowData) => {
     
@@ -43,102 +43,102 @@ const ProductsList = () => {
       newarrivals: rowData.row.newarrivals,
       taxRate: parseFloat(rowData.row.taxRate),
       categoryId: rowData.row.category.id,
-  };
+  }
   
   
    
     try {
-      const result = await createProduct({ variables: { input: newProduct } });
+      const result = await createProduct({ variables: { input: newProduct } })
      
   
       // Update the UI to reflect the new product
-      setRows([...rows, result.data.createProduct]);
+      setRows([...rows, result.data.createProduct])
 
       // Show success toast
       toast({
-        title: "Success",
-        description: "New product created successfully",
-        status: "success",
+        title: 'Success',
+        description: 'New product created successfully',
+        status: 'success',
         duration: 2000,
         isClosable: true,
-      });
+      })
     } catch (error) {
-      console.error('Error creating new product:', error);
+      console.error('Error creating new product:', error)
   
       // Show error toast
       toast({
-        title: "Error",
-        description: "Error creating new product: " + error,
-        status: "error",
+        title: 'Error',
+        description: 'Error creating new product: ' + error,
+        status: 'error',
         duration: 2000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
   
   
 
-  const columns = createColumns(editRow, deleteRow, handleSelect);
+  const columns = createColumns(editRow, deleteRow, handleSelect)
 
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true)
   const { data, loading, error, refetch } = useGetProducts({
     skip: !initialLoad,
-  });
+  })
 
-  const [showProductForm, setShowProductForm] = useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [productId, setProductId] = useState(null);
+  const [showProductForm, setShowProductForm] = useState(false)
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false)
+  const [productId, setProductId] = useState(null)
 
 
 
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([])
 
 
   useEffect(() => {
     if (data && data.products) {
-      setRows(data.products);
-      setInitialLoad(false);
+      setRows(data.products)
+      setInitialLoad(false)
     }
-  }, [data]);
+  }, [data])
   
   const handleConfirmDelete = async () => {
     try {
-      const result = await refetch();
+      const result = await refetch()
      
-      setShowProductForm(false);
+      setShowProductForm(false)
      
     } catch (error) {
-      console.error('Refetch error:', error);
+      console.error('Refetch error:', error)
     } finally {
-      setShowDeleteAlert(false);
-      setProductId(null);
+      setShowDeleteAlert(false)
+      setProductId(null)
     }
-  };
+  }
   
   
 
   const handleAdd = () => {
-    console.log("Add new record");
-    setProductId(null);
-    setShowProductForm(true);
-  };
+    console.log('Add new record')
+    setProductId(null)
+    setShowProductForm(true)
+  }
 
   const handleCancel = () => {
-    setShowProductForm(false);
-  };
+    setShowProductForm(false)
+  }
 
   const handleSuccess = (newProduct) => {
-    setShowProductForm(false);
-    refetch();
-  };
+    setShowProductForm(false)
+    refetch()
+  }
 
   const handleCloseDeleteAlert = () => {
-    setShowDeleteAlert(false);
-    setProductId(null);
-  };
+    setShowDeleteAlert(false)
+    setProductId(null)
+  }
 
   // if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
@@ -165,7 +165,7 @@ const ProductsList = () => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default ProductsList;
+export default ProductsList

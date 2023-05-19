@@ -5,6 +5,7 @@
   "homepage": "https://datqbox.com",
   "dependencies": {
     "@apollo/client": "^3.7.14",
+    "@babel/eslint-parser": "^7.21.8",
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.1",
     "@chakra-ui/system": "^2.5.7",
@@ -20,8 +21,11 @@
     "@mui/utils": "^5.12.0",
     "@mui/x-data-grid": "^6.3.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
     "apexcharts": "^3.27.3",
     "apollo-upload-client": "^17.0.0",
+    "babel-eslint": "^10.1.0",
     "classnames": "^2.3.2",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.1",
@@ -67,7 +71,7 @@
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "optionalDependencies": {
-    "@babel/core": "7.14.0",
+    "@babel/core": "^7.21.8",
     "typescript": "4.2.4"
   },
   "devDependencies": {

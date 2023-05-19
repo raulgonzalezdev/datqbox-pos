@@ -1,4 +1,4 @@
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation } from '@apollo/client'
 
 export const GET_PRODUCTS = gql`
   query GetProducts {
@@ -46,7 +46,7 @@ export const GET_PRODUCTS = gql`
       }
     }
   }
-`;
+`
 
 export const GET_PRODUCT = gql`
   query GetProduct($id: ID!) {
@@ -94,7 +94,7 @@ export const GET_PRODUCT = gql`
       }
     }
   }
-`;
+`
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {
@@ -116,7 +116,7 @@ export const CREATE_PRODUCT = gql`
       taxRate
     }
   }
-`;
+`
 
 export const DUPLICATE_PRODUCT = gql`
   mutation DuplicateProduct($input: DuplicateProductInput!) {
@@ -139,7 +139,7 @@ export const DUPLICATE_PRODUCT = gql`
       taxRate
     }
   }
-`;
+`
 
 export const UPDATE_PRODUCT = gql`
   mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {
@@ -162,13 +162,13 @@ export const UPDATE_PRODUCT = gql`
       taxRate
     }
   }
-`;
+`
 
 export const DELETE_PRODUCT = gql`
   mutation DeleteProduct($id: ID!) {
     deleteProduct(id: $id)
   }
-`;
+`
 
 export const UPLOAD_PRODUCT_IMAGE = gql`
   mutation UploadProductImage($id: ID!, $image: Upload!) {
@@ -177,7 +177,7 @@ export const UPLOAD_PRODUCT_IMAGE = gql`
       image
     }
   }
-`;
+`
 
 export const DELETE_PRODUCT_IMAGE = gql`
   mutation DeleteProductImage($id: ID!) {
@@ -186,13 +186,13 @@ export const DELETE_PRODUCT_IMAGE = gql`
       image
     }
   }
-`;
+`
 
 
 
 
 export function useGetProducts() {
-    return useQuery(GET_PRODUCTS);
+    return useQuery(GET_PRODUCTS)
   }
   
   export function useGetProduct(id, options = {}) {
@@ -201,47 +201,47 @@ export function useGetProducts() {
         loading: false,
         data: null,
         error: null,
-      };
+      }
     }
   
-    return useQuery(GET_PRODUCT, { variables: { id }, ...options });
+    return useQuery(GET_PRODUCT, { variables: { id }, ...options })
   }
   
   
   export function useCreateProduct() {
     return useMutation(CREATE_PRODUCT, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
 
   export function useDuplicateProduct() {
     return useMutation(Duplicate_PRODUCT, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
   
   export function useUpdateProduct() {
     return useMutation(UPDATE_PRODUCT, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
   
   export function useDeleteProduct() {
     return useMutation(DELETE_PRODUCT, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
 
   export function useUploadProductImage() {
     return useMutation(UPLOAD_PRODUCT_IMAGE, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
   
   export function useDeleteProductImage() {
     return useMutation(DELETE_PRODUCT_IMAGE, {
       refetchQueries: [{ query: GET_PRODUCTS }],
-    });
+    })
   }
   
 
