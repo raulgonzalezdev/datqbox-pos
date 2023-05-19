@@ -26,14 +26,14 @@ import {
 // Styles for the circular progressbar
 import medusa from 'assets/img/cardimgfree.png'
 // Custom components
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardHeader from 'components/Card/CardHeader.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
+import CardHeader from 'components/Card/CardHeader'
 import BarChart from 'components/Charts/BarChart'
 import LineChart from 'components/Charts/LineChart'
 import IconBox from 'components/Icons/IconBox'
 // Icons
-import { CartIcon, DocumentIcon, GlobeIcon, RocketIcon, StatsIcon, WalletIcon } from 'components/Icons/Icons.js'
+import { CartIcon, DocumentIcon, GlobeIcon, RocketIcon, StatsIcon, WalletIcon } from 'components/Icons/Icons'
 import DashboardTableRow from 'components/Tables/DashboardTableRow'
 import TimelineRow from 'components/Tables/TimelineRow'
 import React from 'react'

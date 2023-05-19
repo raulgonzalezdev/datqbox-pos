@@ -4,13 +4,13 @@
 import { ChakraProvider, Portal, useDisclosure } from '@chakra-ui/react'
 import { RtlProvider } from 'components/RTLProvider/RTLProvider'
 import Configurator from 'components/Configurator/Configurator'
-import Footer from 'components/Footer/Footer.js'
+import Footer from 'components/Footer/Footer'
 // Layout components
-import AdminNavbar from 'components/Navbars/AdminNavbar.js'
-import Sidebar from 'components/Sidebar/Sidebar.js'
+import AdminNavbar from 'components/Navbars/AdminNavbar'
+import Sidebar from 'components/Sidebar/Sidebar'
 import React, { useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import routes from 'routes.js'
+import routes from 'routes'
 // Custom Chakra theme
 import theme from 'theme/themeAdmin'
 import FixedPlugin from '../components/FixedPlugin/FixedPlugin'

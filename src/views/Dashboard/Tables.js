@@ -21,9 +21,9 @@ import {
 } from '@chakra-ui/react'
 
 // Custom components
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardBody from 'components/Card/CardBody'
 
 // Table Components
 import TablesProjectRow from 'components/Tables/TablesProjectRow'

@@ -3,8 +3,8 @@ import { Box, Image, VStack, HStack, Stack, Input, useBreakpointValue, Flex, Gri
 
 import { BaseFlex, StyledText, StyledInput, StyledFormLabel } from 'components/ReusableComponents/ReusableComponents'
 import ImagesUpload from 'components/ImagesUpload/ImagesUpload'
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
 import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 import { useDropzone } from 'react-dropzone'
 import { REMOVE_PRODUCT_IMAGES, REMOVE_IMAGE } from 'graphql/image/crudImage'

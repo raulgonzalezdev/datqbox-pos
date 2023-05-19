@@ -14,9 +14,9 @@ import { Box, Button, Flex, Grid, Icon, Spacer, Text } from '@chakra-ui/react'
 import BackgroundCard1 from 'assets/img/billing-background-card.png'
 
 // Custom components
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardHeader from 'components/Card/CardHeader.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
+import CardHeader from 'components/Card/CardHeader'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 import IconBox from 'components/Icons/IconBox'
 import BillingRow from 'components/Tables/BillingRow'

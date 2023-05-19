@@ -21,7 +21,7 @@ import PropTypes from 'prop-types'
 import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../../AuthContext'
 import { NavLink , useHistory} from 'react-router-dom'
-import routes from 'routes.js'
+import routes from 'routes'
 import logo_Brand from 'assets/img/logo.png'
 
 export default function PosNavbar(props) {

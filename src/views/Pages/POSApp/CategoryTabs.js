@@ -17,8 +17,8 @@ import {
 } from '@chakra-ui/react'
 import { productosRows as productsList, categories } from 'variables/products'
 
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 
 const CategoryTabs = ({ handleProductDoubleClick }) => {

@@ -29,7 +29,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 
 import { NavLink } from 'react-router-dom'
-import routes from 'routes.js'
+import routes from 'routes'
 import logo_Brand from 'assets/img/logo.png'
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, ...rest } = props

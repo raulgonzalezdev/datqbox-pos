@@ -1,9 +1,9 @@
 import React from 'react'
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import { Flex, Text, Box  } from '@chakra-ui/react'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardBody from 'components/Card/CardBody'
 import { ThemeProvider } from '@mui/material/styles' 
 import taxTableTheme from 'theme/themeTableMUI'
   

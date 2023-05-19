@@ -28,7 +28,7 @@ import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../../AuthContext'
 import {  useHistory} from 'react-router-dom'
 
-import routes from 'routes.js'
+import routes from 'routes'
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props

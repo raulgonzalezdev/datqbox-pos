@@ -15,8 +15,8 @@ import {
   BaseFlex,
   StyledText,
 } from 'components/ReusableComponents/ReusableComponents'
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'

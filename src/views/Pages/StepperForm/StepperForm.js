@@ -1,5 +1,5 @@
 import React from 'react'
-import Stepper from 'components/Stepper/Stepper.js'
+import Stepper from 'components/Stepper/Stepper'
 import UserInfo from './UserInfo'
 import Address from './Address'
 import Social from './Social'
