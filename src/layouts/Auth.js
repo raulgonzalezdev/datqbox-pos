@@ -1,43 +1,36 @@
 import { Box, ChakraProvider, Portal } from "@chakra-ui/react";
-import Footer from "components/Footer/Footer.js";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
-import React, { Component } from "react";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 import theme from "theme/themeAuth.js";
+import SignIn from "views/Pages/SignIn.js";
+import SignUp from "views/Pages/SignUp.js";
 
-class AuthLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.wrapper = React.createRef();
-    this.navRef = React.createRef();
-  }
+const AuthLayout = (props) => {
+  const wrapper = useRef(null);
+ 
 
-  componentDidMount() {
+  useEffect(() => {
     document.body.style.overflow = "unset";
-  }
 
-  componentWillUnmount() {
-    document.body.style.overflow = "";
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.forceUpdate !== this.props.forceUpdate) {
-      this.props.history.push("/auth/signin");
+    return () => {
+      document.body.style.overflow = "";
     }
-  }
+  }, []);
 
+ 
 
-  getActiveRoute = (routes) => {
+  const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
-        let collapseActiveRoute = this.getActiveRoute(routes[i].views);
+        let collapseActiveRoute = getActiveRoute(routes[i].views);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
       } else if (routes[i].category) {
-        let categoryActiveRoute = this.getActiveRoute(routes[i].views);
+        let categoryActiveRoute = getActiveRoute(routes[i].views);
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
@@ -52,14 +45,26 @@ class AuthLayout extends Component {
     return activeRoute;
   };
 
-  getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return this.getRoutes(prop.views);
-      }
-      if (prop.category === "account") {
-        return this.getRoutes(prop.views);
-      }
+ 
+   
+  var dashRoutes = [
+    {
+      path: "/signin",
+      component: SignIn,
+      layout: "/auth",
+    },
+    {
+       path: "/signup",
+      component: SignUp,
+      layout: "/auth",
+    },
+  ]  
+   
+  const getRoutes = (routes) => {
+    // Combine routes and dashRoutes into one array
+    const allRoutes = [...routes, ...dashRoutes];
+    
+    return allRoutes.map((prop, key) => {
       if (prop.layout === "/auth") {
         return (
           <Route
@@ -73,12 +78,13 @@ class AuthLayout extends Component {
       }
     });
   };
-
-  getActiveNavbar = (routes) => {
+  
+  
+  const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].category) {
-        let categoryActiveNavbar = this.getActiveNavbar(routes[i].views);
+        let categoryActiveNavbar = getActiveNavbar(routes[i].views);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
@@ -94,31 +100,28 @@ class AuthLayout extends Component {
     }
     return activeNavbar;
   };
-  
 
-  render() {
-    document.documentElement.dir = "ltr";
-    return (
-      <ChakraProvider theme={theme} resetCss={false} w="100%">
-        <Box ref={this.wrapper} w="100%">
-          <Portal containerRef={this.wrapper}>
-            <AuthNavbar
-              secondary={this.getActiveNavbar(routes)}
-              logoText="DATQBOX - POS"
-            />
-          </Portal>
-          <Box w="100%">
-            <Box ref={this.wrapper} w="100%">
-              <Switch>
-                {this.getRoutes(routes)}
-                <Redirect from="/auth" to="/auth/signin" />
-              </Switch>
-            </Box>
+  document.documentElement.dir = "ltr";
+  return (
+    <ChakraProvider theme={theme} resetCss={false} w="100%">
+      <Box ref={wrapper} w="100%">
+        <Portal containerRef={wrapper}>
+          <AuthNavbar
+            secondary={getActiveNavbar(routes)}
+            logoText="DATQBOX - POS"
+          />
+        </Portal>
+        <Box w="100%">
+          <Box ref={wrapper} w="100%">
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="/pos" to="/pos" />
+            </Switch>
           </Box>
         </Box>
-      </ChakraProvider>
-    );
-  }
+      </Box>
+    </ChakraProvider>
+  );
 }
 
-export default withRouter(AuthLayout);
+export default AuthLayout;

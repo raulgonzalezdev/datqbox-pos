@@ -31,6 +31,13 @@ const LOGIN_USER = gql`
   }
 `;
 
+export const VALIDATE_TOKEN = gql`
+  query ValidateToken($token: String!) {
+    validateToken(token: $token)
+  }
+`;
+
+
 
 
 

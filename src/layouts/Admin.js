@@ -3,30 +3,33 @@
 import { ChakraProvider, Portal, useDisclosure } from "@chakra-ui/react";
 import Configurator from "components/Configurator/Configurator";
 import Footer from "components/Footer/Footer.js";
-// Layout components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import React, { useState } from "react";
+import React, { useState , useRef} from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
-// Custom Chakra theme
 import theme from "theme/themeAdmin.js";
 import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
-// Custom components
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
-export default function Dashboard(props) {
-  const { ...rest } = props;
-  // states and functions
+import { withRouter } from 'react-router-dom';
+
+
+const AdminLayout = ( props ) => {
+
+  const { history, ...rest } = props;
+ 
   const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const [fixed, setFixed] = useState(false);
   // ref for main panel div
-  const mainPanel = React.createRef();
+  const mainPanel = useRef(null);
   // functions for changing the states from components
+
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
+
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -131,13 +134,7 @@ export default function Dashboard(props) {
           </PanelContent>
         ) : null}
         <Footer />
-        {/* <Portal>
-          <FixedPlugin
-            secondary={getActiveNavbar(routes)}
-            fixed={fixed}
-            onOpen={onOpen}
-          />
-        </Portal> */}
+        
         <Configurator
           secondary={getActiveNavbar(routes)}
           isOpen={isOpen}
@@ -153,3 +150,5 @@ export default function Dashboard(props) {
     </ChakraProvider>
   );
 }
+
+export default withRouter(AdminLayout);

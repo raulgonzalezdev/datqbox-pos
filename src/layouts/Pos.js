@@ -8,10 +8,12 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 //import theme from "theme/themeAuth.js";
 import theme from "theme/themeAdmin.js";
+import { withRouter } from 'react-router-dom';
 
 
-export default function Pages(props) {
-  const { ...rest } = props;
+const PosLayout = (props ) => {
+
+  const { history, ...rest } = props;
   // ref for the wrapper div
   const wrapper = React.createRef();
   React.useEffect(() => {
@@ -93,6 +95,7 @@ export default function Pages(props) {
             secondary={getActiveNavbar(routes)}
             logoText='DATQBOX  -  POS'
             {...props}
+            {...rest}
           
           />
         </Portal>
@@ -108,3 +111,5 @@ export default function Pages(props) {
     </ChakraProvider>
   );
 }
+
+export default withRouter(PosLayout);

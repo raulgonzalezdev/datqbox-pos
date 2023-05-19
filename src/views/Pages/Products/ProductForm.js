@@ -135,10 +135,15 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }
   `;
 
+
+  
+
+  const token = localStorage.getItem('authToken');
   const uploadLink = createUploadLink({
     uri: "http://localhost:4000/graphql", // Debes reemplazarlo por la URI de tu servidor GraphQL
     headers: {
       "keep-alive": "true",
+      authorization: token ? `Bearer ${token}` : "",
     },
   });
 

@@ -25,19 +25,16 @@ import {
 } from "components/Icons/Icons";
 import  SidebarResponsive  from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
-import React from "react";
+import React from 'react';
+
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 export default function AuthNavbar(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setOpen(!open);
-  };
+
+
   const { logo, logoText, secondary, ...rest } = props;
-  // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName) => {
-    return window.location.href.indexOf(routeName) > -1 ? true : false;
-  };
+
+
   // Chakra color mode
   let navbarIcon = "white";
   let mainText = "white";
@@ -76,39 +73,12 @@ export default function AuthNavbar(props) {
   );
   var linksAuth = (
     <HStack display={{ sm: "none", lg: "flex" }}>
-      <NavLink to='/admin/dashboard'>
-        <Button
-          fontSize='sm'
-          ms='0px'
-          me='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={<HomeIcon color={navbarIcon} w='12px' h='12px' me='0px' />}>
-          <Text>Dashboard</Text>
-        </Button>
-      </NavLink>
-      <NavLink to='/admin/profile'>
-        <Button
-          fontSize='sm'
-          ms='0px'
-          me='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          leftIcon={
-            <PersonIcon color={navbarIcon} w='12px' h='12px' me='0px' />
-          }>
-          <Text>Profile</Text>
-        </Button>
-      </NavLink>
+     
       <NavLink to='/auth/signup'>
         <Button
           fontSize='sm'
           ms='0px'
-          me='0px'
+        
           px='0px'
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -168,19 +138,7 @@ export default function AuthNavbar(props) {
           />
         </Box>
          {linksAuth} 
-        {/* <Link href='https://datqbox.com/product/vision-ui-dashboard-chakra'>
-          <Button
-            fontSize='xs'
-            variant='brand'
-            borderRadius='12px'
-            px='30px'
-            display={{
-              sm: "none",
-              lg: "flex",
-            }}>
-            Download
-          </Button>
-        </Link> */}
+       
       </Flex>
     </Flex>
   );

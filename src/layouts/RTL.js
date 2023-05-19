@@ -18,6 +18,8 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
+
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -134,13 +136,7 @@ export default function Dashboard(props) {
             </PanelContent>
           ) : null}
           <Footer />
-          {/* <Portal>
-            <FixedPlugin
-              secondary={getActiveNavbar(routes)}
-              fixed={fixed}
-              onOpen={onOpen}
-            />
-          </Portal> */}
+         
           <Configurator
             secondary={getActiveNavbar(routes)}
             isOpen={isOpen}

@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useContext, useEffect } from 'react';
+import { AuthContext } from '../../AuthContext';
 import { useHistory } from 'react-router-dom';
 
 // Chakra imports
@@ -36,6 +36,7 @@ function SignIn() {
   const [password, setPassword] = React.useState('');
   const [rememberMe, setRememberMe] = React.useState(false);
   const history = useHistory();
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -49,23 +50,37 @@ function SignIn() {
     setRememberMe(event.target.checked);
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/pos'); 
+      localStorage.setItem('authToken', true);
+    } else {
+      history.push('/auth/signin');
+    }
+  }, [isAuthenticated, history]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-    
-      const { data } = await signIn({ variables: { email, password } });
-      const { token } = data.loginUser
-     
-      localStorage.setItem('authToken', token);
+      const response = await signIn({ variables: { email, password } });
+  
+      if (response && response.data && response.data.loginUser) {
+        const { token } = response.data.loginUser;
+  
+       
+        
+        setIsAuthenticated(true);
 
-      history.push('/pos');
-      console.log('token', token)
       
-
+        console.log('token', token);
+      } else {
+        console.error('Error during sign in: no data received');
+      }
     } catch (err) {
       console.error('Error during sign in:', err);
     }
   };
+  
 
   return (
     <Flex position='relative'>
@@ -89,7 +104,7 @@ function SignIn() {
           <Flex
             direction='column'
             w='100%'
-            background='transparent'
+            // background='transparent'
             mt={{ base: "50px", md: "150px", lg: "160px", xl: "245px" }}
             mb={{ base: "60px", lg: "95px" }}>
             <Heading color={titleColor} fontSize='32px' mb='10px'>
@@ -184,6 +199,7 @@ function SignIn() {
               h='45'
               mb='20px'
               mt='20px'
+             
               onClick={handleSubmit}
               >
               SIGN IN
@@ -231,7 +247,7 @@ function SignIn() {
             flexDirection='column'
             justifyContent='center'
             alignItems='center'
-            position='absolute'>
+           >
             <Text
               textAlign='center'
               color='white'

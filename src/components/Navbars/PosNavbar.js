@@ -26,11 +26,14 @@ import {
 } from "components/Icons/Icons";
 import SidebarResponsive  from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
+import { AuthContext } from '../../AuthContext';
+import { NavLink , useHistory} from "react-router-dom";
 import routes from "routes.js";
+
 export default function PosNavbar(props) {
   const [open, setOpen] = React.useState(false);
+    
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
@@ -40,6 +43,25 @@ export default function PosNavbar(props) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   };
   // Chakra color mode
+  const history = useHistory();
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      history.push('/auth/signin');
+     
+    // } else {
+    //   history.push('/auth/signin');
+    }
+  }, [isAuthenticated, history]);
+  
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
+
   let navbarIcon = "white";
   let mainText = "white";
   let navbarBg =
@@ -81,7 +103,7 @@ export default function PosNavbar(props) {
         <Button
           fontSize='sm'
           ms='0px'
-          me='0px'
+        
           px='0px'
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -94,7 +116,7 @@ export default function PosNavbar(props) {
         <Button
           fontSize='sm'
           ms='0px'
-          me='0px'
+          
           px='0px'
           me={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
@@ -117,7 +139,7 @@ export default function PosNavbar(props) {
           leftIcon={
             <LogoutIcon color={navbarIcon} w='12px' h='12px' me='0px' />
           }
-          onClick={props.onLogout}
+          onClick={handleLogout}
           >
           <Text>Logout</Text>
         </Button>
@@ -157,19 +179,7 @@ export default function PosNavbar(props) {
           />
         </Box>
         {linksAuth}
-        {/* <Link href='https://datqbox.com/product/vision-ui-dashboard-chakra'>
-          <Button
-            fontSize='xs'
-            variant='brand'
-            borderRadius='12px'
-            px='30px'
-            display={{
-              sm: "none",
-              lg: "flex",
-            }}>
-            Download
-          </Button>
-        </Link> */}
+       
       </Flex>
     </Flex>
   );

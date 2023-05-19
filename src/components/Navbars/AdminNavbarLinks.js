@@ -22,14 +22,33 @@ import avatar3 from "assets/img/avatars/avatar3.png";
 import { ProfileIcon, SettingsIcon } from "components/Icons/Icons";
 // Custom Components
 import { ItemContent } from "components/Menu/ItemContent";
-import SidebarResponsive  from "components/Sidebar/SidebarResponsive";
+import SidebarResponsive from "components/Sidebar/SidebarResponsive";
 import PropTypes from "prop-types";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
+import { AuthContext } from '../../AuthContext';
+import {  useHistory} from "react-router-dom";
+
 import routes from "routes.js";
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
+
+
+  const history = useHistory();
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      history.push('/auth/signin');
+
+    }
+  }, [isAuthenticated, history]);
+  
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
 
   // Chakra Color Mode
   let inputBg = "#0F1535";
@@ -46,24 +65,26 @@ export default function HeaderLinks(props) {
     <Flex
       pe={{ sm: "0px", md: "16px" }}
       w={{ sm: "100%", md: "auto" }}
-      alignItems='center'
-      flexDirection='row'>
+      alignItems="center"
+      flexDirection="row"
+    >
       <InputGroup
-        cursor='pointer'
+        cursor="pointer"
         bg={inputBg}
-        borderRadius='15px'
-        borderColor='rgba(226, 232, 240, 0.3)'
+        borderRadius="15px"
+        borderColor="rgba(226, 232, 240, 0.3)"
         w={{
           sm: "128px",
           md: "200px",
         }}
-        me={{ sm: "auto", md: "20px" }}>
+        me={{ sm: "auto", md: "20px" }}
+      >
         <InputLeftElement
           children={
             <IconButton
-              bg='inherit'
-              borderRadius='inherit'
-              _hover='none'
+              bg="inherit"
+              borderRadius="inherit"
+              _hover="none"
               _active={{
                 bg: "inherit",
                 transform: "none",
@@ -72,74 +93,63 @@ export default function HeaderLinks(props) {
               _focus={{
                 boxShadow: "none",
               }}
-              icon={
-                <SearchIcon color={searchIcon} w='15px' h='15px' />
-              }></IconButton>
+              icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
+            ></IconButton>
           }
         />
         <Input
-          fontSize='xs'
-          py='11px'
+          fontSize="xs"
+          py="11px"
           color={mainText}
-          placeholder='Type here...'
-          borderRadius='inherit'
+          placeholder="Type here..."
+          borderRadius="inherit"
         />
       </InputGroup>
-      <NavLink to='/auth/signin'>
-        <Button
-          ms='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='transparent-with-icon'
-          rightIcon={
-            document.documentElement.dir ? (
-              ""
-            ) : (
-              <ProfileIcon color={navbarIcon} w='22px' h='22px' me='0px' />
-            )
-          }
-          leftIcon={
-            document.documentElement.dir ? (
-              <ProfileIcon color={navbarIcon} w='22px' h='22px' me='0px' />
-            ) : (
-              ""
-            )
-          }>
-          <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
-        </Button>
-      </NavLink>
+
+      <Button
+        ms="0px"
+        px="0px"
+        me={{ sm: "2px", md: "16px" }}
+        color={navbarIcon}
+        variant="transparent-with-icon"
+        onClick={handleLogout}
+        leftIcon={<ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />}
+      >
+        <Text display={{ sm: "none", md: "flex" }}>Logout</Text>
+      </Button>
+
       <SidebarResponsive
-        iconColor='gray.500'
+        iconColor="gray.500"
         logoText={props.logoText}
         secondary={props.secondary}
         routes={routes}
-        // logo={logo}
+     
         {...rest}
       />
       <SettingsIcon
-        cursor='pointer'
+        cursor="pointer"
         ms={{ base: "16px", xl: "0px" }}
-        me='16px'
+        me="16px"
         ref={settingsRef}
         onClick={props.onOpen}
         color={navbarIcon}
-        w='18px'
-        h='18px'
+        w="18px"
+        h="18px"
       />
       <Menu>
-        <MenuButton align='center'>
-          <BellIcon color={navbarIcon} mt='-4px' w='18px' h='18px' />
+        <MenuButton align="center">
+          <BellIcon color={navbarIcon} mt="-4px" w="18px" h="18px" />
         </MenuButton>
 
         <MenuList
-          border='transparent'
-          backdropFilter='blur(63px)'
-          bg='linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(10, 14, 35, 0.69) 76.65%)'
-          borderRadius='20px'>
-          <Flex flexDirection='column'>
+          border="transparent"
+          backdropFilter="blur(63px)"
+          bg="linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(10, 14, 35, 0.69) 76.65%)"
+          borderRadius="20px"
+        >
+          <Flex flexDirection="column">
             <MenuItem
-              borderRadius='8px'
+              borderRadius="8px"
               _hover={{
                 bg: "transparent",
               }}
@@ -149,17 +159,18 @@ export default function HeaderLinks(props) {
               _focus={{
                 bg: "transparent",
               }}
-              mb='10px'>
+              mb="10px"
+            >
               <ItemContent
-                time='13 minutes ago'
-                info='from Alicia'
-                boldInfo='New Message'
-                aName='Alicia'
+                time="13 minutes ago"
+                info="from Alicia"
+                boldInfo="New Message"
+                aName="Alicia"
                 aSrc={avatar1}
               />
             </MenuItem>
             <MenuItem
-              borderRadius='8px'
+              borderRadius="8px"
               _hover={{
                 bg: "transparent",
               }}
@@ -169,18 +180,19 @@ export default function HeaderLinks(props) {
               _focus={{
                 bg: "transparent",
               }}
-              _hover={{ bg: "transparent" }}
-              mb='10px'>
+            
+              mb="10px"
+            >
               <ItemContent
-                time='2 days ago'
-                info='by Josh Henry'
-                boldInfo='New Album'
-                aName='Josh Henry'
+                time="2 days ago"
+                info="by Josh Henry"
+                boldInfo="New Album"
+                aName="Josh Henry"
                 aSrc={avatar2}
               />
             </MenuItem>
             <MenuItem
-              borderRadius='8px'
+              borderRadius="8px"
               _hover={{
                 bg: "transparent",
               }}
@@ -189,12 +201,13 @@ export default function HeaderLinks(props) {
               }}
               _focus={{
                 bg: "transparent",
-              }}>
+              }}
+            >
               <ItemContent
-                time='3 days ago'
-                info='Payment succesfully completed!'
-                boldInfo=''
-                aName='Kara'
+                time="3 days ago"
+                info="Payment succesfully completed!"
+                boldInfo=""
+                aName="Kara"
                 aSrc={avatar3}
               />
             </MenuItem>
