@@ -1,3 +1,4 @@
+import React from 'react'
 import Dashboard from 'views/Dashboard/Dashboard'
 import Tables from 'views/Dashboard/Tables'
 import Billing from 'views/Dashboard/Billing'
@@ -12,18 +13,7 @@ import POSApp from 'views/Pages/POSApp/POSApp'
 import ProductsList from 'views/Pages/Products/ProductsList'
 import CategoriesList from 'views/Pages/Categories/CategoriesList'
 import ColorsList from 'views/Pages/Colors/ColorsList'
-
-import {
-  HomeIcon,
-  StatsIcon,
-  CreditIcon,
-  PersonIcon,
-  DocumentIcon,
-  RocketIcon,
-  SupportIcon,
-  
-} from 'components/Icons/Icons'
-
+import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
   {
@@ -42,8 +32,6 @@ var dashRoutes = [
     component: POSApp,
     layout: '/pos',
   },
-
- 
 
   {
     name: 'Productos',
@@ -98,7 +86,6 @@ var dashRoutes = [
         component: ProductsList,
         layout: '/admin',
       },
-      
     ],
   },
   {
@@ -109,7 +96,6 @@ var dashRoutes = [
     state: 'pageArcordion',
     icon: <CreditIcon color="inherit" />,
     views: [
-     
       {
         path: '/periodsaccounting',
         name: 'Clientes',
@@ -137,7 +123,7 @@ var dashRoutes = [
       },
     ],
   },
-  
+
   {
     name: 'Reportes',
     path: '/stepperform',
@@ -155,7 +141,6 @@ var dashRoutes = [
         component: StepperForm,
         layout: '/admin',
       },
-     
     ],
   },
   {
@@ -184,7 +169,6 @@ var dashRoutes = [
         component: StepperForm,
         layout: '/admin',
       },
-     
     ],
   },
 ]

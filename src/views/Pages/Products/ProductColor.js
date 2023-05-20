@@ -150,10 +150,10 @@ function ProductColor({
                   <Box
                     key={color.id}
                     w="120%"
-                    h="auto" // ajusta la altura para que sea automática y se adapte al contenido
+                    h="auto" 
                     mb={1}
                     pr={{ base: '0', md: '4', xl: '4' }}
-                    p={1} // añade un poco de padding para dar más espacio alrededor del contenido
+                    p={1}
                   >
                     <CustomCheckbox
                       value={color.id}

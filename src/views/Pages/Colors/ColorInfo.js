@@ -1,50 +1,57 @@
 import React from 'react'
-import {
-  StyledInput,
-  StyledFormLabel,
+import { StyledInput, StyledFormLabel } from 'components/ReusableComponents/ReusableComponents'
+import { Box, Stack } from '@chakra-ui/react'
+import ColorPicker from 'components/ColorPicker/colorPiker'
 
-} from 'components/ReusableComponents/ReusableComponents'
-import { Box,  Grid, Text,  } from '@chakra-ui/react'
+function ColorInfo({ formState, handleChange }) {
 
+  const handleColor = (color) => {
+    handleChange({ target: { value: color, name: 'hexCode' } })
+  }
 
-function ProductInfo({
-  formState,
-  handleChange,
-
-}) {
-  
-  
-  // const [formState, setFormState] = useState({});
-
-  
   return (
     <React.Fragment>
-      <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
+    <Box p="4" border="1px solid #000" borderRadius="4px">
+        <Stack spacing={4}>
+          <Box>
+            <ColorPicker
+              handleColor={handleColor}
+              boxProps={{
+                bg: formState.hexCode,
+                boxSize: '8.7rem',
+                border: '1px solid #c4c4c4',
+                marginTop: '10px',
+              }}
+            />
+          </Box>
+        </Stack>
+
         <Box>
-          <StyledFormLabel>Nombre Categoria</StyledFormLabel>
+          <StyledFormLabel>Nombre Color</StyledFormLabel>
           <StyledInput
             name="name"
-            value={formState.name || ''}
-            onChange={handleChange}
-            placeholder="Ingrese el Nombre Categoria"
+            placeholder="Nombre del Color"
+            fontSize="sm"
+            type="text"
+            color="black"
+            value={formState.name}
+            onChange={(e) => handleChange(e)}
           />
         </Box>
-
         <Box>
-          <StyledFormLabel>Url Imagen</StyledFormLabel>
+          <StyledFormLabel>Hex Code</StyledFormLabel>
           <StyledInput
-            name="image"
-            value={formState.image || ''}
-            onChange={handleChange}
-            placeholder="Ingrese el nombre del producto"
+            name="hexCode"
+            value={formState.hexCode}
+            onChange={(e) => handleChange(e)}
+            placeholder="Hex Code del Color"
+            type="text"
           />
         </Box>
-
-        
-        
-      </Grid>
+        </Box>
+     
     </React.Fragment>
   )
 }
 
-export default ProductInfo
+export default ColorInfo

@@ -1,61 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Flex, Button, Box, useToast, HStack, Spinner, Grid } from '@chakra-ui/react'
-import { gql } from '@apollo/client'
-import { ApolloClient, InMemoryCache, useMutation } from '@apollo/client'
-import { createUploadLink } from 'apollo-upload-client'
+import { Form, Formik } from 'formik'
 import { StyledText } from 'components/ReusableComponents/ReusableComponents'
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
-import { useGetCategory, useCreateCategory, useUpdateCategory } from 'graphql/category/crudCategory'
-import { Form, Formik } from 'formik'
+import { useGetColor, useCreateColor, useUpdateColor } from 'graphql/color/crudColor'
 
-import CategoryInfo from './ColorInfo'
-import CategoryImage from './ColorImage'
+import ColorInfo from './ColorInfo'
 
-function CategoryForm({ categoryId, onCancel, onSuccess }) {
-  const [formState, setFormState] = useState({})
+function ColorForm({ colorId, onCancel, onSuccess }) {
+  const [formState, setFormState] = useState({
+    name: '',
+    hexCode: '#0000FF',
+  })
   const toast = useToast()
-  const { data, loading, error } = useGetCategory(categoryId, { skip: !categoryId })
-  const UPLOAD_FILES = gql`
-    mutation ($files: [Upload!]!) {
-      multipleUpload(files: $files) {
-        filename
-      }
-    }
-  `
+  const { data, loading, error } = useGetColor(colorId, { skip: !colorId })
 
-  const [updateCategory] = useUpdateCategory()
-  const [createCategory] = useCreateCategory()
+  const [createColor, { loading: createLoading }] = useCreateColor()
+  const [updateColor, { loading: updateLoading }] = useUpdateColor()
   const [isLoading, setIsLoading] = useState(false)
 
-  const token = localStorage.getItem('authToken')
-  const uploadLink = createUploadLink({
-    uri: 'http://localhost:4000/graphql', 
-    headers: {
-      'keep-alive': 'true',
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  })
-
-  const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: uploadLink,
-  })
-
   useEffect(() => {
-    if (data && data.category) {
+    if (data && data.color) {
       setFormState({
-        ...data.category,
-        categoryId: data.category.id,
+        ...data.color,
+        colorId: data.color.id,
+        colorselect: data.color.hexCode || '#0000FF',
+        nameColor: data.color.name || 'Azul',
       })
-    } else if (!categoryId) {
+    } else if (!colorId) {
       setFormState({
         id: null,
         name: '',
-        image: '',
+        hexCode: '',
+        colorselect: '#0000FF',
+        nameColor: 'Azul',
       })
     }
-  }, [data, categoryId])
+  }, [data, colorId])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -66,54 +48,34 @@ function CategoryForm({ categoryId, onCancel, onSuccess }) {
   }
 
   const handleSubmit = async (e) => {
-    let newcategoryId = categoryId
+    let newcolorId = colorId
     setIsLoading(true)
-    const adjustedFormState = {
+    const input = {
       name: formState.name,
-      image: formState.image,
-    }
-
-    if (formState.image instanceof File) {
-      const { data, errors } = await client.mutate({
-        mutation: UPLOAD_FILES,
-        variables: { files: [formState.image] },
-      })
-
-      // Comprueba si hubo errores
-      if (errors) {
-        console.error('Error uploading file:', errors)
-        return
-      }
-      const filename = data.multipleUpload[0].filename
-      const imageUrl = `http://localhost:4000/uploads/${filename}`
-
-      // Actualiza el estado del formulario con la URL de la imagen
-      adjustedFormState.image = imageUrl
+      hexCode: formState.hexCode,
     }
 
     try {
-      if (categoryId) {
-        await updateCategory({
-          variables: { id: categoryId, input: adjustedFormState },
-        })
+      if (colorId) {
+        const id = colorId
+        await updateColor({ variables: { id, input } })
       } else {
-        const newCategory = await createCategory({
-          variables: { input: adjustedFormState },
-        })
-        newcategoryId = newCategory.data.createCategory.id
+        const newColor = await createColor({ variables: { input } })
+
+        newcolorId = newColor.data.createColor.id
       }
-      if (categoryId) {
+      if (colorId) {
         toast({
-          title: 'Category actualizado',
-          description: 'La Categoria ha sido actualizado exitosamente',
+          title: 'Color actualizado',
+          description: 'El Color ha sido actualizado exitosamente',
           status: 'success',
           duration: 3000,
           isClosable: true,
         })
       } else {
         toast({
-          title: 'Category creado',
-          description: 'La Categoria ha sido creado exitosamente',
+          title: 'Color creado',
+          description: 'El Color ha sido creado exitosamente',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -135,30 +97,24 @@ function CategoryForm({ categoryId, onCancel, onSuccess }) {
     setIsLoading(false)
   }
 
-  if (categoryId && loading) return <p>Cargando...</p>
+  if (colorId && loading) return <p>Cargando...</p>
 
   return (
     <>
       {isLoading ? (
-        <Spinner /> // Muestra el spinner si isLoading es true
+        <Spinner />
       ) : (
         <>
           <Formik initialValues={formState} onSubmit={handleSubmit}>
             <Form>
-              <Card
-                width={{ base: 'auto', md: '93.5%', '2xl': '95%' }}
-                marginLeft="10"
-                mt={55}
-                pt={-2} // reduce padding-top if needed
-                pb={-2} // reduce padding-bottom if needed
-              >
-                <Box mt={2}>
+              <Card width={{ base: 'auto', md: '50%', '2xl': '50%' }} marginLeft="10" mt={65} pt={-2} pb={-2}>
+                <Box mt={4}>
                   {' '}
                   {/* adjust marginTop as needed */}
-                  <HStack width="100%" justifyContent="space-between" spacing={2}>
+                  <HStack width="50%" justifyContent="space-between" spacing={2}>
                     {' '}
                     {/* reduce spacing as needed */}
-                    <StyledText fontSize={{ base: '16px', md: '20px' }}>{categoryId ? 'Editar Categoria' : 'Añadir Categoria'}</StyledText>
+                    <StyledText fontSize={{ base: '16px', md: '20px' }}>{colorId ? 'Editar Color' : 'Añadir Color'}</StyledText>
                     <Button onClick={onCancel} colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
                       Retornar
                     </Button>
@@ -169,21 +125,12 @@ function CategoryForm({ categoryId, onCancel, onSuccess }) {
                 </Box>
               </Card>
 
-              <Grid templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }} my="26px" gap="18px" marginLeft="10" marginRight="10" marginTop="2">
-                <Card width={{ base: 'auto', md: '100%' }}>
-                  <CardBody width={{ base: 'auto', md: '100%' }} h="100%">
-                    <CategoryInfo formState={formState} handleChange={handleChange} setFormState={setFormState} />
-                  </CardBody>
-                  <Flex direction={{ base: 'column', md: 'row' }} justifyContent="space-between" mt="5"></Flex>
-                </Card>
-                <Card width={{ base: 'auto', md: '100%' }}>
-                  <CardBody width={{ base: 'auto', md: '100%' }}>
-                    <Flex direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-                      <CategoryImage formState={formState} categoryId={categoryId} handleChange={handleChange} />
-                    </Flex>
-                  </CardBody>
-                </Card>
-              </Grid>
+              <Card pt={5} pb={5} marginLeft="10" width={{ base: 'auto', md: '50%' }}>
+                <CardBody width={{ base: 'auto', md: '50%' }} h="100%">
+                  <ColorInfo formState={formState} handleChange={handleChange} />
+                </CardBody>
+                <Flex direction={{ base: 'column', md: 'row' }} justifyContent="space-between" mt="5"></Flex>
+              </Card>
             </Form>
           </Formik>
         </>
@@ -192,4 +139,4 @@ function CategoryForm({ categoryId, onCancel, onSuccess }) {
   )
 }
 
-export default CategoryForm
+export default ColorForm
