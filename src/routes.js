@@ -14,6 +14,7 @@ import ProductsList from 'views/Pages/Products/ProductsList'
 import CategoriesList from 'views/Pages/Categories/CategoriesList'
 import ColorsList from 'views/Pages/Colors/ColorsList'
 import SizesList from 'views/Pages/Sizes/SizesList'
+import PaymentsList from 'views/Pages/Payments/PaymentsList'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
@@ -82,6 +83,53 @@ var dashRoutes = [
     ],
   },
   {
+    name: 'Clientes',
+    path: '/customers',
+    category: 'account',
+    rtlName: 'صفحات',
+    icon: <CreditIcon color="inherit" />,
+    state: 'pageArcordion',
+    views: [
+      {
+        path: '/companies',
+        name: 'Empresas',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ProductsList,
+        layout: '/admin',
+      },
+      {
+        path: '/categories',
+        name: 'Categorias',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: CategoriesList,
+        layout: '/admin',
+      },
+      {
+        path: '/sizes',
+        name: 'Tallas',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: SizesList,
+        layout: '/admin',
+      },
+      {
+        path: '/colores',
+        name: 'Colores',
+        rtlName: 'لوحة القيادة',
+        icon: <PersonIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: ColorsList,
+        layout: '/admin',
+      },
+     
+    ],
+  },
+  {
     name: 'Pedidos',
     path: '/periodsaccounting',
     category: 'account',
@@ -107,11 +155,11 @@ var dashRoutes = [
         layout: '/admin',
       },
       {
-        path: '/rtl-support',
-        name: 'Pagos',
+        path: '/paymentmethods',
+        name: 'PaymentMethods',
         rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
-        component: ProductsList,
+        component: PaymentsList,
         layout: '/admin',
       },
     ],
