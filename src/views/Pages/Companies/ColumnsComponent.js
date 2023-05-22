@@ -8,6 +8,7 @@ const ColumnsComponent = ({ rowModesModel, handleSaveClick, handleCancelClick, h
     { field: 'name', headerName: 'Name', width: 180, editable: true },
     { field: 'legalId', headerName: 'Legal Id', width: 100, editable: true },
     { field: 'address', headerName: 'Address', width: 180, editable: true },
+    { field: 'email', headerName: 'Email', width: 180, editable: true },
     { field: 'phoneNumber', headerName: 'Phone Number', width: 100, editable: true },
 
     {

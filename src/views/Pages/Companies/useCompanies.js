@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { useGetPaymentMethods, useCreatePaymentMethod, useUpdatePaymentMethod, DELETE_PAYMENT_METHOD } from 'graphql/payments/crudPayments'
+import { useGetCompanies, useCreateCompanie, useUpdateCompanie, DELETE_COMPANIE } from 'graphql/companies/useCompanies'
 import { GridRowModes } from '@mui/x-data-grid'
 
 export default function useCompanies() {
@@ -15,15 +15,15 @@ export default function useCompanies() {
     page: 0,
   })
 
-  const { data, loading, error, refetch } = useGetPaymentMethods()
-  const [create, { loading: createLoading }] = useCreatePaymentMethod()
-  const [update, { loading: updateLoading }] = useUpdatePaymentMethod()
-  const DELETE = DELETE_PAYMENT_METHOD
+  const { data, loading, error, refetch } = useGetCompanies()
+  const [create, { loading: createLoading }] = useCreateCompanie()
+  const [update, { loading: updateLoading }] = useUpdateCompanie()
+  const DELETE = DELETE_COMPANIE
   const toast = useToast()
 
   useEffect(() => {
-    if (data && data.paymentMethods) {
-      setRows(data.paymentMethods)
+    if (data && data.companies) {
+      setRows(data.companies)
       setInitialLoad(false)
     }
   }, [data])
@@ -58,7 +58,7 @@ export default function useCompanies() {
   const refetchData = async () => {
     try {
       const newData = await refetch()
-      setRows(newData.data.paymentMethods)
+      setRows(newData.data.companies)
     } catch (error) {
       console.error('Error refetching data:', error)
     }
@@ -68,7 +68,10 @@ export default function useCompanies() {
     const rowToClone = rows.find((row) => row.id === id)
     const newSize = {
       name: rowToClone.name,
-      description: rowToClone.description
+      address: rowToClone.address,
+      phoneNumber: rowToClone.phoneNumber,
+      email: rowToClone.email,
+      legalId: rowToClone.address,
     }
 
     try {
@@ -76,7 +79,7 @@ export default function useCompanies() {
       setRows([...rows, { ...result.data.create, isNew: false }])
       toast({
         title: 'Success',
-        description: 'New paymentMethods created successfully',
+        description: 'New companies created successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -125,17 +128,28 @@ export default function useCompanies() {
 
     try {
       if (newRow.isNew) {
-        response = await create({ variables: { name: newRow.name, description: newRow.description } })
+        response = await create({
+          variables: { name: newRow.name, address: newRow.address, phoneNumber: newRow.phoneNumber, email: newRow.email, legalId: newRow.address },
+        })
       } else {
-        response = await update({ variables: { id: newRow.id, name: newRow.name,  description: newRow.description } })
+        response = await update({
+          variables: {
+            id: newRow.id,
+            name: newRow.name,
+            address: newRow.address,
+            phoneNumber: newRow.phoneNumber,
+            email: newRow.email,
+            legalId: newRow.address
+          },
+        })
       }
 
       const updatedRow = { ...newRow, isNew: false }
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
       setRowModesModel({ ...rowModesModel, [newRow.id]: { mode: GridRowModes.View } })
       toast({
-        title: newRow.isNew ? 'Pyment creado' : 'Pyment Actualizado',
-        description: newRow.isNew ? 'El Pyment ha sido creado  exitosamente' : 'El Pyment ha sido Actualiado exitosamente',
+        title: newRow.isNew ? 'companies creado' : 'companies Actualizado',
+        description: newRow.isNew ? 'El companies ha sido creado  exitosamente' : 'El companies ha sido Actualiado exitosamente',
         status: 'success',
         duration: 3000,
         isClosable: true,

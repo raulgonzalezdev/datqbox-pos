@@ -15,6 +15,7 @@ import CategoriesList from 'views/Pages/Categories/CategoriesList'
 import ColorsList from 'views/Pages/Colors/ColorsList'
 import SizesList from 'views/Pages/Sizes/SizesList'
 import PaymentsList from 'views/Pages/Payments/PaymentsList'
+import CompaniesList from 'views/Pages/Companies/CompaniesList'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
@@ -96,7 +97,7 @@ var dashRoutes = [
         rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: CompaniesList,
         layout: '/admin',
       },
       {
