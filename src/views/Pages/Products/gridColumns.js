@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { MdSave, MdCancel, MdDelete, MdOutlineBorderColor, MdFolderCopy } from 'react-icons/md'
 import {
     Flex,
     Text,
@@ -174,7 +174,7 @@ import {
         <Flex justifyContent="space-around">
           <IconButton
             aria-label="Editar"
-            icon={<EditIcon />}
+            icon={<MdOutlineBorderColor size={20} />}
             onClick={() => editRow(params.row.id)}
             cursor="pointer"
             mx={2}
@@ -182,14 +182,21 @@ import {
           
           <IconButton
             aria-label="Eliminar"
-            icon={<DeleteIcon />}
+            icon={<MdDelete size={20} />}
             onClick={() => deleteRow(params.row.id)}
             cursor="pointer"
             mx={2}
+            
           />
-           <Button colorScheme="yellow" onClick={() => onSelect(params)}>
-              Clonar
-            </Button> 
+          
+
+            <IconButton
+            aria-label="Editar"
+            icon={<MdFolderCopy size={20} />}
+            onClick={() => onSelect(params)}
+            cursor="pointer"
+            mx={2}
+          />
         </Flex>
       ),
     },

@@ -13,6 +13,7 @@ import POSApp from 'views/Pages/POSApp/POSApp'
 import ProductsList from 'views/Pages/Products/ProductsList'
 import CategoriesList from 'views/Pages/Categories/CategoriesList'
 import ColorsList from 'views/Pages/Colors/ColorsList'
+import SizesList from 'views/Pages/Sizes/SizesList'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
@@ -60,12 +61,12 @@ var dashRoutes = [
         layout: '/admin',
       },
       {
-        path: '/products',
+        path: '/sizes',
         name: 'Tallas',
         rtlName: 'لوحة القيادة',
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: SizesList,
         layout: '/admin',
       },
       {
@@ -77,15 +78,7 @@ var dashRoutes = [
         component: ColorsList,
         layout: '/admin',
       },
-      {
-        path: '/products',
-        name: 'Reviews',
-        rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: ProductsList,
-        layout: '/admin',
-      },
+     
     ],
   },
   {
