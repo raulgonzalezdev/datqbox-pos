@@ -15,7 +15,7 @@ export default function usePayments() {
     page: 0,
   })
 
-  const { data, loading, error, refetch } = useGetPaymentMethods()
+  const { data = {}, loading, error, refetch } = useGetPaymentMethods()
   const [create, { loading: createLoading }] = useCreatePaymentMethod()
   const [update, { loading: updateLoading }] = useUpdatePaymentMethod()
   const DELETE = DELETE_PAYMENT_METHOD
@@ -55,10 +55,15 @@ export default function usePayments() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
   }
 
+
+
+
   const refetchData = async () => {
     try {
       const newData = await refetch()
-      setRows(newData.data.paymentMethods)
+      if (newData && newData.data && newData.data.paymentMethods) {
+        setRows(newData.data.paymentMethods)
+      }
     } catch (error) {
       console.error('Error refetching data:', error)
     }
@@ -67,13 +72,16 @@ export default function usePayments() {
   const handleClon = (id) => async () => {
     const rowToClone = rows.find((row) => row.id === id)
     const newSize = {
-      name: rowToClone.name,
-      description: rowToClone.description
+      input: {
+        name: rowToClone.name,
+        description: rowToClone.description,
+      },
     }
 
     try {
       const result = await create({ variables: newSize })
-      setRows([...rows, { ...result.data.create, isNew: false }])
+     
+      setRows([...rows, { ...result.data.createPaymentMethod, isNew: false }])
       toast({
         title: 'Success',
         description: 'New paymentMethods created successfully',
@@ -125,9 +133,25 @@ export default function usePayments() {
 
     try {
       if (newRow.isNew) {
-        response = await create({ variables: { name: newRow.name, description: newRow.description } })
+        const rowNew = {
+          input: {
+            name: newRow.name,
+            description: newRow.description,
+          },
+        }
+
+        response = await create({ variables: rowNew })
       } else {
-        response = await update({ variables: { id: newRow.id, name: newRow.name,  description: newRow.description } })
+        const rowUpdate = {
+          id: newRow.id,
+          input: {
+            name: newRow.name,
+            description: newRow.description,
+          },
+        }
+
+        console.log(rowUpdate)
+        response = await update({ variables: rowUpdate })
       }
 
       const updatedRow = { ...newRow, isNew: false }
@@ -174,9 +198,9 @@ export default function usePayments() {
     loading,
     error,
     refetch,
-    create,
+    createSize,
     createLoading,
-    update,
+    updateSize,
     updateLoading,
     paginationModel,
     setPaginationModel,

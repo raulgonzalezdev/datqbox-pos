@@ -16,6 +16,7 @@ import ColorsList from 'views/Pages/Colors/ColorsList'
 import SizesList from 'views/Pages/Sizes/SizesList'
 import PaymentsList from 'views/Pages/Payments/PaymentsList'
 import CompaniesList from 'views/Pages/Companies/CompaniesList'
+import Invoices from 'views/Pages/Invoices/Invoices'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
@@ -100,33 +101,8 @@ var dashRoutes = [
         component: CompaniesList,
         layout: '/admin',
       },
-      {
-        path: '/categories',
-        name: 'Categorias',
-        rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: CategoriesList,
-        layout: '/admin',
-      },
-      {
-        path: '/sizes',
-        name: 'Tallas',
-        rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: SizesList,
-        layout: '/admin',
-      },
-      {
-        path: '/colores',
-        name: 'Colores',
-        rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: ColorsList,
-        layout: '/admin',
-      },
+      
+     
      
     ],
   },
@@ -139,22 +115,15 @@ var dashRoutes = [
     icon: <CreditIcon color="inherit" />,
     views: [
       {
-        path: '/periodsaccounting',
-        name: 'Clientes',
+        path: '/invoices',
+        name: 'Invoices',
         rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
         secondaryNavbar: true,
-        component: PeriodsAccounting,
-        layout: '/auth',
-      },
-      {
-        path: '/rtl-support-page',
-        name: 'Pedidos',
-        rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
-        component: RTLPage,
+        component: Invoices,
         layout: '/admin',
       },
+     
       {
         path: '/paymentmethods',
         name: 'PaymentMethods',

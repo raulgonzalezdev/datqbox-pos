@@ -3,10 +3,38 @@ import { MdSave, MdCancel, MdDelete, MdOutlineBorderColor, MdFolderCopy } from '
 import { GridRowModes, GridActionsCellItem } from '@mui/x-data-grid'
 import { Tooltip} from '@chakra-ui/react'
 
-const ColumnsComponent = ({ rowModesModel, handleSaveClick, handleCancelClick, handleEditClick, setId, handleDeleteClick, handleClon }) => {
+const ColumnsComponent = ({ rowModesModel, handleSaveClick, handleCancelClick, handleEditClick, setId, handleDeleteClick, handleClon , invoiceItems}) => {
   return [
-    { field: 'id', headerName: 'id', width: 180, editable: false },
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
+    { field: 'id', headerName: 'ID', width: 60, editable: false },
+    { field: 'createdAt', headerName: 'Created At', width: 120, editable: true },
+    { field: 'companyName', headerName: 'Company Name', width: 180, editable: true },
+    { field: 'paymentMethodName', headerName: 'Payment Method', width: 120, editable: true },
+    
+    { 
+      field: 'subtotal', 
+      headerName: 'Subtotal', 
+      width: 120, 
+      editable: false, 
+      valueGetter: (params) => {
+          return params.row.total / ((params.row.tax / 100) + 1)
+      },
+  },
+  { 
+      field: 'IVA', 
+      headerName: 'IVA', 
+      width: 100, 
+      editable: false, 
+      valueGetter: (params) => {
+          const subtotal = params.row.total / ((params.row.tax / 100) + 1)
+          return params.row.total - subtotal
+      },
+  },
+  
+    { field: 'total', headerName: 'Total', width: 100, editable: true },
+    { field: 'tax', headerName: 'Tax', width: 100, editable: true },
+    { field: 'status', headerName: 'Status', width: 100, editable: true },
+
+   
 
 
     {

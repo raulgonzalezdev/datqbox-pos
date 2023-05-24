@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { useGetCompanies, useCreateCompanie, useUpdateCompanie, DELETE_COMPANIE } from 'graphql/companies/useCompanies'
+import { useGetCompanies, useCreateCompany, useUpdateCompany, DELETE_COMPANY } from 'graphql/companies/useCompanies'
 import { GridRowModes } from '@mui/x-data-grid'
 
 export default function useCompanies() {
@@ -15,10 +15,10 @@ export default function useCompanies() {
     page: 0,
   })
 
-  const { data, loading, error, refetch } = useGetCompanies()
-  const [create, { loading: createLoading }] = useCreateCompanie()
-  const [update, { loading: updateLoading }] = useUpdateCompanie()
-  const DELETE = DELETE_COMPANIE
+  const { data = {}, loading, error, refetch }  = useGetCompanies()
+  const [create, { loading: createLoading }] = useCreateCompany()
+  const [update, { loading: updateLoading }] = useUpdateCompany()
+  const DELETE = DELETE_COMPANY
   const toast = useToast()
 
   useEffect(() => {
@@ -58,25 +58,32 @@ export default function useCompanies() {
   const refetchData = async () => {
     try {
       const newData = await refetch()
-      setRows(newData.data.companies)
+      if (newData && newData.data && newData.data.companies) {
+        setRows(newData.data.companies)
+      }
     } catch (error) {
       console.error('Error refetching data:', error)
     }
   }
+  
 
   const handleClon = (id) => async () => {
     const rowToClone = rows.find((row) => row.id === id)
-    const newSize = {
-      name: rowToClone.name,
-      address: rowToClone.address,
-      phoneNumber: rowToClone.phoneNumber,
-      email: rowToClone.email,
-      legalId: rowToClone.address,
+    const newRow = {
+      input: {
+        name: rowToClone.name,
+        address: rowToClone.address,
+        phoneNumber: rowToClone.phoneNumber,
+        email: rowToClone.email,
+        legalId: rowToClone.legalId,
+      },
     }
 
     try {
-      const result = await create({ variables: newSize })
-      setRows([...rows, { ...result.data.create, isNew: false }])
+      const result = await create({ variables: newRow })
+      const newId = result
+      console.log(newId)
+      setRows([...rows, { ...result.data.addCompany, isNew: true }])
       toast({
         title: 'Success',
         description: 'New companies created successfully',
@@ -128,20 +135,31 @@ export default function useCompanies() {
 
     try {
       if (newRow.isNew) {
-        response = await create({
-          variables: { name: newRow.name, address: newRow.address, phoneNumber: newRow.phoneNumber, email: newRow.email, legalId: newRow.address },
-        })
-      } else {
-        response = await update({
-          variables: {
-            id: newRow.id,
+        const rowNew = {
+          input: {
             name: newRow.name,
             address: newRow.address,
             phoneNumber: newRow.phoneNumber,
             email: newRow.email,
-            legalId: newRow.address
+            legalId: newRow.legalId,
           },
-        })
+        }
+
+        response = await create({ variables: rowNew })
+      } else {
+        const rowUpdate = {
+          id: newRow.id,
+          input: {
+            name: newRow.name,
+            address: newRow.address,
+            phoneNumber: newRow.phoneNumber,
+            email: newRow.email,
+            legalId: newRow.legalId,
+          },
+        }
+
+        
+        response = await update({ variables: rowUpdate })
       }
 
       const updatedRow = { ...newRow, isNew: false }

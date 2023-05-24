@@ -1,24 +1,24 @@
 import { useQuery, useMutation, gql } from '@apollo/client'
+
 const GET_COMPANIES = gql`
   query GetCompanies {
     companies {
       id
       name
-      adreess
+      address
       phoneNumber
       email
       legalId
-     
     }
   }
 `
 
-export const GET_COMPANIE = gql`
-  query GetCompanie($id: ID!) {
-    companie(id: $id) {
+export const GET_COMPANY = gql`
+  query GetCompany($id: ID!) {
+    company(id: $id) {
       id
       name
-      adreess
+      address
       phoneNumber
       email
       legalId
@@ -26,12 +26,12 @@ export const GET_COMPANIE = gql`
   }
 `
 
-const CREATE_COMPANIE = gql`
-  mutation CreateCompanie($name: String!) {
-    createCompanie(name: $name) {
+const CREATE_COMPANY = gql`
+  mutation CreateCompany($input: CompanyInput!) {
+    addCompany(input: $input) {
       id
       name
-      adreess
+      address
       phoneNumber
       email
       legalId
@@ -39,12 +39,13 @@ const CREATE_COMPANIE = gql`
   }
 `
 
-const UPDATE_COMPANIE = gql`
-  mutation UpdateCompanie($id: ID!, $name: String!) {
-    updateCompanie(id: $id, name: $name) {
+
+const UPDATE_COMPANY = gql`
+  mutation UpdateCompany($id: ID!, $input: CompanyInput!) {
+    updateCompany(id: $id, input: $input) {
       id
       name
-      adreess
+      address
       phoneNumber
       email
       legalId
@@ -52,38 +53,39 @@ const UPDATE_COMPANIE = gql`
   }
 `
 
-export const DELETE_COMPANIE = gql`
-  mutation DeleteCompanie($id: ID!) {
-    deleteCompanie(id: $id) 
+
+export const DELETE_COMPANY = gql`
+  mutation DeleteCompany($id: ID!) {
+    deleteCompany(id: $id) 
   }
 `
 
-
+// Using these hooks
 export function useGetCompanies() {
     return useQuery(GET_COMPANIES)
-  }
-  
-  export function useCreateCompanie() {
-    return useMutation(CREATE_COMPANIE, {
-      refetchQueries: [{ query: GET_COMPANIES }],
-    })
-  }
-  
-  export function useUpdateCompanie() {
-    return useMutation(UPDATE_COMPANIE, {
-      refetchQueries: [{ query: GET_COMPANIES }],
-    })
-  }
-  
-  export function useDeleteCompanie() {
-    return useMutation(DELETE_COMPANIE, {
-      refetchQueries: [{ query: GET_COMPANIES }],
-    })
-  }
+}
 
-  export function useGetCompanie(id) {
-    return useQuery(GET_COMPANIE, {
-      variables: { id },
+export function useCreateCompany() {
+    return useMutation(CREATE_COMPANY, {
+      refetchQueries: [{ query: GET_COMPANIES }],
     })
-  } 
+  }
   
+
+export function useUpdateCompany() {
+  return useMutation(UPDATE_COMPANY, {
+    refetchQueries: [{ query: GET_COMPANIES }],
+  })
+}
+
+export function useDeleteCompany() {
+  return useMutation(DELETE_COMPANY, {
+    refetchQueries: [{ query: GET_COMPANIES }],
+  })
+}
+
+export function useGetCompany(id) {
+  return useQuery(GET_COMPANY, {
+    variables: { id },
+  })
+}

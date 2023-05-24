@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { useGetSizes, useCreateSize, useUpdateSize, DELETE_SIZE } from 'graphql/sizes/crudSizes'
+import { useGetInvoices, useCreateInvoice, useUpdateInvoice, DELETE_INVOICE } from 'graphql/invoice/crudInvoice'
 import { GridRowModes } from '@mui/x-data-grid'
 
-export default function useSizesList() {
+export default function useInvoices() {
   const [rowModesModel, setRowModesModel] = useState({})
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [Id, setId] = useState(null)
   const [rows, setRows] = useState([])
+  const [invoiceItems, setInvoiceItems] = useState([])
+  const [selectedInvoice, setSelectedInvoice] = useState(null)
+
   const [searchValue, setSearchValue] = useState('')
   const [initialLoad, setInitialLoad] = useState(true)
   const [paginationModel, setPaginationModel] = useState({
@@ -15,18 +18,58 @@ export default function useSizesList() {
     page: 0,
   })
 
-  const { data = {}, loading, error, refetch } = useGetSizes()
-  const [createSize, { loading: createLoading }] = useCreateSize()
-  const [updateSize, { loading: updateLoading }] = useUpdateSize()
-  const DELETE = DELETE_SIZE
+  const { data = {}, loading, error, refetch } = useGetInvoices()
+  const [create, { loading: createLoading }] = useCreateInvoice()
+  const [update, { loading: updateLoading }] = useUpdateInvoice()
+  const DELETE = DELETE_INVOICE
   const toast = useToast()
 
   useEffect(() => {
-    if (data && data.sizes) {
-      setRows(data.sizes)
+    if (data && data.getAllInvoices) {
+      const flattenedInvoices = flattenInvoiceData(data.getAllInvoices)
       setInitialLoad(false)
     }
   }, [data])
+
+  const flattenInvoiceData = (invoices) => {
+    const flatInvoices = invoices.map((invoice) => {
+      const company = invoice.companies && invoice.companies.length > 0 ? invoice.companies[0].name : 'N/A'
+      const branch = invoice.branch ? invoice.branch.name : 'N/A'
+      const paymentMethod = invoice.paymentMethod ? invoice.paymentMethod.name : 'N/A'
+      const invoiceItems =
+        invoice.invoiceItems && invoice.invoiceItems.length > 0
+          ? invoice.invoiceItems.map((item) => ({
+              id: item.id,
+              sku: item.product.sku,
+              description: item.product.description,
+              price: item.price,
+              quantity: item.quantity,
+              product: item.product.name,
+              total: item.price * item.quantity,
+            }))
+          : []
+
+      return {
+        id: invoice.id,
+        userId: invoice.user.id,
+        userFirstName: invoice.user.firstName,
+        userLastName: invoice.user.lastName,
+        userEmail: invoice.user.email,
+        companyName: company,
+        branchName: branch,
+        paymentMethodName: paymentMethod,
+        invoiceItems: invoiceItems,
+        total: invoice.total,
+        tax: invoice.tax,
+        status: invoice.status,
+        createdAt: invoice.createdAt,
+      }
+    })
+
+    const flatInvoiceItems = invoices.flatMap((invoice) => invoice.invoiceItems || [])
+    setRows(flatInvoices)
+    setInvoiceItems(flatInvoiceItems)
+  }
 
   useEffect(() => {
     if (Id !== null) {
@@ -58,7 +101,10 @@ export default function useSizesList() {
   const refetchData = async () => {
     try {
       const newData = await refetch()
-      setRows(newData.data.sizes)
+      if (newData && newData.data && newData.data.getAllInvoices) {
+        // setRows(newData.data.getAllInvoices)
+        const flattenedInvoices = flattenInvoiceData(newData.data.getAllInvoices)
+      }
     } catch (error) {
       console.error('Error refetching data:', error)
     }
@@ -66,16 +112,24 @@ export default function useSizesList() {
 
   const handleClon = (id) => async () => {
     const rowToClone = rows.find((row) => row.id === id)
-    const newSize = {
-      name: rowToClone.name,
+    const newRow = {
+      input: {
+        name: rowToClone.name,
+        address: rowToClone.address,
+        phoneNumber: rowToClone.phoneNumber,
+        email: rowToClone.email,
+        legalId: rowToClone.legalId,
+      },
     }
 
     try {
-      const result = await createSize({ variables: newSize })
-      setRows([...rows, { ...result.data.createSize, isNew: false }])
+      const result = await create({ variables: newRow })
+      const newId = result
+      console.log(newId)
+      setRows([...rows, { ...result.data.addCompany, isNew: true }])
       toast({
         title: 'Success',
-        description: 'New Size created successfully',
+        description: 'New Invoices created successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -107,7 +161,6 @@ export default function useSizesList() {
       setId(null)
     }
   }
-
   const handleCancelClick = (id) => () => {
     setRowModesModel({
       ...rowModesModel,
@@ -125,17 +178,38 @@ export default function useSizesList() {
 
     try {
       if (newRow.isNew) {
-        response = await createSize({ variables: { name: newRow.name } })
+        const rowNew = {
+          input: {
+            name: newRow.name,
+            address: newRow.address,
+            phoneNumber: newRow.phoneNumber,
+            email: newRow.email,
+            legalId: newRow.legalId,
+          },
+        }
+
+        response = await create({ variables: rowNew })
       } else {
-        response = await updateSize({ variables: { id: newRow.id, name: newRow.name } })
+        const rowUpdate = {
+          id: newRow.id,
+          input: {
+            name: newRow.name,
+            address: newRow.address,
+            phoneNumber: newRow.phoneNumber,
+            email: newRow.email,
+            legalId: newRow.legalId,
+          },
+        }
+
+        response = await update({ variables: rowUpdate })
       }
 
       const updatedRow = { ...newRow, isNew: false }
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
       setRowModesModel({ ...rowModesModel, [newRow.id]: { mode: GridRowModes.View } })
       toast({
-        title: newRow.isNew ? 'Size creado' : 'Size ACTUALIZADO',
-        description: newRow.isNew ? 'El Size ha sido creado  exitosamente' : 'El Size ha sido ACTUALIZADO exitosamente',
+        title: newRow.isNew ? 'Invoice creado' : 'companies Actualizado',
+        description: newRow.isNew ? 'El invoice ha sido creado  exitosamente' : 'El Invoice ha sido Actualiado exitosamente',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -156,6 +230,11 @@ export default function useSizesList() {
   const handleRowModesModelChange = (newRowModesModel) => {
     setRowModesModel(newRowModesModel)
   }
+  const handleRowSelected = (params) => {
+    console.log('parems', params)
+    const selected = rows.find((row) => row.id === params.id)
+    setSelectedInvoice(selected)
+  }
 
   return {
     rowModesModel,
@@ -174,9 +253,9 @@ export default function useSizesList() {
     loading,
     error,
     refetch,
-    createSize,
+    create,
     createLoading,
-    updateSize,
+    update,
     updateLoading,
     paginationModel,
     setPaginationModel,
@@ -192,6 +271,10 @@ export default function useSizesList() {
     handleCancelClick,
     processRowUpdate,
     handleRowModesModelChange,
+    handleRowSelected,
+    setSelectedInvoice,
+    selectedInvoice,
     DELETE,
+    invoiceItems,
   }
 }

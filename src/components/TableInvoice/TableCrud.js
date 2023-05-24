@@ -8,7 +8,6 @@ import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
 import SearchAndAddToolbar from './SearchAndAddToolbar'
 
-
 export default function TableCrud({ useCustomHook, ColumnsComponent }) {
   const {
     rowModesModel,
@@ -37,10 +36,12 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
     processRowUpdate,
     handleRowModesModelChange,
     setId,
-    DELETE, 
+    DELETE,
     setRowModesModel,
     flattenInvoiceData,
-    invoiceItems,
+    handleRowSelected,
+    setSelectedInvoice,
+    selectedInvoice,
   } = useCustomHook()
 
   const columns = ColumnsComponent({
@@ -54,8 +55,21 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
     handleDeleteClick,
     handleClon,
     flattenInvoiceData,
-    invoiceItems,
   })
+
+  function InvoiceDetails({ invoiceItems }) {
+    const columns = [
+      { field: 'id', headerName: 'ID', width: 60 },
+      { field: 'sku', headerName: 'sku', width: 180 },
+      { field: 'product', headerName: 'Product', width: 180 },
+      { field: 'description', headerName: 'description', width: 180 },
+      { field: 'quantity', headerName: 'Quantity', width: 180 },
+      { field: 'price', headerName: 'Price', width: 180 },
+      { field: 'total', headerName: 'Total', width: 180 },
+    ]
+
+    return <DataGrid rows={invoiceItems} columns={columns} autoHeight />
+  }
 
   if (loading) {
     return <Spinner />
@@ -71,6 +85,7 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
         background="transparent"
         borderRadius="30px"
         w="100%"
+        h={{ base: '750px', '2xl': '850px' }}
         bg={{
           base: 'rgb(19,21,56)',
         }}
@@ -92,13 +107,11 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
             data={data.sizes}
           />
         </Flex>
-
         <Box
           sx={{
             width: '97%',
-            minHeight: { md: '450px', '2xl': '600px' },
-            maxHeight: '450px', // altura máxima
-            overflow: 'auto', // habilita el desplazamiento
+            height: '65%',
+            overflow: 'auto',
           }}
           mx="1em"
         >
@@ -117,20 +130,39 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
               columns={columns}
               editMode="row"
               rowModesModel={rowModesModel}
+              onRowClick={(params) => handleRowSelected(params)}
               onRowModesModelChange={handleRowModesModelChange}
               onRowEditStart={handleRowEditStart}
               onRowEditStop={handleRowEditStop}
               processRowUpdate={processRowUpdate}
+              onRowSelected={handleRowSelected}
               slotProps={{
                 toolbar: { setRows, setRowModesModel },
               }}
               paginationModel={paginationModel}
               onPaginationModelChange={setPaginationModel}
               pageSizeOptions={[15, 25, 30, 50, 75, 100]}
-              // autoHeight
+              autoHeight
             />
           </ThemeProvider>
         </Box>
+        {selectedInvoice && (
+          <Box
+            sx={{
+              width: '97%',
+              height: '40%',
+              overflow: 'auto',
+            }}
+            mx="1em"
+          >
+            <Text textAlign="center" color="white" fontSize="xl" mb={4}>
+              Items Detail
+            </Text>
+            <ThemeProvider theme={taxTableTheme}>
+              <InvoiceDetails invoiceItems={selectedInvoice.invoiceItems} />
+            </ThemeProvider>
+          </Box>
+        )}
       </Flex>
     </GradientBorder>
   )
