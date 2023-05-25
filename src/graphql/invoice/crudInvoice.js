@@ -95,7 +95,7 @@ const GET_INVOICE = gql`
 `
 
 const CREATE_INVOICE = gql`
-  mutation CreateInvoice($input: CreateInvoiceInput!) {
+  mutation CreateInvoice($input: InvoiceInput!) {
     createInvoice(input: $input) {
       id
       user {
@@ -104,6 +104,10 @@ const CREATE_INVOICE = gql`
         lastName
       }
       branch {
+        id
+        name
+      }
+      companies {
         id
         name
       }
@@ -119,7 +123,7 @@ const CREATE_INVOICE = gql`
 `
 
 const UPDATE_INVOICE = gql`
-  mutation UpdateInvoice($id: ID!, $input: UpdateInvoiceInput!) {
+  mutation UpdateInvoice($id: ID!, $input: InvoiceInput!) {
     updateInvoice(id: $id, input: $input) {
       id
       user {
@@ -141,6 +145,7 @@ const UPDATE_INVOICE = gql`
     }
   }
 `
+
 
 export const DELETE_INVOICE = gql`
   mutation DeleteInvoice($id: ID!) {

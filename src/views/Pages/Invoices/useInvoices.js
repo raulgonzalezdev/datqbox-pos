@@ -33,6 +33,7 @@ export default function useInvoices() {
 
   const flattenInvoiceData = (invoices) => {
     const flatInvoices = invoices.map((invoice) => {
+  
       const company = invoice.companies && invoice.companies.length > 0 ? invoice.companies[0].name : 'N/A'
       const branch = invoice.branch ? invoice.branch.name : 'N/A'
       const paymentMethod = invoice.paymentMethod ? invoice.paymentMethod.name : 'N/A'
@@ -46,9 +47,10 @@ export default function useInvoices() {
               quantity: item.quantity,
               product: item.product.name,
               total: item.price * item.quantity,
+              productId: item.product.id, // Agregado productId
             }))
           : []
-
+  
       return {
         id: invoice.id,
         userId: invoice.user.id,
@@ -56,8 +58,11 @@ export default function useInvoices() {
         userLastName: invoice.user.lastName,
         userEmail: invoice.user.email,
         companyName: company,
+        companyId: invoice.companies[0].id, // Agregado companyId
         branchName: branch,
+        branchId: invoice.branch.id, // Agregado branchId
         paymentMethodName: paymentMethod,
+        paymentMethodId: invoice.paymentMethod.id, // Agregado paymentMethodId
         invoiceItems: invoiceItems,
         total: invoice.total,
         tax: invoice.tax,
@@ -65,11 +70,12 @@ export default function useInvoices() {
         createdAt: invoice.createdAt,
       }
     })
-
+  
     const flatInvoiceItems = invoices.flatMap((invoice) => invoice.invoiceItems || [])
     setRows(flatInvoices)
     setInvoiceItems(flatInvoiceItems)
   }
+  
 
   useEffect(() => {
     if (Id !== null) {
@@ -111,40 +117,44 @@ export default function useInvoices() {
   }
 
   const handleClon = (id) => async () => {
-    const rowToClone = rows.find((row) => row.id === id)
-    const newRow = {
+    const invoiceToClone = rows.find((row) => row.id === id)
+    const newInvoice = {
       input: {
-        name: rowToClone.name,
-        address: rowToClone.address,
-        phoneNumber: rowToClone.phoneNumber,
-        email: rowToClone.email,
-        legalId: rowToClone.legalId,
+        userId: invoiceToClone.userId,
+        companyId: invoiceToClone.companyId,
+        branchId: invoiceToClone.branchId,
+        paymentMethodId: invoiceToClone.paymentMethodId,
+        total: invoiceToClone.total,
+        tax: invoiceToClone.tax,
+        status: invoiceToClone.status,
       },
     }
 
+  
     try {
-      const result = await create({ variables: newRow })
+      const result = await create({ variables: newInvoice })
       const newId = result
       console.log(newId)
-      setRows([...rows, { ...result.data.addCompany, isNew: true }])
+      setRows([...rows, { ...result.data.createInvoice, isNew: true }])
       toast({
         title: 'Success',
-        description: 'New Invoices created successfully',
+        description: 'New Invoice cloned successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
       })
     } catch (error) {
-      console.error('Error creating new product:', error)
+      console.error('Error cloning invoice:', error)
       toast({
         title: 'Error',
-        description: 'Error creating new product: ' + error,
+        description: 'Error cloning invoice: ' + error,
         status: 'error',
         duration: 2000,
         isClosable: true,
       })
     }
   }
+  
 
   const handleDeleteClick = (id) => () => {
     setId(id)
@@ -175,35 +185,40 @@ export default function useInvoices() {
 
   const processRowUpdate = async (newRow) => {
     let response
-
+  
     try {
       if (newRow.isNew) {
         const rowNew = {
           input: {
-            name: newRow.name,
-            address: newRow.address,
-            phoneNumber: newRow.phoneNumber,
-            email: newRow.email,
-            legalId: newRow.legalId,
+            userId: newRow.userId,
+            companyId: newRow.companyId,
+            branchId: newRow.branchId,
+            paymentMethodId: newRow.paymentMethodId,
+            total: newRow.total,
+            tax: newRow.tax,
+            status: newRow.status,
           },
         }
-
+  
         response = await create({ variables: rowNew })
       } else {
         const rowUpdate = {
           id: newRow.id,
           input: {
-            name: newRow.name,
-            address: newRow.address,
-            phoneNumber: newRow.phoneNumber,
-            email: newRow.email,
-            legalId: newRow.legalId,
+            userId: newRow.userId,
+            companyId: newRow.companyId,
+            branchId: newRow.branchId,
+            paymentMethodId: newRow.paymentMethodId,
+            total: newRow.total,
+            tax: newRow.tax,
+            status: newRow.status,
           },
         }
-
+  
         response = await update({ variables: rowUpdate })
       }
-
+  
+    
       const updatedRow = { ...newRow, isNew: false }
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
       setRowModesModel({ ...rowModesModel, [newRow.id]: { mode: GridRowModes.View } })

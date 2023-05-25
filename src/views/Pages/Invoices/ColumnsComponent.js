@@ -1,12 +1,30 @@
 import React from 'react'
 import { MdSave, MdCancel, MdDelete, MdOutlineBorderColor, MdFolderCopy } from 'react-icons/md'
 import { GridRowModes, GridActionsCellItem } from '@mui/x-data-grid'
-import { Tooltip} from '@chakra-ui/react'
+import { Tooltip, Flex, Box} from '@chakra-ui/react'
+import DateFormat from 'components/DateFormat/DateFormat'
+
+
 
 const ColumnsComponent = ({ rowModesModel, handleSaveClick, handleCancelClick, handleEditClick, setId, handleDeleteClick, handleClon , invoiceItems}) => {
   return [
     { field: 'id', headerName: 'ID', width: 60, editable: false },
-    { field: 'createdAt', headerName: 'Created At', width: 120, editable: true },
+    {
+      field: 'createdAt',
+      headerName: 'Created At',
+      width: 180,
+      editable: true,
+      renderCell: (params) => {
+        
+        return (
+          <DateFormat valuedate={params.row.createdAt} />
+        )
+      }
+
+     
+
+    },
+    
     { field: 'companyName', headerName: 'Company Name', width: 180, editable: true },
     { field: 'paymentMethodName', headerName: 'Payment Method', width: 120, editable: true },
     

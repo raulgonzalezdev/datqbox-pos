@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 
-const taxTableTheme = createTheme({
+const taxDateTheme = createTheme({
   components: {
     MuiDataGrid: {
       styleOverrides: {
@@ -74,9 +74,9 @@ const taxTableTheme = createTheme({
       main: '#56577A',
     },
     text: {
-      primary: '#56577A',
+      primary: '#fff',
     },
   },
 })
 
-export default taxTableTheme
+export default taxDateTheme

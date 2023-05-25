@@ -71,6 +71,7 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
         background="transparent"
         borderRadius="30px"
         w="100%"
+        h={{ base: '750px', '2xl': '850px' }}
         bg={{
           base: 'rgb(19,21,56)',
         }}
@@ -127,7 +128,7 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
               paginationModel={paginationModel}
               onPaginationModelChange={setPaginationModel}
               pageSizeOptions={[15, 25, 30, 50, 75, 100]}
-              // autoHeight
+              autoHeight
             />
           </ThemeProvider>
         </Box>
