@@ -40,7 +40,25 @@ query GetInvoices {
     }
     total
     tax
+    exchangeRate {
+      currencyId
+      date
+      rate
+      currencyType {
+        id
+        name
+      }
+    }
     status
+    taxInvoices {
+      id
+      amount
+      tax {
+        id
+        name
+        rate
+      }
+    }
     createdAt
     updatedAt
   }
@@ -87,7 +105,25 @@ const GET_INVOICE = gql`
     }
     total
     tax
+    exchangeRate {
+      currencyId
+      date
+      rate
+      currencyType {
+        id
+        name
+      }
+    }
     status
+    taxInvoices {
+      id
+      amount
+      tax {
+        id
+        name
+        rate
+      }
+    }
     createdAt
     updatedAt
     }
@@ -117,7 +153,20 @@ const CREATE_INVOICE = gql`
       }
       total
       tax
+      currencyId
+      exchangeRateId
       status
+      taxInvoices {
+        id
+        amount
+        tax {
+          id
+          name
+          rate
+        }
+      }
+      createdAt
+      updatedAt
     }
   }
 `
@@ -141,6 +190,8 @@ const UPDATE_INVOICE = gql`
       }
       total
       tax
+      currencyId
+      exchangeRateId
       status
     }
   }
@@ -162,9 +213,37 @@ export function useGetInvoices() {
     return useQuery(GET_INVOICE, { variables: { id } })
   }
   
+  // export function useCreateInvoice() {
+  //   return useMutation(CREATE_INVOICE, {
+  //     refetchQueries: [{ query: GET_INVOICES }],
+  //   })
+  // }
+
   export function useCreateInvoice() {
     return useMutation(CREATE_INVOICE, {
       refetchQueries: [{ query: GET_INVOICES }],
+      update: (cache, { data: { createInvoice } }) => {
+        cache.modify({
+          fields: {
+            getAllInvoices(existingInvoices = []) {
+              const newInvoiceRef = cache.writeFragment({
+                data: createInvoice,
+                fragment: gql`
+                  fragment NewInvoice on Invoice {
+                    id
+                    total
+                    tax
+                    currencyId
+                    exchangeRateId
+                    status
+                  }
+                `,
+              })
+              return [...existingInvoices, newInvoiceRef]
+            },
+          },
+        })
+      },
     })
   }
   

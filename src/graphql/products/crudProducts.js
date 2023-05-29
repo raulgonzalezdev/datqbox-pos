@@ -9,6 +9,20 @@ export const GET_PRODUCTS = gql`
       vendor
       description
       image
+      isComposite
+      productCosts {
+        id
+        purchaseCost
+        otherCosts
+        shippingCost
+        product {
+          id
+          categoryId
+          name
+          description
+        }
+
+      }
       price
       category {
         id
@@ -19,6 +33,14 @@ export const GET_PRODUCTS = gql`
       featured
       newarrivals
       taxRate
+      unit
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
       images {
         id
         url
@@ -42,6 +64,17 @@ export const GET_PRODUCTS = gql`
         size {
           id
           name
+        }
+      }
+
+      exchangeRate {
+        currencyId
+        rate
+        date
+        currencyType {
+          id
+          name
+          symbol
         }
       }
     }
@@ -57,6 +90,20 @@ export const GET_PRODUCT = gql`
       vendor
       description
       image
+      isComposite
+      productCosts {
+        id
+        purchaseCost
+        otherCosts
+        shippingCost
+        product {
+          id
+          categoryId
+          name
+          description
+        }
+
+      }
       price
       category {
         id
@@ -65,8 +112,16 @@ export const GET_PRODUCT = gql`
       inventory
       rentalType
       featured
+      unit
       newarrivals
       taxRate
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
       images {
         id
         url
@@ -92,6 +147,17 @@ export const GET_PRODUCT = gql`
           name
         }
       }
+
+      exchangeRate {
+        currencyId
+        rate
+        date
+        currencyType {
+          id
+          name
+          symbol
+        }
+      }
     }
   }
 `
@@ -104,6 +170,20 @@ export const CREATE_PRODUCT = gql`
       vendor
       description
       image
+      isComposite
+      productCosts {
+        id
+        purchaseCost
+        otherCosts
+        shippingCost
+        product {
+          id
+          categoryId
+          name
+          description
+        }
+
+      }
       price
       category {
         id
@@ -113,7 +193,18 @@ export const CREATE_PRODUCT = gql`
       rentalType
       featured
       newarrivals
+      unit
       taxRate
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
+      exchangeRate {
+        currencyId
+      }
     }
   }
 `
@@ -127,6 +218,8 @@ export const DUPLICATE_PRODUCT = gql`
       vendor
       description
       image
+      isComposite
+     
       price
       category {
         id
@@ -137,6 +230,17 @@ export const DUPLICATE_PRODUCT = gql`
       featured
       newarrivals
       taxRate
+      unit
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
+      exchangeRate {
+        currencyId
+      }
     }
   }
 `
@@ -150,6 +254,8 @@ export const UPDATE_PRODUCT = gql`
       vendor
       description
       image
+      isComposite
+     
       price
       category {
         id
@@ -160,6 +266,17 @@ export const UPDATE_PRODUCT = gql`
       featured
       newarrivals
       taxRate
+      unit
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
+      exchangeRate {
+        currencyId
+      }
     }
   }
 `
@@ -188,61 +305,54 @@ export const DELETE_PRODUCT_IMAGE = gql`
   }
 `
 
-
-
-
 export function useGetProducts() {
-    return useQuery(GET_PRODUCTS)
-  }
-  
-  export function useGetProduct(id, options = {}) {
-    if (!id) {
-      return {
-        loading: false,
-        data: null,
-        error: null,
-      }
+  return useQuery(GET_PRODUCTS)
+}
+
+export function useGetProduct(id, options = {}) {
+  if (!id) {
+    return {
+      loading: false,
+      data: null,
+      error: null,
     }
-  
-    return useQuery(GET_PRODUCT, { variables: { id }, ...options })
-  }
-  
-  
-  export function useCreateProduct() {
-    return useMutation(CREATE_PRODUCT, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
   }
 
-  export function useDuplicateProduct() {
-    return useMutation(Duplicate_PRODUCT, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
-  }
-  
-  export function useUpdateProduct() {
-    return useMutation(UPDATE_PRODUCT, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
-  }
-  
-  export function useDeleteProduct() {
-    return useMutation(DELETE_PRODUCT, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
-  }
+  return useQuery(GET_PRODUCT, { variables: { id }, ...options })
+}
 
-  export function useUploadProductImage() {
-    return useMutation(UPLOAD_PRODUCT_IMAGE, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
-  }
-  
-  export function useDeleteProductImage() {
-    return useMutation(DELETE_PRODUCT_IMAGE, {
-      refetchQueries: [{ query: GET_PRODUCTS }],
-    })
-  }
-  
+export function useCreateProduct() {
+  return useMutation(CREATE_PRODUCT, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}
 
-   
+export function useDuplicateProduct() {
+  return useMutation(Duplicate_PRODUCT, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}
+
+export function useUpdateProduct() {
+  return useMutation(UPDATE_PRODUCT, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}
+
+export function useDeleteProduct() {
+  return useMutation(DELETE_PRODUCT, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}
+
+export function useUploadProductImage() {
+  return useMutation(UPLOAD_PRODUCT_IMAGE, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}
+
+export function useDeleteProductImage() {
+  return useMutation(DELETE_PRODUCT_IMAGE, {
+    refetchQueries: [{ query: GET_PRODUCTS }],
+  })
+}

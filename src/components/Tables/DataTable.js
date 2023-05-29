@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { DataGrid, GridColDef, GridValueGetterParams, GridRowSelectedParams,  GridCellEditStopReasons } from '@mui/x-data-grid'
-import { Flex, Text, Box, Avatar, Badge, Input, Button, InputGroup, InputLeftElement } from '@chakra-ui/react'
+import { DataGrid,  GridCellEditStopReasons } from '@mui/x-data-grid'
+import { Flex, Text, Box,  Input, Button, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { ThemeProvider } from '@mui/material/styles'
 import taxTableTheme from 'theme/themeTableMUI'
 import { SearchIcon } from '@chakra-ui/icons'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
 
-const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData, onEditCommit }) => {
+const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData, onEditCommit, ptValue, onRowDoubleClick }) => {
   const [searchValue, setSearchValue] = useState('')
   const [rows, setRows] = useState(data)
-
 
   useEffect(() => {
     setRows(data)
@@ -43,7 +42,7 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData, onEditC
           base: 'rgb(19,21,56)',
         }}
         direction="column"
-        pt={{ base: '120px', md: '75px' }}
+        pt={ptValue !== undefined ? ptValue : { base: '120px', md: '75px' }}
       >
         <Flex justifyContent="space-between" alignItems="center" w="95%">
           <Text ml={8} fontSize="lg" color="#fff" fontWeight="bold" flex="1">
@@ -78,12 +77,12 @@ const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData, onEditC
                 },
               }}
               pageSizeOptions={[5, 10, 15, 25, 30, 50]}
-              disableSelectionOnClick
+              onRowDoubleClick={onRowDoubleClick}
               autoHeight
               onRowModesModelChange={(params, event) => {
                 if (params.reason === GridCellEditStopReasons.cellFocusOut) {
-            event.defaultMuiPrevented = true
-          }
+                  event.defaultMuiPrevented = true
+                }
                 if (params.reason !== 'commit') {
                   return
                 }

@@ -169,6 +169,7 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                 <Stack direction="row" spacing={2}>
                   <PopoverTrigger>
                     <IconButton
+                     colorScheme="blue"
                       aria-label="Add new size"
                       icon={<AddIcon />}
                       onClick={() => {
@@ -179,6 +180,7 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                   </PopoverTrigger>
 
                   <IconButton
+                    colorScheme="blue"
                     aria-label="Edit Size"
                     icon={<EditIcon />}
                     onClick={() => {
@@ -190,6 +192,7 @@ function ProductSize({ formState, handleChange, handleSelectedSizes, selectedSiz
                     }}
                   />
                   <IconButton
+                    colorScheme="red"
                     aria-label="Delete Size"
                     icon={<DeleteIcon />}
                     onClick={() => {

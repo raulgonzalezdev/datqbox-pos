@@ -49,35 +49,35 @@ import {
       ),
     },
     {
-      field: 'name',
-      headerName: 'Name',
-      width: 150,
+      field: 'category',
+      headerName: 'Category',
+      width: 100,
       sortable: true,
       renderCell: (params) => (
         <Flex align="center">
-          
           <Box ml={2}>
-            <Text>{params.row.name}</Text>
-          
+            <Text >
+              {params.row.category.name}
+            </Text>
+            
           </Box>
         </Flex>
       ),
     },
     {
-      field: 'description',
-      headerName: 'description',
-      width: 150,
+      field: 'nameDescription',
+      headerName: 'Description',
+      width: 300,
       sortable: true,
       renderCell: (params) => (
         <Flex align="center">
-          
           <Box ml={2}>
-            <Text>{params.row.description}</Text>
-          
+            <Text>{`${params.row.name} - ${params.row.description}`}</Text>
           </Box>
         </Flex>
       ),
     },
+    
     {
       field: 'vendor',
       headerName: 'Vendedor',
@@ -95,24 +95,8 @@ import {
       ),
     },
     {
-      field: 'category',
-      headerName: 'Category',
-      width: 100,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          <Box ml={2}>
-            <Text >
-              {params.row.category.name}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
-    {
       field: 'price',
-      headerName: 'price',
+      headerName: 'price $',
       width: 100,
       sortable: true,
       align: 'right',
@@ -128,8 +112,29 @@ import {
       ),
     },
     {
-      field: 'taxrate',
-      headerName: 'TaxRate',
+      field: 'pricelocal',
+      headerName: 'Price Local',
+      width: 100,
+      sortable: true,
+      align: 'right',
+      renderCell: (params) => (
+        <Flex align="center" justifyContent="flex-end">
+          <Box ml={2}>
+            <Text>
+              {params.row.price && params.row.exchangeRate && params.row.exchangeRate.rate
+                ? (params.row.price * params.row.exchangeRate.rate).toLocaleString()
+                : ''}
+            </Text>
+          </Box>
+        </Flex>
+      ),
+    },
+    
+
+
+    {
+      field: 'exchangeRate',
+      headerName: 'Exchange',
       width: 100,
       sortable: true,
       align: 'right',
@@ -137,13 +142,14 @@ import {
         <Flex align="center" justifyContent="flex-end">
           <Box ml={2}>
             <Text >
-            {params.row.price.toLocaleString()}
+            {params.row.exchangeRate.rate.toLocaleString()}
             </Text>
             
           </Box>
         </Flex>
       ),
     },
+    
     {
       field: 'newarrivals',
       headerName: 'New Arrivals',

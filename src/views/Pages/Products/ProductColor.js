@@ -182,6 +182,7 @@ function ProductColor({
                   <Stack direction="row" spacing={2}>
                     <PopoverTrigger>
                       <IconButton
+                      colorScheme="blue"
                         aria-label="Add new color"
                         icon={<AddIcon />}
                         onClick={() => {
@@ -192,8 +193,9 @@ function ProductColor({
                     </PopoverTrigger>
 
                     <IconButton
+                    colorScheme="blue"
                       aria-label="Edit color"
-                      icon={<EditIcon />}
+                      icon={<EditIcon  />}
                       onClick={() => {
                         if (radioValue) {
                           console.log(selectedColor.name)
@@ -205,8 +207,9 @@ function ProductColor({
                       }}
                     />
                     <IconButton
+                      colorScheme="red"
                       aria-label="Delete color"
-                      icon={<DeleteIcon />}
+                      icon={<DeleteIcon colorScheme="blue" />}
                       onClick={() => {
                         setActionType('delete')
                         handleSubmit('color', 'delete', radioValue.index)

@@ -280,6 +280,7 @@ function ProductSizeColor({
                   <Stack direction="row" spacing={2}>
                     <PopoverTrigger>
                       <IconButton
+                       colorScheme="blue"
                         aria-label="Add new color"
                         icon={<AddIcon />}
                         onClick={() => {
@@ -290,6 +291,7 @@ function ProductSizeColor({
                     </PopoverTrigger>
 
                     <IconButton
+                      colorScheme="blue"
                       aria-label="Edit color"
                       icon={<EditIcon />}
                       onClick={() => {
@@ -303,6 +305,7 @@ function ProductSizeColor({
                       }}
                     />
                     <IconButton
+                     colorScheme="red"
                       aria-label="Delete color"
                       icon={<DeleteIcon />}
                       onClick={() => {

@@ -1,38 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
-import {
-
-  Flex,
-  Button,
-  Box,
-  useToast,
-  HStack,
-  Spinner,
-  Grid,
-
-} from '@chakra-ui/react'
-import {
-
-  StyledText,
-} from 'components/ReusableComponents/ReusableComponents'
+import { Flex, Button, Box, useToast, HStack, Spinner, Grid } from '@chakra-ui/react'
+import { StyledText } from 'components/ReusableComponents/ReusableComponents'
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import { gql } from '@apollo/client'
-import {
-  useGetProduct,
-  useCreateProduct,
-  useUpdateProduct,
-} from 'graphql/products/crudProducts'
+import { useGetProduct, useCreateProduct, useUpdateProduct } from 'graphql/products/crudProducts'
 import { Form, Formik } from 'formik'
-import {
-  useRemoveProductColor,
-  useAddMultipleProductColors,
-} from 'graphql/productcolor/crudProductColor'
-import {
-  useRemoveProductSize,
-  useAddMultipleProductSizes,
-} from 'graphql/productsize/crudProductSize'
+import { useRemoveProductColor, useAddMultipleProductColors } from 'graphql/productcolor/crudProductColor'
+import { useRemoveProductSize, useAddMultipleProductSizes } from 'graphql/productsize/crudProductSize'
 import { useAddImages } from 'graphql/image/crudImage'
 
 import ProductInfo from './ProductInfo'
@@ -60,10 +37,8 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
   const [removeProductSize] = useRemoveProductSize()
   const [removeProductColor] = useRemoveProductColor()
-  const dbSizes =
-    formState?.productSizes?.map((sizeObj) => sizeObj.size.id) || []
-  const dbColors =
-    formState?.productColors?.map((ColorObj) => ColorObj.color.id) || []
+  const dbSizes = formState?.productSizes?.map((sizeObj) => sizeObj.size.id) || []
+  const dbColors = formState?.productColors?.map((ColorObj) => ColorObj.color.id) || []
 
   const [selectedSizes, setSelectedSizes] = useState(dbSizes)
   const [selectedColors, setSelectedColors] = useState(dbColors)
@@ -76,23 +51,30 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
   useEffect(() => {
     if (data && data.product) {
+      let expirationDate
+
+      if (data.product.expirationDate !== null) {
+        const expirationDateMillis = Number(data.product.expirationDate)
+        if (!isNaN(expirationDateMillis)) {
+          expirationDate = new Date(expirationDateMillis).toISOString().split('T')[0]
+        }
+      }
+
       setFormState({
         ...data.product,
         categoryId: data.product.category.id,
-        featured:
-          data.product.featured === undefined ? true : data.product.featured,
-        newarrivals:
-          data.product.newarrivals === undefined
-            ? true
-            : data.product.newarrivals,
+        exchangeRateId: data.product.exchangeRate.currencyId,
+        purchaseCost: data.product.productCosts ? data.product.productCosts.purchaseCost : 0,
+        otherCosts: data.product.productCosts ? data.product.productCosts.otherCosts : 0,
+        shippingCost: data.product.productCosts ? data.product.productCosts.shippingCost : 0,
+        expirationDate: expirationDate,
+        //taxInclued: data.product.taxInclued === undefined ? true : data.product.taxInclued,
+        featured: data.product.featured === undefined ? true : data.product.featured,
+        newarrivals: data.product.newarrivals === undefined ? true : data.product.newarrivals,
       })
 
-      setSelectedSizes(
-        data.product.productSizes.map((productSize) => productSize.size.id)
-      )
-      setSelectedColors(
-        data.product.productColors.map((productColor) => productColor.color.id)
-      )
+      setSelectedSizes(data.product.productSizes.map((productSize) => productSize.size.id))
+      setSelectedColors(data.product.productColors.map((productColor) => productColor.color.id))
     } else if (!productId) {
       setFormState({
         id: null,
@@ -106,7 +88,19 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         featured: true,
         newarrivals: true,
         taxRate: 0,
+        taxInclued: true,
         categoryId: '',
+        exchangeRateId: '',
+        requiresPrescription: true,
+        expirationDate: '',
+        dosage: '',
+        unit: '',
+        usageInstructions: '',
+        contraindications: '',
+        activeIngredient: '',
+        otherCosts: 0,
+        shippingCost: 0,
+        purchaseCost: 0,
       })
       setSelectedSizes([])
       setSelectedColors([])
@@ -128,9 +122,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     }
   `
 
-
-  
-
   const token = localStorage.getItem('authToken')
   const uploadLink = createUploadLink({
     uri: 'http://localhost:4000/graphql', // Debes reemplazarlo por la URI de tu servidor GraphQL
@@ -150,7 +141,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
 
     // Verificar si selectedImages contiene objetos de archivo o URLs
     const isNewFiles = selectedImages[0].hasOwnProperty('path')
-   
 
     if (isNewFiles) {
       // Trata selectedImages como un array de objetos de archivo
@@ -164,7 +154,6 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         const { data } = await addImages({
           variables: { input: { images: imagesWithProduct } },
         })
-        
 
         const files = selectedImages.map(({ preview, path }) => {
           return new File([preview], path)
@@ -204,7 +193,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
         const { data } = await addImages({
           variables: { input: { images: imagesProduct } },
         })
-        console.log(data.addImages) // Array of newly added images
+
         setSelectedImages([])
       } catch (error) {
         console.error('Error al añadir imágenes: ', error)
@@ -244,6 +233,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     // e.preventDefault();
     setIsLoading(true)
 
+    
     const adjustedFormState = {
       name: formState.name,
       vendor: formState.vendor,
@@ -255,11 +245,20 @@ function ProductForm({ productId, onCancel, onSuccess }) {
       rentalType: formState.rentalType,
       featured: formState.featured,
       newarrivals: formState.newarrivals,
+      taxInclued: formState.taxInclued,
       taxRate: parseFloat(formState.taxRate),
       categoryId: formState.categoryId,
+      unit: formState.unit,
+      exchangeRateId: formState.exchangeRateId,
+      requiresPrescription: formState.requiresPrescription,
+      expirationDate: formState.expirationDate,
+      dosage: formState.dosage,
+      usageInstructions: formState.usageInstructions,
+      contraindications: formState.contraindications,
+      activeIngredient: formState.activeIngredient,
     }
     let newProductId = productId
-
+    //console.log({ id: productId, input: adjustedFormState })
     try {
       if (productId) {
         await updateProduct({
@@ -353,16 +352,15 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     })
   }
 
-  if ((productId && loading) || createLoading || updateLoading)
-    return <p>Cargando...</p>
+  if ((productId && loading) || createLoading || updateLoading) return <p>Cargando...</p>
   if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Spinner /> // Muestra el spinner si isLoading es true
       ) : (
-        <>
+        <> */}
           <Formik initialValues={formState} onSubmit={handleSubmit}>
             <Form>
               <Card
@@ -375,43 +373,21 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                 <Box mt={2}>
                   {' '}
                   {/* adjust marginTop as needed */}
-                  <HStack
-                    width="100%"
-                    justifyContent="space-between"
-                    spacing={2}
-                  >
-                    {' '}
+                  <HStack width="100%" justifyContent="space-between" spacing={2}>
                     {' '}
                     {/* reduce spacing as needed */}
-                    <StyledText fontSize={{ base: '16px', md: '20px' }}>
-                      {productId ? 'Editar Producto' : 'Añadir Producto'}
-                    </StyledText>
-                    <Button
-                      onClick={onCancel}
-                      colorScheme="teal"
-                      size={{ base: 'sm', md: 'md' }}
-                    >
+                    <StyledText fontSize={{ base: '16px', md: '20px' }}>{productId ? 'Editar Producto' : 'Añadir Producto'}</StyledText>
+                    <Button onClick={onCancel} colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
                       Retornar
                     </Button>
-                    <Button
-                      type="submit"
-                      colorScheme="teal"
-                      size={{ base: 'sm', md: 'md' }}
-                    >
+                    <Button type="submit" colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
                       Submit
                     </Button>
                   </HStack>
                 </Box>
               </Card>
 
-              <Grid
-                templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }}
-                my="26px"
-                gap="18px"
-                marginLeft="10"
-                marginRight="10"
-                marginTop="2"
-              >
+              <Grid templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }} my="26px" gap="18px" marginLeft="10" marginRight="10" marginTop="2">
                 <Card width={{ base: 'auto', md: '100%' }}>
                   <CardBody width={{ base: 'auto', md: '100%' }} h="100%">
                     <ProductInfo
@@ -423,11 +399,7 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                       handleCheckboxChange={handleCheckboxChange}
                     />
                   </CardBody>
-                  <Flex
-                    direction={{ base: 'column', md: 'row' }}
-                    justifyContent="space-between"
-                    mt="5"
-                  >
+                  <Flex direction={{ base: 'column', md: 'row' }} justifyContent="space-between" mt="5">
                     <ProductColor
                       formState={formState}
                       handleChange={handleChange}
@@ -445,24 +417,16 @@ function ProductForm({ productId, onCancel, onSuccess }) {
                 </Card>
                 <Card width={{ base: 'auto', md: '100%' }}>
                   <CardBody width={{ base: 'auto', md: '100%' }}>
-                    <Flex
-                      direction={{ base: 'column', md: 'row' }}
-                      justifyContent="space-between"
-                    >
-                      <ProductImage
-                        formState={formState}
-                        productId={productId}
-                        handleChange={handleChange}
-                        onImageSelect={onImageSelect}
-                      />
+                    <Flex direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
+                      <ProductImage formState={formState} productId={productId} handleChange={handleChange} onImageSelect={onImageSelect} />
                     </Flex>
                   </CardBody>
                 </Card>
               </Grid>
             </Form>
           </Formik>
-        </>
-      )}
+        {/* </>
+      )} */}
     </>
   )
 }
