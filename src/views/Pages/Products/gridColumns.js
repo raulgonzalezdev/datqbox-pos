@@ -67,7 +67,7 @@ import {
     {
       field: 'nameDescription',
       headerName: 'Description',
-      width: 300,
+      width: 200,
       sortable: true,
       renderCell: (params) => (
         <Flex align="center">
@@ -78,22 +78,7 @@ import {
       ),
     },
     
-    {
-      field: 'vendor',
-      headerName: 'Vendedor',
-      width: 100,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          <Box ml={2}>
-            <Text >
-              {params.row.vendor}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
+    
     {
       field: 'price',
       headerName: 'price $',

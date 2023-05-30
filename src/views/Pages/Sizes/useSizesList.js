@@ -153,9 +153,10 @@ export default function useSizesList() {
     }
   }
 
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel)
-  }
+const handleRowModesModelChange = (newRowModesModel) => {
+  setRowModesModel(newRowModesModel)
+}
+
 
   return {
     rowModesModel,

@@ -15,6 +15,9 @@ export const GET_PRODUCTS = gql`
         purchaseCost
         otherCosts
         shippingCost
+        isTaxedCost
+        calcMethod
+        taxRateCosts
         product {
           id
           categoryId
@@ -24,6 +27,7 @@ export const GET_PRODUCTS = gql`
 
       }
       price
+      profit
       category {
         id
         name
@@ -96,6 +100,9 @@ export const GET_PRODUCT = gql`
         purchaseCost
         otherCosts
         shippingCost
+        isTaxedCost
+        calcMethod
+        taxRateCosts
         product {
           id
           categoryId
@@ -105,6 +112,7 @@ export const GET_PRODUCT = gql`
 
       }
       price
+      profit
       category {
         id
         name
@@ -176,6 +184,9 @@ export const CREATE_PRODUCT = gql`
         purchaseCost
         otherCosts
         shippingCost
+        isTaxedCost
+        calcMethod
+        taxRateCosts
         product {
           id
           categoryId
@@ -185,6 +196,7 @@ export const CREATE_PRODUCT = gql`
 
       }
       price
+      profit
       category {
         id
         name
@@ -257,6 +269,7 @@ export const UPDATE_PRODUCT = gql`
       isComposite
      
       price
+      profit
       category {
         id
         name

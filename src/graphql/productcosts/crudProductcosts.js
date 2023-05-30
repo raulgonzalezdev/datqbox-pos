@@ -1,31 +1,58 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
 
 export const CREATE_PRODUCT_COST = gql`
-  mutation CreateProductCost($productId: ID!, $input: CreateProductCostInput!) {
-    createProductCost(productId: $productId, input: $input) {
-      id
-      purchaseCost
-      otherCosts
-      shippingCost
-    }
+mutation CreateProductCost($input: CreateProductCostsInput!) {
+  createProductCosts(input: $input) {
+    id
+    productId
+    purchaseCost
+    otherCosts
+    shippingCost
+    isTaxedCost
+    calcMethod
+    taxRateCosts
   }
+}
+
 `
 
 export const UPDATE_PRODUCT_COST = gql`
-  mutation UpdateProductCost($id: ID!, $input: UpdateProductCostInput!) {
-    updateProductCost(id: $id, input: $input) {
-      id
-      purchaseCost
-      otherCosts
-      shippingCost
-    }
-}
+mutation UpdateProductCost($id: ID!, $input: UpdateProductCostsInput!) {
+  updateProductCosts(id: $id, input: $input) {
+    id
+    productId
+    purchaseCost
+    otherCosts
+    shippingCost
+    isTaxedCost
+    calcMethod
+    taxRateCosts
+  }
+} 
+
  `
+
+ 
+
 
  export const DELETE_PRODUCT_COST = gql`
   mutation DeleteProductCost($id: ID!) {
     deleteProductCost(id: $id) {
       id
+    }
+  }
+`
+
+export const GET_PRODUCT_COSTS = gql`
+  query GetProductCostById($productId: ID!) {
+    productCost(productId: $productId) {
+      id
+      purchaseCost
+      otherCosts
+      shippingCost
+      isTaxedCost
+      calcMethod
+      taxRateCosts
     }
   }
 `
@@ -40,15 +67,28 @@ export function useGetProductCosts(productId) {
   
   export function useCreateProductCost() {
     return useMutation(CREATE_PRODUCT_COST, {
-      refetchQueries: (mutationResult) => [{ query: GET_PRODUCT_COSTS, variables: { productId: mutationResult.data.createProductCost.product.id } }],
+      update: (cache, { data: { createProductCosts } }) => {
+        // Actualización de cache si es necesario
+      },
+      onError: (error) => {
+        // Manejo del error
+        console.error(error)
+      },
     })
-  }
-  
-  export function useUpdateProductCost() {
-    return useMutation(UPDATE_PRODUCT_COST, {
-      refetchQueries: (mutationResult) => [{ query: GET_PRODUCT_COSTS, variables: { productId: mutationResult.data.updateProductCost.product.id } }],
-    })
-  }
+}
+
+export function useUpdateProductCost() {
+  return useMutation(UPDATE_PRODUCT_COST, {
+    update: (cache, { data: { updateProductCosts } }) => {
+      // Actualización de cache si es necesario
+    },
+    onError: (error) => {
+      // Manejo del error
+      console.error(error)
+    },
+  })
+}
+
   
   export function useDeleteProductCost() {
     return useMutation(DELETE_PRODUCT_COST, {

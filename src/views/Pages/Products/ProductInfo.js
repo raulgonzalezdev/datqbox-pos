@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyledInput, StyledFormLabel, StyledTextarea, StyledSelect, StyledNumberInput } from 'components/ReusableComponents/ReusableComponents'
-import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, Checkbox, Grid, Text, Flex } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Grid, Text, Flex, useDisclosure } from '@chakra-ui/react'
 import { useGetCategories } from 'graphql/category/crudCategory'
 import { useGetTaxes } from 'graphql/tax/crudTax'
 import { useGetCurrencyTypes } from 'graphql/currencies/crudCurrencies'
-import { BaseFlex, StyledText } from 'components/ReusableComponents/ReusableComponents'
+import ProductComposite from 'components/productscomposite/ProductComposite'
 
-function ProductInfo({ formState, handleChange, handleNumberInputChange, setFormState, handleCheckboxChange, handleRentalTypeChange }) {
+import ProductInfoMedical from './ProductInfoMedical'
+import ProductInfoCosts from './ProductInfoCosts'
+
+function ProductInfo({
+  formState,
+  handleChange,
+  handleNumberInputChange,
+  setFormState,
+  handleCheckboxChange,
+  handlecalcMethodChange,
+  handleRentalTypeChange,
+  onProductSelect,
+  selectedCompositeProducts,
+  handleCostChange,
+}) {
   const { data: categoriesData } = useGetCategories()
   const { data: taxesData } = useGetTaxes()
   const { data: currencyTypesData } = useGetCurrencyTypes()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value
@@ -49,6 +64,21 @@ function ProductInfo({ formState, handleChange, handleNumberInputChange, setForm
       })
     }
   }
+  const handleTaxCostChange = (event) => {
+    const taxRate = event.target.value === 'none' ? null : Number(event.target.value)
+    const tax = taxesData.getAllTaxes.find((tax) => tax.rate === taxRate)
+    if (tax) {
+      setFormState({
+        ...formState,
+        taxRateCosts: taxRate,
+      })
+    } else {
+      setFormState({
+        ...formState,
+        taxRateCosts: null,
+      })
+    }
+  }
 
   const handleCurrencyTypeChange = (event) => {
     const currencyTypeId = event.target.value
@@ -76,7 +106,7 @@ function ProductInfo({ formState, handleChange, handleNumberInputChange, setForm
   return (
     <React.Fragment>
       <Box>
-        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
+        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
           <Box>
             <StyledFormLabel>Codigo Sku producto</StyledFormLabel>
             <StyledInput name="sku" value={formState.sku || ''} onChange={handleChange} placeholder="Ingrese el sku del producto" />
@@ -116,6 +146,19 @@ function ProductInfo({ formState, handleChange, handleNumberInputChange, setForm
             <StyledFormLabel>Proveedor</StyledFormLabel>
             <StyledInput name="vendor" value={formState.vendor || ''} onChange={handleChange} placeholder="Ingrese el proveedor del producto" />
           </Box>
+        </Grid>
+        <ProductInfoCosts
+          formState={formState}
+          handleNumberInputChange={handleNumberInputChange}
+          handleChange={handleChange}
+          handleCheckboxChange={handleCheckboxChange}
+          taxesData={taxesData}
+          handleTaxCostChange={handleTaxCostChange}
+          handlecalcMethodChange={handlecalcMethodChange}
+          handleCostChange={handleCostChange}
+        />
+
+        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
           <Box>
             <StyledFormLabel>Moneda</StyledFormLabel>
             <StyledSelect value={formState.exchangeRateId} onChange={handleCurrencyTypeChange}>
@@ -136,6 +179,17 @@ function ProductInfo({ formState, handleChange, handleNumberInputChange, setForm
               value={formState.price || 0}
               onChange={(value) => handleNumberInputChange('price', value)}
               placeholder="Ingrese el precio del producto"
+            />
+          </Box>
+          <Box>
+            <StyledFormLabel>Profit</StyledFormLabel>
+            <StyledNumberInput
+              name="profit"
+              type="number"
+              value={formState.profit || 0}
+              //onChange={(value) => handleNumberInputChange('profit', value)}
+              placeholder="Ingrese la utilidad del producto"
+              isReadOnly 
             />
           </Box>
           <Box>
@@ -168,153 +222,51 @@ function ProductInfo({ formState, handleChange, handleNumberInputChange, setForm
               <option value="rent">Alquiler</option>
             </StyledSelect>
           </Box>
-          <Flex direction={{ base: 'column', md: 'column' }} justifyContent="space-between">
-            <Checkbox name="taxInclued" isChecked={formState.taxInclued} onChange={handleCheckboxChange} colorScheme="black" size="lg">
+        </Grid>
+
+        <Flex direction={{ base: 'column', md: 'column' }} justifyContent="space-between">
+          <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
+            <Checkbox ml={4} name="taxInclued" isChecked={formState.taxInclued} onChange={handleCheckboxChange} colorScheme="black" size="lg">
               <Text color="white" fontSize="lg">
                 Tax Inclued
               </Text>
             </Checkbox>
-            <Checkbox name="featured" isChecked={formState.featured} onChange={handleCheckboxChange} colorScheme="black" size="lg">
+            <Checkbox ml={4} name="featured" isChecked={formState.featured} onChange={handleCheckboxChange} colorScheme="black" size="lg">
               <Text color="white" fontSize="lg">
                 Featured
               </Text>
             </Checkbox>
 
-            <Checkbox name="newarrivals" isChecked={formState.newarrivals} onChange={handleCheckboxChange} colorScheme="black" size="lg">
+            <Checkbox ml={4} name="newarrivals" isChecked={formState.newarrivals} onChange={handleCheckboxChange} colorScheme="black" size="lg">
               <Text color="white" fontSize="lg">
                 New Arrivals
               </Text>
             </Checkbox>
-            <Checkbox name="isComposite" isChecked={formState.isComposite} onChange={handleCheckboxChange} colorScheme="black" size="lg">
-              <Text color="white" fontSize="lg">
-                is Composite
-              </Text>
-            </Checkbox>
-          </Flex>
-        </Grid>
+            <Flex alignItems="center" justifyContent="space-between">
+              <Checkbox ml={4} name="isComposite" isChecked={formState.isComposite} onChange={handleCheckboxChange} colorScheme="black" size="lg">
+                <Text color="white" fontSize="lg">
+                  is Composite
+                </Text>
+              </Checkbox>
+              {formState.isComposite && (
+                <Button colorShema="blue" onClick={onOpen} ml={3}>
+                  Compuestos
+                </Button>
+              )}
+            </Flex>
 
-        <Accordion allowToggle w="100%">
-          <AccordionItem>
-            <AccordionButton>
-              <Box color="white" flex="1" textAlign="left">
-                Detalles de Costo
-              </Box>
-              <AccordionIcon color="white" />
-            </AccordionButton>
-
-            <AccordionPanel pb={4}>
-              <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
-                <Box>
-                  <StyledFormLabel>Costo de Compra</StyledFormLabel>
-                  <StyledNumberInput
-                    name="purchaseCost"
-                    type="number"
-                    value={formState.purchaseCost || 0}
-                    onChange={(value) => handleNumberInputChange('purchaseCost', value)}
-                    placeholder="Ingrese el costo de compra"
-                  />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Otros Costos</StyledFormLabel>
-                  <StyledNumberInput
-                    name="otherCosts"
-                    type="number"
-                    value={formState.otherCosts || 0}
-                    onChange={(value) => handleNumberInputChange('otherCosts', value)}
-                    placeholder="Ingrese otros costos"
-                  />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Costo de Envío</StyledFormLabel>
-                  <StyledNumberInput
-                    name="shippingCost"
-                    type="number"
-                    value={formState.shippingCost || 0}
-                    onChange={(value) => handleNumberInputChange('shippingCost', value)}
-                    placeholder="Ingrese el costo de envío"
-                  />
-                </Box>
-              </Grid>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-
-        <Accordion allowToggle w="100%">
-          <AccordionItem>
-            <AccordionButton>
-              <Box color="white" flex="1" textAlign="left">
-                Detalles Farmacéuticos
-              </Box>
-              <AccordionIcon color="white" />
-            </AccordionButton>
-
-            <AccordionPanel pb={4}>
-              <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
-                <Box>
-                  <StyledFormLabel>¿Requiere Receta?</StyledFormLabel>
-                  <Checkbox
-                    name="requiresPrescription"
-                    isChecked={formState.requiresPrescription}
-                    onChange={handleCheckboxChange}
-                    colorScheme="black"
-                    size="lg"
-                  >
-                    <Text color="white" fontSize="lg">
-                      Si
-                    </Text>
-                  </Checkbox>
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Fecha de Expiración</StyledFormLabel>
-                  <StyledInput
-                    type="date"
-                    name="expirationDate"
-                    value={formState.expirationDate ? formState.expirationDate : ''}
-                    onChange={handleChange}
-                  />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Dosificación</StyledFormLabel>
-                  <StyledInput name="dosage" value={formState.dosage || ''} onChange={handleChange} placeholder="Ingrese la dosificación" />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Instrucciones de Uso</StyledFormLabel>
-                  <StyledTextarea
-                    name="usageInstructions"
-                    value={formState.usageInstructions || ''}
-                    onChange={handleChange}
-                    placeholder="Ingrese las instrucciones de uso"
-                  />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Contraindicaciones</StyledFormLabel>
-                  <StyledTextarea
-                    name="contraindications"
-                    value={formState.contraindications || ''}
-                    onChange={handleChange}
-                    placeholder="Ingrese las contraindicaciones"
-                  />
-                </Box>
-
-                <Box>
-                  <StyledFormLabel>Ingrediente Activo</StyledFormLabel>
-                  <StyledInput
-                    name="activeIngredient"
-                    value={formState.activeIngredient || ''}
-                    onChange={handleChange}
-                    placeholder="Ingrese el ingrediente activo"
-                  />
-                </Box>
-              </Grid>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+            <ProductComposite isOpen={isOpen} onClose={onClose} onProductSelect={onProductSelect} formState={formState} />
+          </Grid>
+        </Flex>
+        <ProductInfoMedical
+          formState={formState}
+          handleNumberInputChange={handleNumberInputChange}
+          handleChange={handleChange}
+          handleCheckboxChange={handleCheckboxChange}
+          taxesData={taxesData}
+          handleTaxChange={handleTaxChange}
+          handlecalcMethodChange={handlecalcMethodChange}
+        />
       </Box>
     </React.Fragment>
   )
