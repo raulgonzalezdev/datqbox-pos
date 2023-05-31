@@ -13,7 +13,7 @@ function ProductInfo({
   formState,
   handleChange,
   handleNumberInputChange,
-  setFormState,
+  formDispatch,
   handleCheckboxChange,
   handlecalcMethodChange,
   handleRentalTypeChange,
@@ -31,53 +31,71 @@ function ProductInfo({
     const category = categoriesData.categories.find((cat) => cat.id === categoryId)
     if (category) {
       // verifica si la categoría existe antes de acceder a sus propiedades
-      setFormState({
-        ...formState,
-        categoryId: categoryId,
-        category: {
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'categoryId',
+        value: categoryId,
+      })
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'category',
+        value: {
           id: categoryId,
           name: category.name,
         },
       })
     } else {
       // Si no se encuentra la categoría, podrías configurar el estado a un valor predeterminado o mostrar un error, etc.
-      setFormState({
-        ...formState,
-        categoryId: null,
-        category: null,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'categoryId',
+        value: null,
+      })
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'category',
+        value: null,
       })
     }
+   
   }
 
   const handleTaxChange = (event) => {
     const taxRate = event.target.value === 'none' ? null : Number(event.target.value)
     const tax = taxesData.getAllTaxes.find((tax) => tax.rate === taxRate)
     if (tax) {
-      setFormState({
-        ...formState,
-        taxRate: taxRate,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'taxRate',
+        value: taxRate,
       })
     } else {
-      setFormState({
-        ...formState,
-        taxRate: null,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'taxRate',
+        value: null,
       })
     }
+     formDispatch({ type: 'calculate' })
   }
+
   const handleTaxCostChange = (event) => {
     const taxRate = event.target.value === 'none' ? null : Number(event.target.value)
     const tax = taxesData.getAllTaxes.find((tax) => tax.rate === taxRate)
     if (tax) {
-      setFormState({
-        ...formState,
-        taxRateCosts: taxRate,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'taxRateCosts',
+        value: taxRate,
       })
     } else {
-      setFormState({
-        ...formState,
-        taxRateCosts: null,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'taxRateCosts',
+        value: null,
       })
     }
+     formDispatch({ type: 'calculate' })
   }
 
   const handleCurrencyTypeChange = (event) => {
@@ -85,23 +103,34 @@ function ProductInfo({
     const currencyType = currencyTypesData.getAllCurrencyTypes.find((type) => type.id === currencyTypeId)
     if (currencyType) {
       // verifica si el tipo de moneda existe antes de acceder a sus propiedades
-      setFormState({
-        ...formState,
-        exchangeRateId: currencyTypeId,
-        currencyType: {
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'exchangeRateId',
+        value: currencyTypeId,
+      })
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'currencyType',
+        value: {
           id: currencyTypeId,
           name: currencyType.name,
         },
       })
     } else {
       // Si no se encuentra el tipo de moneda, podrías configurar el estado a un valor predeterminado o mostrar un error, etc.
-      setFormState({
-        ...formState,
-        exchangeRateId: null,
-        currencyType: null,
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'exchangeRateId',
+        value: null,
+      })
+      formDispatch({
+        type: 'SET_VALUE',
+        field: 'currencyType',
+        value: null,
       })
     }
   }
+
 
   return (
     <React.Fragment>
@@ -177,7 +206,8 @@ function ProductInfo({
               name="price"
               type="number"
               value={formState.price || 0}
-              onChange={(value) => handleNumberInputChange('price', value)}
+              //onChange={(value) => handleNumberInputChange('price', value)}
+              onChange={(valueAsString, valueAsNumber) => handleCostChange('price', valueAsNumber)}
               placeholder="Ingrese el precio del producto"
             />
           </Box>
@@ -187,9 +217,10 @@ function ProductInfo({
               name="profit"
               type="number"
               value={formState.profit || 0}
-              //onChange={(value) => handleNumberInputChange('profit', value)}
+             // onChange={(value) => handleNumberInputChange('profit', value)}
+              onChange={(valueAsString, valueAsNumber) => handleCostChange('profit', valueAsNumber)}
               placeholder="Ingrese la utilidad del producto"
-              isReadOnly 
+              //isReadOnly 
             />
           </Box>
           <Box>

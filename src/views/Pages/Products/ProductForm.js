@@ -1,10 +1,9 @@
 import React from 'react'
-import { Flex, Button, Box,  HStack,  Grid } from '@chakra-ui/react'
+import { Flex, Button, Box, HStack, Grid } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { StyledText } from 'components/ReusableComponents/ReusableComponents'
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
-
 
 import ProductInfo from './ProductInfo'
 import ProductImage from './ProductImage'
@@ -13,10 +12,10 @@ import ProductSize from './ProductSize'
 import useProductForm from './useProductForm'
 
 function ProductForm({ productId, onCancel, onSuccess }) {
- 
   const {
     formState,
     setFormState,
+    formDispatch,
     handleCostChange,
     handleNumberInputChange,
     handleAddImages,
@@ -54,10 +53,10 @@ function ProductForm({ productId, onCancel, onSuccess }) {
     dbSizes,
     createLoading,
     updateLoading,
-} = useProductForm(productId, onSuccess, onCancel)
+  } = useProductForm(productId, onSuccess, onCancel)
 
-if ((productId && loading) || createLoading || updateLoading) return <p>Cargando...</p>
-if (error) return <p>Error: {error.message}</p>
+  if ((productId && loading) || createLoading || updateLoading) return <p>Cargando...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
@@ -80,7 +79,7 @@ if (error) return <p>Error: {error.message}</p>
                 <Button onClick={onCancel} colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
                   Retornar
                 </Button>
-                <Button type="submit" colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
+                <Button type="button" onClick={handleSubmit} colorScheme="teal" size={{ base: 'sm', md: 'md' }}>
                   Submit
                 </Button>
               </HStack>
@@ -93,7 +92,7 @@ if (error) return <p>Error: {error.message}</p>
                 <ProductInfo
                   formState={formState}
                   handleChange={handleChange}
-                  setFormState={setFormState}
+                  formDispatch={formDispatch}
                   handleNumberInputChange={handleNumberInputChange}
                   handleRentalTypeChange={handleRentalTypeChange}
                   handleCheckboxChange={handleCheckboxChange}

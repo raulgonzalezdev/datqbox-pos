@@ -1,21 +1,18 @@
 import React from 'react'
-import { 
-  Accordion, 
-  AccordionItem, 
-  AccordionButton, 
-  AccordionPanel, 
-  AccordionIcon, 
-  Box, 
-  Grid,
-  Checkbox, 
-  Text,
-  
-} from '@chakra-ui/react'
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, Grid, Checkbox, Text } from '@chakra-ui/react'
 import { StyledFormLabel, StyledNumberInput, StyledInput, StyledTextarea, StyledSelect } from 'components/ReusableComponents/ReusableComponents'
 
-
-
-function ProductInfoCosts({ formState, handleNumberInputChange, handleCostChange, handleChange, handleTaxCostChange, handlecalcMethodChange, handleCheckboxChange, taxesData, handleTaxChange }) {
+function ProductInfoCosts({
+  formState,
+  handleNumberInputChange,
+  handleCostChange,
+  handleChange,
+  handleTaxCostChange,
+  handlecalcMethodChange,
+  handleCheckboxChange,
+  taxesData,
+  handleTaxChange,
+}) {
   return (
     <React.Fragment>
       <Accordion mt={5} allowToggle w="100%">
@@ -35,22 +32,21 @@ function ProductInfoCosts({ formState, handleNumberInputChange, handleCostChange
                   name="purchaseCost"
                   type="number"
                   value={formState.purchaseCost || 0}
-                  // onChange={(value) => handleNumberInputChange('purchaseCost', value)}
-                  onChange={(value) => handleCostChange({ target: { name: 'purchaseCost', value } })}
+                  onChange={(valueAsString, valueAsNumber) => handleCostChange('purchaseCost', valueAsNumber)}
                   placeholder="Ingrese el costo de compra"
                 />
               </Box>
               <Box>
-            <StyledFormLabel>Tax Rate Cost</StyledFormLabel>
-            <StyledSelect value={formState.taxRateCosts === null ? 'none' : formState.taxRateCosts} onChange={handleTaxCostChange}>
-              <option value="none">Selecciona un impuesto</option>
-              {taxesData?.getAllTaxes?.map((tax) => (
-                <option key={tax.id} value={tax.rate} label={tax.name}>
-                  {tax.name}
-                </option>
-              ))}
-            </StyledSelect>
-          </Box>
+                <StyledFormLabel>Tax Rate Cost</StyledFormLabel>
+                <StyledSelect value={formState.taxRateCosts === null ? 'none' : formState.taxRateCosts} onChange={handleTaxCostChange}>
+                  <option value="none">Selecciona un impuesto</option>
+                  {taxesData?.getAllTaxes?.map((tax) => (
+                    <option key={tax.id} value={tax.rate} label={tax.name}>
+                      {tax.name}
+                    </option>
+                  ))}
+                </StyledSelect>
+              </Box>
 
               <Box>
                 <StyledFormLabel>Otros Costos</StyledFormLabel>
@@ -58,8 +54,7 @@ function ProductInfoCosts({ formState, handleNumberInputChange, handleCostChange
                   name="otherCosts"
                   type="number"
                   value={formState.otherCosts || 0}
-                  //onChange={(value) => handleNumberInputChange('otherCosts', value)}
-                  onChange={(value) => handleCostChange({ target: { name: 'otherCosts', value } })}
+                  onChange={(valueAsString, valueAsNumber) => handleCostChange('otherCosts', valueAsNumber)}
                   placeholder="Ingrese otros costos"
                 />
               </Box>
@@ -70,32 +65,37 @@ function ProductInfoCosts({ formState, handleNumberInputChange, handleCostChange
                   name="shippingCost"
                   type="number"
                   value={formState.shippingCost || 0}
-                  //onChange={(value) => handleNumberInputChange('shippingCost', value)}
-                  onChange={(value) => handleCostChange({ target: { name: 'shippingCost', value } })}
+                  onChange={(valueAsString, valueAsNumber) => handleCostChange('shippingCost', valueAsNumber)}
                   placeholder="Ingrese el costo de envío"
                 />
               </Box>
               <Box>
-            <StyledFormLabel>Metodo Calculo</StyledFormLabel>
-            <StyledSelect value={formState.calcMethod} onChange={handlecalcMethodChange}>
-              <option value="sale">Venta</option>
-              <option value="cost">Costo</option>
-            </StyledSelect>
-          </Box>
-          <Checkbox name="isTaxedCost" isChecked={formState.isTaxedCost} onChange={handleCheckboxChange} colorScheme="black" size="lg">
-              <Text color="white" fontSize="lg">
-                 Incluir Iva al Costo
-              </Text>
-            </Checkbox>
+                <StyledFormLabel>Metodo Calculo</StyledFormLabel>
+                <StyledSelect value={formState.calcMethod} onChange={handlecalcMethodChange}>
+                  <option value="sale">Venta</option>
+                  <option value="cost">Costo</option>
+                </StyledSelect>
+              </Box>
+              <Checkbox
+                name="isTaxedCost"
+                isChecked={formState.isTaxedCost}
+                onChange={(event) => {
+                  handleCheckboxChange(event)
+                  handleCostChange('isTaxedCost', event.target.checked)
+                }}
+                colorScheme="black"
+                size="lg"
+              >
+                <Text color="white" fontSize="lg">
+                  Incluir Iva al Costo
+                </Text>
+              </Checkbox>
             </Grid>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-
-     
     </React.Fragment>
   )
 }
 
 export default ProductInfoCosts
-

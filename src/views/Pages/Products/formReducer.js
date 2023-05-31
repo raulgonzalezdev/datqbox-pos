@@ -1,58 +1,70 @@
-export function calculateSalePrice(
-  purchaseCost = 0,
-  otherCosts = 0,
-  shippingCost = 0,
-  taxRateCosts = 0,
-  taxRateSale = 0,
-  profitMargin = 0,
+export function calculateSalePriceAndProfitMargin(
+  price,
+  purchaseCost,
+  otherCosts,
+  shippingCost,
+  taxRateCosts,
+  taxRate,
+  profit,
   isTaxedCost,
   calcMethod
 ) {
+  console.log('Initial parameters: ', price, purchaseCost, otherCosts, shippingCost, taxRateCosts, taxRate, profit, isTaxedCost, calcMethod)
+
   let totalCost = Number(purchaseCost) + Number(otherCosts) + Number(shippingCost)
+  console.log('Initial totalCost: ', totalCost)
 
   if (isTaxedCost) {
-    totalCost += totalCost * Number(taxRateCosts)
+    totalCost += totalCost * (Number(taxRateCosts) / 100)
+    console.log('Updated totalCost after tax: ', totalCost)
   }
+
+  let salePrice = 0
+  let profitMarginPercent = 0
 
   if (calcMethod === 'cost') {
-    const profit = totalCost * Number(profitMargin)
-    const preTaxPrice = totalCost + profit
-    const tax = preTaxPrice * Number(taxRateSale)
-    const salePrice = preTaxPrice + tax
+    const profits = totalCost * (Number(profit) / 100)
+    console.log('Profits: ', profits)
+    
+    const preTaxPrice = totalCost + profits
+    console.log('preTaxPrice: ', preTaxPrice)
 
-    return Number(salePrice.toFixed(2))
-  } else if (calcMethod === 'sale' && profitMargin !== 0) {
-    // Check if profitMargin is not 0
-    const preTaxPrice = totalCost / (1 - Number(profitMargin))
-    const tax = preTaxPrice * Number(taxRateSale)
-    const salePrice = preTaxPrice + tax
+    const tax = preTaxPrice * (Number(taxRate) / 100)
+    console.log('Tax: ', tax)
+    
+    salePrice = preTaxPrice + tax
+    console.log('salePrice: ', salePrice)
+    
+    profitMarginPercent = (profits / totalCost) * 100
+    console.log('profitMarginPercent: ', profitMarginPercent)
 
-    return Number(salePrice.toFixed(2))
-  }
-  return 0 // Return 0 if profitMargin is 0
+  } else if (calcMethod === 'sale' && profit !== 0) {
+    const preTaxPrice = totalCost / (1 - Number(profit) / 100)
+    console.log('preTaxPrice: ', preTaxPrice)
+
+    const tax = preTaxPrice * (Number(taxRate) / 100)
+    console.log('Tax: ', tax)
+
+    salePrice = preTaxPrice + tax
+    console.log('salePrice: ', salePrice)
+
+    // Calculamos la ganancia real que obtenemos con el nuevo precio de venta.
+    const profits = salePrice - totalCost
+    console.log('Profits: ', profits)
+
+    // No necesitamos calcular el porcentaje de margen de beneficio, ya que es el valor de profit proporcionado como entrada.
+    profitMarginPercent = profit
+    console.log('profitMarginPercent: ', profitMarginPercent)
 }
 
-export function calculateProfitMargin(salePrice = 0, purchaseCost = 0, otherCosts = 0, shippingCost = 0, taxRateCosts = 0, isTaxedCost, calcMethod) {
-  let totalCost = Number(purchaseCost) + Number(otherCosts) + Number(shippingCost)
 
-  if (isTaxedCost) {
-    totalCost += totalCost * Number(taxRateCosts)
+  return {
+    salePrice: Number(salePrice.toFixed(2)),
+    profitMargin: Number(profitMarginPercent.toFixed(2))
   }
-
-  if (Number(salePrice) >= totalCost) {
-    // Check if salePrice is greater or equal to totalCost
-    const profit = Number(salePrice) - totalCost
-
-    if (calcMethod === 'cost') {
-      const profitMargin = (profit / totalCost) * 100
-      return Number(profitMargin.toFixed(2))
-    } else if (calcMethod === 'sale') {
-      const profitMargin = (profit / salePrice) * 100
-      return Number(profitMargin.toFixed(2))
-    }
-  }
-  return 0 // Return 0 if salePrice is less than totalCost
 }
+
+
 
 export const initialState = {
   id: null,
@@ -61,15 +73,16 @@ export const initialState = {
   description: '',
   image: '',
   price: 0,
+  profit:30,
   inventory: 0,
   rentalType: '',
-  featured: true,
-  newarrivals: true,
+  featured: false,
+  newarrivals: false,
   taxRate: 0,
-  taxInclued: true,
+  taxInclued: false,
   categoryId: '',
   exchangeRateId: '',
-  requiresPrescription: true,
+  requiresPrescription: false,
   expirationDate: '',
   dosage: '',
   unit: '',
@@ -82,7 +95,7 @@ export const initialState = {
   shippingCost: 0,
   purchaseCost: 0,
   calcMethod: '',
-  isTaxedCost: true,
+  isTaxedCost: false,
   sizes: [],
   colors: [],
 }
@@ -96,42 +109,39 @@ export function formReducer(state, action) {
       }
     }
     case 'calculate': {
-      const { purchaseCost, otherCosts, shippingCost, taxRateCosts, taxRateSale, profitMargin, isTaxedCost, calcMethod } = state
-
-      let totalCost = Number(purchaseCost) + Number(otherCosts) + Number(shippingCost)
-
-      if (isTaxedCost) {
-        totalCost += totalCost * Number(taxRateCosts)
-      }
-
-      let newSalePrice = 0
-      let newProfitMargin = 0
-
-      if (calcMethod === 'cost') {
-        const profit = totalCost * Number(profitMargin)
-        const preTaxPrice = totalCost + profit
-        const tax = preTaxPrice * Number(taxRateSale)
-        newSalePrice = preTaxPrice + tax
-
-        newProfitMargin = (profit / totalCost) * 100
-      } else if (calcMethod === 'sale') {
-        const preTaxPrice = totalCost / (1 - Number(profitMargin))
-        const tax = preTaxPrice * Number(taxRateSale)
-        newSalePrice = preTaxPrice + tax
-
-        newProfitMargin = ((newSalePrice - totalCost) / newSalePrice) * 100
-      }
-
+    
+      
+      const { salePrice, profitMargin } = calculateSalePriceAndProfitMargin(
+        state.price,
+        state.purchaseCost,
+        state.otherCosts,
+        state.shippingCost,
+        state.taxRateCosts,
+        state.taxRate,
+        state.profit,
+        state.isTaxedCost,
+        state.calcMethod
+      )
+    
+      console.log('New Sale Price: ', salePrice)
+      console.log('New Profit Margin: ', profitMargin)
+    
       return {
         ...state,
-        price: Number(newSalePrice.toFixed(2)),
-        profit: Number(newProfitMargin.toFixed(2)),
+        price: salePrice,
+        profit: profitMargin,
       }
     }
+    
     case 'FIELD_CHANGE':
       return { ...state, [action.fieldName]: action.value }
     case 'UPDATE_FROM_DATA':
       return { ...state, ...action.payload }
+    case 'SET_VALUE':
+      return {
+        ...state,
+        [action.field]: action.value,
+      }
     default: {
       throw new Error(`Unknown action type: ${action.type}`)
       return state

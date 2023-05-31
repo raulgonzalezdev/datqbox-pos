@@ -4,15 +4,15 @@ import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 import { gql } from '@apollo/client'
 
-import { calculateSalePrice, calculateProfitMargin , formReducer, initialState} from './formReducer'
+import {  formReducer, initialState} from './formReducer'
 import useProductDatabase from './useProductDatabase'
 
 export default function useProductForm(productId, onSuccess, onCancel) {
 
-const [formState, setFormState] = useState({
-    sizes: [],
-    colors: [],
-  })
+// const [formState, setFormState] = useState({
+//     sizes: [],
+//     colors: [],
+//   })
 
   const [formState, formDispatch] = useReducer(formReducer, initialState)
 
@@ -55,6 +55,7 @@ const [formState, setFormState] = useState({
 
   useEffect(() => {
     if (data && data.product) {
+        console.log('data', data.product)
       let expirationDate
 
       if (data.product.expirationDate !== null) {
@@ -64,100 +65,56 @@ const [formState, setFormState] = useState({
         }
       }
 
-      setFormState({
-        ...data.product,
-        categoryId: data.product.category.id,
-        exchangeRateId: data.product.exchangeRate.currencyId,
-        purchaseCost: data.product.productCosts ? data.product.productCosts.purchaseCost : 0,
-        otherCosts: data.product.productCosts ? data.product.productCosts.otherCosts : 0,
-        shippingCost: data.product.productCosts ? data.product.productCosts.shippingCost : 0,
-        isTaxedCost: data.product.productCosts  ? data.product.productCosts.isTaxedCost : false,
-        calcMethod: data.product.productCosts  ? data.product.productCosts.calcMethod : '',
-        taxRateCosts: data.product.productCosts ? data.product.productCosts.taxRateCosts : 0,
-        expirationDate: expirationDate,
-        featured: data.product.featured === undefined ? true : data.product.featured,
-        newarrivals: data.product.newarrivals === undefined ? true : data.product.newarrivals,
+      formDispatch({
+        type: 'UPDATE_FROM_DATA',
+        payload: {
+          ...data.product,
+          categoryId: data.product.category.id,
+          exchangeRateId: data.product.exchangeRate.currencyId,
+          purchaseCost: data.product.productCosts ? data.product.productCosts.purchaseCost : 0,
+          otherCosts: data.product.productCosts ? data.product.productCosts.otherCosts : 0,
+          shippingCost: data.product.productCosts ? data.product.productCosts.shippingCost : 0,
+          isTaxedCost: data.product.productCosts  ? data.product.productCosts.isTaxedCost : false,
+          calcMethod: data.product.productCosts  ? data.product.productCosts.calcMethod : '',
+          taxRateCosts: data.product.productCosts ? data.product.productCosts.taxRateCosts : 0,
+          expirationDate: expirationDate,
+          featured: data.product.featured === undefined ? true : data.product.featured,
+          newarrivals: data.product.newarrivals === undefined ? true : data.product.newarrivals,
+        }
       })
 
       setSelectedSizes(data.product.productSizes.map((productSize) => productSize.size.id))
       setSelectedColors(data.product.productColors.map((productColor) => productColor.color.id))
     } else if (!productId) {
-      setFormState({
-        id: null,
-        name: '',
-        vendor: '',
-        description: '',
-        image: '',
-        price: 0,
-        inventory: 0,
-        rentalType: '',
-        featured: true,
-        newarrivals: true,
-        taxRate: 0,
-        taxInclued: true,
-        categoryId: '',
-        exchangeRateId: '',
-        requiresPrescription: true,
-        expirationDate: '',
-        dosage: '',
-        unit: '',
-        usageInstructions: '',
-        contraindications: '',
-        activeIngredient: '',
-        shippingCost: 0,
-        taxRateCosts: 0,
-        otherCosts: 0,
-        shippingCost: 0,
-        purchaseCost: 0,
-        calcMethod: '',
-        isTaxedCost: true,
+      formDispatch({
+        type: 'UPDATE_FROM_DATA',
+        payload: initialState,
       })
       setSelectedSizes([])
       setSelectedColors([])
     }
   }, [data, productId])
 
-  function handleCostChange(event) {
-    const { name, value } = event.target
 
-    setFormState(prevFormState => {
-      const updatedFormState = {
-        ...prevFormState,
-        [name]: value,
-      }
-      const newSalePrice = calculateSalePrice(
-        updatedFormState.purchaseCost, 
-        updatedFormState.otherCosts, 
-        updatedFormState.shippingCost, 
-        updatedFormState.taxRateCosts, 
-        updatedFormState.taxRateSale, 
-        updatedFormState.profit, 
-        updatedFormState.isTaxedCost, 
-        updatedFormState.calcMethod
-      )
-
-      const newProfitMargin = calculateProfitMargin(
-        updatedFormState.price, 
-        updatedFormState.purchaseCost, 
-        updatedFormState.otherCosts, 
-        updatedFormState.shippingCost, 
-        updatedFormState.taxRateCosts, 
-        updatedFormState.isTaxedCost, 
-        updatedFormState.calcMethod
-      )
-      return {
-        ...updatedFormState,
-        price: parseFloat(newSalePrice),
-        profit: parseFloat(newProfitMargin),
-      }
+  function handleCostChange(name, value) {
+    
+    formDispatch({
+      type: 'field',
+      fieldName: name,
+      payload: value,
     })
-}
+    // Trigger the calculate action after updating the value
+    formDispatch({ type: 'calculate' })
+  }
+  
+  
 
-  const handleNumberInputChange = (fieldName, value) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [fieldName]: Number(value),
-    }))
+const handleNumberInputChange = (fieldName, value) => {
+    formDispatch({
+      type: 'SET_VALUE',
+      field: fieldName,
+      value: Number(value),
+    })
   }
 
   const UPLOAD_FILES = gql`
@@ -232,10 +189,11 @@ const [formState, setFormState] = useState({
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
+    formDispatch({
+      type: 'SET_VALUE',
+      field: name,
+      value: value,
+    })
   }
 
   const handleSelectedColors = (colorId) => {
@@ -440,28 +398,32 @@ const [formState, setFormState] = useState({
     }
   }
 
-  const handleCheckboxChange = (event) => {
+ const handleCheckboxChange = (event) => {
     const { name, checked } = event.target
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: checked,
-    }))
+    formDispatch({
+      type: 'SET_VALUE',
+      field: name,
+      value: checked,
+    })
   }
 
   const handleRentalTypeChange = (event) => {
     const rentalType = event.target.value
-    setFormState({
-      ...formState,
-      rentalType: rentalType.toLowerCase(),
+    formDispatch({
+      type: 'SET_VALUE',
+      field: 'rentalType',
+      value: rentalType.toLowerCase(),
     })
   }
 
-  const handlecalcMethodChange = (event) => {
+ const handlecalcMethodChange = (event) => {
     const calcMethod = event.target.value
-    setFormState({
-      ...formState,
-      calcMethod: calcMethod.toLowerCase(),
+    formDispatch({
+      type: 'SET_VALUE',
+      field: 'calcMethod',
+      value: calcMethod.toLowerCase(),
     })
+    formDispatch({ type: 'calculate' })
   }
 
 
@@ -469,7 +431,7 @@ const [formState, setFormState] = useState({
 
     return {
         formState,
-        setFormState,
+        formDispatch,
         handleCostChange,
         handleNumberInputChange,
         handleAddImages,
@@ -508,7 +470,6 @@ const [formState, setFormState] = useState({
         createLoading,
     updateLoading,
       }
-    
-    
+
   
 }
