@@ -22,7 +22,7 @@ query GetInvoices {
       id
       name
     }
-    paymentMethod {
+    paymentMethods {
       id
       name
       description
@@ -87,7 +87,7 @@ const GET_INVOICE = gql`
       id
       name
     }
-    paymentMethod {
+    paymentMethods {
       id
       name
       description
@@ -147,7 +147,7 @@ const CREATE_INVOICE = gql`
         id
         name
       }
-      paymentMethod {
+      paymentMethods {
         id
         name
       }
@@ -184,7 +184,11 @@ const UPDATE_INVOICE = gql`
         id
         name
       }
-      paymentMethod {
+      companies {
+        id
+        name
+      }
+      paymentMethods {
         id
         name
       }
@@ -212,12 +216,7 @@ export function useGetInvoices() {
   export function useGetInvoice(id) {
     return useQuery(GET_INVOICE, { variables: { id } })
   }
-  
-  // export function useCreateInvoice() {
-  //   return useMutation(CREATE_INVOICE, {
-  //     refetchQueries: [{ query: GET_INVOICES }],
-  //   })
-  // }
+
 
   export function useCreateInvoice() {
     return useMutation(CREATE_INVOICE, {

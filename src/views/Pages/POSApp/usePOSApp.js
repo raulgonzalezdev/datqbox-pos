@@ -10,6 +10,8 @@ export default function usePOSApp() {
     const [selectedRowId, setSelectedRowId] = useState(null)
     const [inputValue, setInputValue] = useState('')
     const [selectedRows, setSelectedRows] = useState([])
+    const [taxDetails, setTaxDetails] = useState({})
+    const [subtotal, setSubtotal] = useState(0)
 
     // const columns = createColumns(incrementQuantity, decrementQuantity, deleteRow)
 
@@ -127,6 +129,7 @@ export default function usePOSApp() {
     
       const handleProductDoubleClick = (product) => {
         const productIndex = rows.findIndex((row) => row.id === product.id)
+       
     
         if (productIndex !== -1) {
           const newRows = [...rows]
@@ -134,6 +137,7 @@ export default function usePOSApp() {
           setRows(newRows)
           updateTotal(newRows) // Agrega esta línea para actualizar el total general
         } else {
+          console.log('product', product)
           const newRow = { ...product, cant: 1 }
           setRows([...rows, newRow])
           updateTotal([...rows, newRow]) // Agrega esta línea para actualizar el total general
@@ -168,20 +172,52 @@ export default function usePOSApp() {
         updateTotal(newRows)
       }
     
+  
+
       const updateTotal = (rows) => {
-        const newTotal = rows.reduce((acc, row) => {
-          const cant = parseFloat(row.cant)
-          const price = parseFloat(row.price)
-    
-          if (isNaN(cant) || isNaN(price)) {
-            return acc
-          }
-    
-          return acc + cant * price
-        }, 0)
-    
+        let newSubtotal = 0
+        let newTotal = 0
+        let newTaxDetails = {}
+
+        rows.forEach((row) => {
+            const cant = parseFloat(row.cant)
+            let price = parseFloat(row.price)
+
+            if (isNaN(cant) || isNaN(price)) {
+                return
+            }
+            
+            const taxRate = parseFloat(row.taxRate) || 0
+            let basePrice, tax
+
+        
+            if (row.taxInclued) {
+                basePrice = price / (1 + taxRate / 100)
+                tax = price - basePrice
+            } else {
+                basePrice = price
+                tax = price * (taxRate / 100)
+            }
+
+            newSubtotal += basePrice * cant
+            newTotal += (basePrice + tax) * cant
+
+            // If this taxRate does not exist in newTaxDetails, add it.
+            if (!newTaxDetails[taxRate]) {
+                newTaxDetails[taxRate] = { subtotal: 0, tax: 0 }
+            }
+
+            newTaxDetails[taxRate].subtotal += basePrice * cant
+            newTaxDetails[taxRate].tax += tax * cant
+        })
+        
+        setSubtotal(newSubtotal)
         setTotal(newTotal)
-      }
+        setTaxDetails(newTaxDetails)
+    }
+
+
+
     
       const handleDetailsClick = () => {
         alert(`Detalles del total: $${total}`)
@@ -222,7 +258,8 @@ export default function usePOSApp() {
         handleDetailsClick,
         handleInputChange,
         fetchProductByCode,
-     
+        subtotal,
+        taxDetails,
         updateTotal,
         columns,
     }

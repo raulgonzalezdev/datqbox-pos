@@ -27,6 +27,18 @@ function ProductInfoCosts({
           <AccordionPanel pb={4}>
             <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
               <Box>
+                <StyledFormLabel>% Profit</StyledFormLabel>
+                <StyledNumberInput
+                  name="profit"
+                  type="number"
+                  value={formState.profit || 0}
+                  // onChange={(value) => handleNumberInputChange('profit', value)}
+                  onChange={(valueAsString, valueAsNumber) => handleCostChange('profit', valueAsNumber)}
+                  placeholder="Ingrese % utilidad "
+                  //isReadOnly
+                />
+              </Box>
+              <Box>
                 <StyledFormLabel>Costo de Compra</StyledFormLabel>
                 <StyledNumberInput
                   name="purchaseCost"

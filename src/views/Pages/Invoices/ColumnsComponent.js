@@ -26,7 +26,7 @@ const ColumnsComponent = ({ rowModesModel, handleSaveClick, handleCancelClick, h
     },
     
     { field: 'companyName', headerName: 'Company Name', width: 180, editable: true },
-    { field: 'paymentMethodName', headerName: 'Payment Method', width: 120, editable: true },
+    // { field: 'paymentMethodName', headerName: 'Payment Method', width: 120, editable: true },
     
     { 
       field: 'subtotal', 

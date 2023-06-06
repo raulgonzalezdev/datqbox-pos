@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Box, Flex, Button, Grid, useToast, useDisclosure, Input } from '@chakra-ui/react'
 import { DataGrid } from '@mui/x-data-grid'
 import { ThemeProvider } from '@mui/material/styles'
+import { FcDepartment, FcOrgUnit, FcCurrencyExchange } from 'react-icons/fc'
+import { MdAssuredWorkload } from 'react-icons/md'
 import taxTableTheme from 'theme/themeTableMUI'
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
@@ -10,11 +12,12 @@ import { StyledText } from 'components/ReusableComponents/ReusableComponents'
 import CompanyModal from 'components/companies/Companies'
 import ProductModal from 'components/products/ProductModal'
 
+import TotalModal from './TotalModal'
 import NumericButtons from './NumericButtons'
 import CategoryTabs from './CategoryTabs'
 import usePOSApp from './usePOSApp'
 import useProducts from './useProducts'
-
+import useInvoices from './useInvoices'
 
 const POSApp = () => {
   const [isCompanyModalOpen, setCompanyModalOpen] = useState(false)
@@ -22,12 +25,11 @@ const POSApp = () => {
 
   const toast = useToast()
   const { isOpen: isProductModalOpen, onOpen: onProductModalOpen, onClose: onProductModalClose } = useDisclosure()
+  const { isOpen: isTotalModalOpen, onOpen: onTotalModalOpen, onClose: onTotalModalClose } = useDisclosure()
 
   const handleCompanySelect = (company) => {
     setSelectedCompany(company)
   }
-
-
 
   const {
     rows,
@@ -53,6 +55,8 @@ const POSApp = () => {
     handleInputChange,
     fetchProductByCode,
     updateTotal,
+    subtotal,
+    taxDetails,
     columns,
   } = usePOSApp()
 
@@ -66,35 +70,26 @@ const POSApp = () => {
     handleProductSelect,
     handleProductsData,
     setFoundProducts,
+  } = useProducts(rows, setRows, updateTotal)
 
-} = useProducts( rows, setRows, updateTotal)
+  const { invoice, handleCreateInvoice, handleAddProductToInvoice, paymentMethods, paymentMethodsLoading, paymentMethodsError } = useInvoices(
+    rows,
+    selectedCompany
+  )
 
+  if (loadingProducts) {
+    return <p>Loading...</p>
+  }
 
-
-if (loadingProducts ) {
-  return <p>Loading...</p>
-}
-
-  // useEffect(() => {
-    
-    
-  //   window.addEventListener('keydown', handleKeyDown)
-  //   return () => {
-  //     window.removeEventListener('keydown', handleKeyDown)
-  //   }
-  // }, [])
-  
   const handleKeyDown = (event) => {
-
     if (event.key === 'Enter') {
-      event.preventDefault() 
-  
+      event.preventDefault()
 
       if (!inputValue.startsWith('*/')) {
         if (!inputValue.trim()) {
           return
         }
-  
+
         const foundProduct = findProductByIdOrSKU(inputValue)
         if (foundProduct) {
           handleProductSelect(foundProduct)
@@ -132,8 +127,6 @@ if (loadingProducts ) {
       // Aquí puedes agregar la lógica para manejar el botón "Borrar"
     }
   }
-  
-  
 
   return (
     <Grid templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }} my="26px" gap="18px" marginLeft="10" marginRight="10">
@@ -142,9 +135,7 @@ if (loadingProducts ) {
         <Flex direction="column" justifyContent="space-between" marginTop="-15" overflowY="hidden" width={{ base: 'auto', md: '100%' }}>
           <Card width={{ base: 'auto', md: '100%' }}>
             <CardBody width={{ base: 'auto', md: '100%' }} h="100%">
-              <CategoryTabs handleProductDoubleClick={handleProductDoubleClick}  />
-
-
+              <CategoryTabs handleProductDoubleClick={handleProductDoubleClick} />
             </CardBody>
           </Card>
         </Flex>
@@ -158,13 +149,14 @@ if (loadingProducts ) {
               <Box>
                 <Flex justifyContent="space-between" mt={4} mb={4} alignItems="center" flexDirection={{ base: 'column', lg: 'row' }}>
                   <Flex width="100%" alignItems="center">
-                    <CustomInput flex="0.95" value={inputValue} onChange={handleInputChange}  onKeyDown={handleKeyDown}  />
+                    <CustomInput flex="0.95" value={inputValue} onChange={handleInputChange} onKeyDown={handleKeyDown} />
                     <Button
                       ml={4}
+                      leftIcon={<FcOrgUnit size={24} />}
                       onClick={() => {
                         onProductModalOpen()
-
                       }}
+                      colorScheme="whiteAlpha"
                     >
                       Productos
                     </Button>
@@ -176,7 +168,17 @@ if (loadingProducts ) {
                         setFoundProducts([])
                       }}
                       onProductSelect={handleProductSelect}
-                      // loadedProducts={products}
+                      loadedProducts={products}
+                    />
+
+                    <TotalModal
+                      isOpen={isTotalModalOpen}
+                      onClose={() => {
+                        onTotalModalClose()
+                      }}
+                      total={total}
+                      subtotal={subtotal}
+                      taxDetails={taxDetails}
                     />
                   </Flex>
                 </Flex>
@@ -201,7 +203,9 @@ if (loadingProducts ) {
                 </Card>
                 <Flex justifyContent="space-between" mt={4} mb={4} alignItems="center" flexDirection={{ base: 'column', lg: 'row' }}>
                   <Flex>
-                    <Button onClick={() => setCompanyModalOpen(true)}>Cliente / Compañia</Button>
+                    <Button colorScheme="whiteAlpha" leftIcon={<FcDepartment size={24} />} onClick={() => setCompanyModalOpen(true)}>
+                      Cliente / Compañia
+                    </Button>
                     {selectedCompany && (
                       <Box mr={2} ml={4} p={2} bgColor="gray.600" color="white" borderRadius="md">
                         ({selectedCompany.legalId}) {selectedCompany.name}
@@ -211,7 +215,9 @@ if (loadingProducts ) {
                   </Flex>
 
                   <Flex alignItems="center">
-                    <Button onClick={handleDetailsClick} mr={4}>
+                    <Button colorScheme="whiteAlpha" leftIcon={<FcCurrencyExchange size={24} />}  onClick={() => {
+                        onTotalModalOpen()
+                      }} mr={4}>
                       Detalles total
                     </Button>
                     <StyledText pr={4}>Total: ${total.toFixed(2)}</StyledText>
@@ -223,6 +229,10 @@ if (loadingProducts ) {
                   handleEnterClick={handleEnterClick}
                   selectedOperation={selectedOperation}
                   setSelectedOperation={setSelectedOperation}
+                  total={total}
+                  paymentMethodsLoading={paymentMethodsLoading}
+                  paymentMethods={paymentMethods}
+                  paymentMethodsError={paymentMethodsError}
                 />
               </Box>
             </CardBody>

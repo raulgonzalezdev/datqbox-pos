@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useGetProducts } from 'graphql/products/crudProducts'
 import { useGetCategories } from 'graphql/category/crudCategory'
+import { useGetPaymentMethods } from 'graphql/PaymentMethods/PaymentMethods'
 
 export default function useProducts(rows, setRows, updateTotal) {
   const { loading: loadingProducts, data: productsData } = useGetProducts()
   const { loading: loadingCategories, data: categoriesData } = useGetCategories()
+ 
   
   const [products, setProducts] = useState([])
+
   const [categories, setCategories] = useState([])
   const [filteredProducts, setFilteredProducts] = useState(products)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [foundProducts, setFoundProducts] = useState([])
   const [searchValue, setSearchValue] = useState('')
+
 
 
   useEffect(() => {

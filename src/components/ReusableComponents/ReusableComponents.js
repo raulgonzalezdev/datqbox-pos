@@ -29,30 +29,36 @@ export const StyledTextarea = ({ ...props }) => (
   />
 )
 
-export const StyledNumberInput = ({ ...props }) => (
-  <NumberInput
-    size="md"
-    // w={{ base: "100%", md: "546px" }}
-    h="40px"
-    sx={{ '::placeholder': { color: 'black' } }}
-    focusBorderColor="black"
-    borderColor="gray.300"
-    bg="white"
-    color="black"
-    borderRadius="md"
-    defaultValue={0}
-    precision={2}
-    step={0.1}
-    // format={(value) => `${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
-    {...props}
-  >
-     <NumberInputField style={{ textAlign: 'right' }} />
-    <NumberInputStepper>
-      <NumberIncrementStepper />
-      <NumberDecrementStepper />
-    </NumberInputStepper>
-  </NumberInput>
-)
+export const StyledNumberInput = ({ value, onChange, ...props }) => {
+  const format = (val) => `${val}`
+  const parse = (val) => parseFloat(val)
+
+  return (
+    <NumberInput
+      size="md"
+      min={0}
+      h="40px"
+      sx={{ '::placeholder': { color: 'black' } }}
+      focusBorderColor="black"
+      borderColor="gray.300"
+      bg="white"
+      color="black"
+      borderRadius="md"
+      value={format(value)}
+      onChange={(valueString) => onChange(parse(valueString))}
+      precision={2}
+      step={0.1}
+      {...props}
+    >
+      <NumberInputField style={{ textAlign: 'right' }} />
+      <NumberInputStepper>
+        <NumberIncrementStepper />
+        <NumberDecrementStepper />
+      </NumberInputStepper>
+    </NumberInput>
+  )
+}
+
 
 export const StyledInput = ({ ...props }) => (
   <ChakraInput

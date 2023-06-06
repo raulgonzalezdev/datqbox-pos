@@ -57,7 +57,6 @@ function ProductInfo({
         value: null,
       })
     }
-   
   }
 
   const handleTaxChange = (event) => {
@@ -76,7 +75,7 @@ function ProductInfo({
         value: null,
       })
     }
-     formDispatch({ type: 'calculate' })
+    formDispatch({ type: 'calculate' })
   }
 
   const handleTaxCostChange = (event) => {
@@ -95,7 +94,7 @@ function ProductInfo({
         value: null,
       })
     }
-     formDispatch({ type: 'calculate' })
+    formDispatch({ type: 'calculate' })
   }
 
   const handleCurrencyTypeChange = (event) => {
@@ -131,7 +130,6 @@ function ProductInfo({
     }
   }
 
-
   return (
     <React.Fragment>
       <Box>
@@ -166,7 +164,18 @@ function ProductInfo({
               placeholder="Ingrese el descripcion detallada del producto"
             />
           </Box>
-
+          <Box>
+            <StyledFormLabel>Tipo Producto</StyledFormLabel>
+            <StyledSelect value={formState.rentalType} onChange={handleRentalTypeChange}>
+              <option value="sale">Venta Directa</option>
+              <option value="service">Servicios</option>
+              <option value="rent">Alquiler</option>
+              <option value="durable">Bienes duraderos</option>
+              <option value="nondurable">Bienes no duraderos</option>
+              <option value="subscription">Suscripción</option>
+              <option value="license">Licencia</option>
+            </StyledSelect>
+          </Box>
           <Box>
             <StyledFormLabel>Unidad</StyledFormLabel>
             <StyledInput name="unit" value={formState.unit || ''} onChange={handleChange} placeholder="Ingrese como se vende el producto" />
@@ -211,18 +220,7 @@ function ProductInfo({
               placeholder="Ingrese el precio del producto"
             />
           </Box>
-          <Box>
-            <StyledFormLabel>Profit</StyledFormLabel>
-            <StyledNumberInput
-              name="profit"
-              type="number"
-              value={formState.profit || 0}
-             // onChange={(value) => handleNumberInputChange('profit', value)}
-              onChange={(valueAsString, valueAsNumber) => handleCostChange('profit', valueAsNumber)}
-              placeholder="Ingrese la utilidad del producto"
-              //isReadOnly 
-            />
-          </Box>
+
           <Box>
             <StyledFormLabel>Tax Rate</StyledFormLabel>
             <StyledSelect value={formState.taxRate === null ? 'none' : formState.taxRate} onChange={handleTaxChange}>
@@ -244,14 +242,6 @@ function ProductInfo({
               onChange={(value) => handleNumberInputChange('inventory', value)}
               placeholder="Ingrese el inventario del producto"
             />
-          </Box>
-
-          <Box>
-            <StyledFormLabel>Rental Type</StyledFormLabel>
-            <StyledSelect value={formState.rentalType} onChange={handleRentalTypeChange}>
-              <option value="sale">Venta</option>
-              <option value="rent">Alquiler</option>
-            </StyledSelect>
           </Box>
         </Grid>
 

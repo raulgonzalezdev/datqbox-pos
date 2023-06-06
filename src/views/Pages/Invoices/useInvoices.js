@@ -32,11 +32,12 @@ export default function useInvoices() {
   }, [data])
 
   const flattenInvoiceData = (invoices) => {
+    console.log(invoices)
     const flatInvoices = invoices.map((invoice) => {
   
       const company = invoice.companies && invoice.companies.length > 0 ? invoice.companies[0].name : 'N/A'
       const branch = invoice.branch ? invoice.branch.name : 'N/A'
-      const paymentMethod = invoice.paymentMethod ? invoice.paymentMethod.name : 'N/A'
+      // const paymentMethod = invoice.paymentMethods ? invoice.paymentMethods.name : 'N/A'
       const invoiceItems =
         invoice.invoiceItems && invoice.invoiceItems.length > 0
           ? invoice.invoiceItems.map((item) => ({
@@ -61,8 +62,8 @@ export default function useInvoices() {
         companyId: invoice.companies[0].id, // Agregado companyId
         branchName: branch,
         branchId: invoice.branch.id, // Agregado branchId
-        paymentMethodName: paymentMethod,
-        paymentMethodId: invoice.paymentMethod.id, // Agregado paymentMethodId
+        // paymentMethodName: paymentMethod,
+        // paymentMethodId: invoice.paymentMethods.id, // Agregado paymentMethodId
         invoiceItems: invoiceItems,
         total: invoice.total,
         tax: invoice.tax,
@@ -123,7 +124,7 @@ export default function useInvoices() {
         userId: invoiceToClone.userId,
         companyId: invoiceToClone.companyId,
         branchId: invoiceToClone.branchId,
-        paymentMethodId: invoiceToClone.paymentMethodId,
+        // paymentMethodId: invoiceToClone.paymentMethodIds.id,
         total: invoiceToClone.total,
         tax: invoiceToClone.tax,
         status: invoiceToClone.status,
@@ -193,7 +194,7 @@ export default function useInvoices() {
             userId: newRow.userId,
             companyId: newRow.companyId,
             branchId: newRow.branchId,
-            paymentMethodId: newRow.paymentMethodId,
+            // paymentMethodId: newRow.paymentMethodsId,
             total: newRow.total,
             tax: newRow.tax,
             status: newRow.status,
@@ -208,7 +209,7 @@ export default function useInvoices() {
             userId: newRow.userId,
             companyId: newRow.companyId,
             branchId: newRow.branchId,
-            paymentMethodId: newRow.paymentMethodId,
+            // paymentMethodId: newRow.paymentMethodId,
             total: newRow.total,
             tax: newRow.tax,
             status: newRow.status,
