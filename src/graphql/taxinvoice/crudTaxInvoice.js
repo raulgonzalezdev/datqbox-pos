@@ -7,6 +7,7 @@ const GET_TAX_INVOICES = gql`
       invoiceId
       taxId
       amount
+      subtotal
     }
   }
 `
@@ -18,28 +19,31 @@ const GET_TAX_INVOICE = gql`
       invoiceId
       taxId
       amount
+      subtotal
     }
   }
 `
 
 const CREATE_TAX_INVOICE = gql`
-  mutation CreateTaxInvoice($invoiceId: Int!, $taxId: Int!, $amount: Float!) {
-    addTaxInvoice(invoiceId: $invoiceId, taxId: $taxId, amount: $amount) {
+  mutation CreateTaxInvoice($invoiceId: Int!, $taxId: Int!, $amount: Float!,  $subtotal: Float!) {
+    addTaxInvoice(invoiceId: $invoiceId, taxId: $taxId, amount: $amount, subtotal: $subtotal) {
       id
       invoiceId
       taxId
       amount
+      subtotal
     }
   }
 `
 
 const UPDATE_TAX_INVOICE = gql`
-  mutation UpdateTaxInvoice($id: ID!, $invoiceId: Int!, $taxId: Int!, $amount: Float!) {
-    updateTaxInvoice(id: $id, input: {invoiceId: $invoiceId, taxId: $taxId, amount: $amount}) {
+  mutation UpdateTaxInvoice($id: ID!, $invoiceId: Int!, $taxId: Int!, $amount: Float!,  $subtotal: Float!) {
+    updateTaxInvoice(id: $id, input: {invoiceId: $invoiceId, taxId: $taxId, amount: $amount, subtotal: $subtotal}) {
       id
       invoiceId
       taxId
       amount
+      subtotal
     }
   }
 `

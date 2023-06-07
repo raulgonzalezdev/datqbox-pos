@@ -15,6 +15,8 @@ const NumericButtons = ({
   paymentMethodsLoading,
   paymentMethods,
   paymentMethodsError,
+  handleCreateInvoice,
+  setSelectedPayMethods,
 }) => {
   const selectedButtonStyle = {
     border: '2px solid',
@@ -34,8 +36,11 @@ const NumericButtons = ({
     onClose()
   }
 
+  const [selectedPayMethods, setselectedPayMethods] = useState([])
+
   const handlePaymentMethodSelect = (selectedMethods) => {
-    console.log(selectedMethods) // Aquí maneja los métodos de pago seleccionados
+ 
+    setselectedPayMethods(selectedMethods)
   }
 
   const handleCantBtnClick = () => {
@@ -57,6 +62,17 @@ const NumericButtons = ({
   const handleBackspaceButtonClick = () => {
     handleNumericButtonClick('backspace')
   }
+
+  const handleSubmitButtonClick = () => {
+    if (selectedPayMethods.length > 0) {
+      
+     // setSelectedPayMethods(selectedPayMethods)
+      handleCreateInvoice(selectedPayMethods, total)
+    }
+    
+  }
+
+ 
 
   return (
     <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} my="26px" gap="18px">
@@ -81,7 +97,7 @@ const NumericButtons = ({
           height="100%"
           mb={4}
           colorScheme="whiteAlpha"
-          onClick={handleOpenPaymentModal}
+          onClick={handleSubmitButtonClick}
         >
           Grabar Operacion
         </Button>
@@ -149,6 +165,7 @@ const NumericButtons = ({
         paymentMethodsLoading={paymentMethodsLoading}
         paymentMethodsData={paymentMethods}
         paymentMethodsError={paymentMethodsError}
+        selectedPayMethods={selectedPayMethods}
       />
     </Grid>
   )

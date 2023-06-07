@@ -39,7 +39,6 @@ query GetInvoices {
       }
     }
     total
-    tax
     exchangeRate {
       currencyId
       date
@@ -131,44 +130,42 @@ const GET_INVOICE = gql`
 `
 
 const CREATE_INVOICE = gql`
-  mutation CreateInvoice($input: InvoiceInput!) {
-    createInvoice(input: $input) {
+mutation CreateInvoice($input: InvoiceInput!) {
+  createInvoice(input: $input) {
+    id
+    user {
       id
-      user {
-        id
-        firstName
-        lastName
-      }
-      branch {
-        id
-        name
-      }
-      companies {
-        id
-        name
-      }
-      paymentMethods {
-        id
-        name
-      }
-      total
-      tax
-      currencyId
-      exchangeRateId
-      status
-      taxInvoices {
-        id
-        amount
-        tax {
-          id
-          name
-          rate
-        }
-      }
-      createdAt
-      updatedAt
+      firstName
+      lastName
     }
+    branch {
+      id
+      name
+    }
+    companies {
+      id
+      name
+    }
+    paymentMethods {
+      id
+      name
+    }
+    total
+    
+    status
+    taxInvoices {
+      id
+      amount
+      tax {
+        id
+        name
+        rate
+      }
+    }
+    createdAt
+    updatedAt
   }
+}
 `
 
 const UPDATE_INVOICE = gql`
@@ -195,7 +192,7 @@ const UPDATE_INVOICE = gql`
       total
       tax
       currencyId
-      exchangeRateId
+    
       status
     }
   }
@@ -217,35 +214,12 @@ export function useGetInvoices() {
     return useQuery(GET_INVOICE, { variables: { id } })
   }
 
-
   export function useCreateInvoice() {
     return useMutation(CREATE_INVOICE, {
       refetchQueries: [{ query: GET_INVOICES }],
-      update: (cache, { data: { createInvoice } }) => {
-        cache.modify({
-          fields: {
-            getAllInvoices(existingInvoices = []) {
-              const newInvoiceRef = cache.writeFragment({
-                data: createInvoice,
-                fragment: gql`
-                  fragment NewInvoice on Invoice {
-                    id
-                    total
-                    tax
-                    currencyId
-                    exchangeRateId
-                    status
-                  }
-                `,
-              })
-              return [...existingInvoices, newInvoiceRef]
-            },
-          },
-        })
-      },
     })
   }
-  
+
   export function useUpdateInvoice() {
     return useMutation(UPDATE_INVOICE, {
       refetchQueries: [{ query: GET_INVOICES }],

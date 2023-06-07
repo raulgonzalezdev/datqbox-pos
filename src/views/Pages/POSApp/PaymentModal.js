@@ -77,18 +77,31 @@ const PaymentMethodCard = ({ method, selected, dispatch, selectedPaymentMethods,
   )
 }
 
-const PaymentModal = ({ isOpen, onClose, onPaymentMethodSelect, total, paymentMethodsData, paymentMethodsLoading, paymentMethodsError }) => {
+const PaymentModal = ({ isOpen, onClose, onPaymentMethodSelect, total, paymentMethodsData, paymentMethodsLoading, paymentMethodsError, selectedPayMethods }) => {
   const [selectedPaymentMethods, dispatch] = useReducer(reducer, {})
 
   useEffect(() => {
     if (isOpen) {
+      const selectedMethodsArray = selectedPayMethods
+      if (Array.isArray(selectedMethodsArray) && selectedMethodsArray.length) {   
+        const selectedMethodsObject = Object.fromEntries(selectedMethodsArray)
+        for (const [id, value] of Object.entries(selectedMethodsObject)) {
+          dispatch({
+            type: 'SET_PAYMENT_METHOD',
+            payload: { id, value }
+          })
+        }
+      }
+    } else {
       dispatch({ type: 'RESET' })
     }
-  }, [isOpen])
-
+  }, [isOpen, onPaymentMethodSelect])
+  
+  
   const handleSubmit = () => {
     const selectedMethods = Object.entries(selectedPaymentMethods).filter(([, amount]) => amount !== undefined)
     onPaymentMethodSelect(selectedMethods)
+   
     onClose()
   }
 
@@ -138,7 +151,9 @@ const PaymentModal = ({ isOpen, onClose, onPaymentMethodSelect, total, paymentMe
                 Cerrar
               </Button>
             </Box>
-            <StyledFormLabel fontSize="24px" fontWeight="bold">Total Pagado: ${totalPayment.toFixed(2)}</StyledFormLabel>
+            <StyledFormLabel fontSize="24px" fontWeight="bold">
+              Total Pagado: ${totalPayment.toFixed(2)}
+            </StyledFormLabel>
           </Flex>
         </ModalFooter>
       </ModalContent>

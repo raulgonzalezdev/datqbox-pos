@@ -21,15 +21,15 @@ import useInvoices from './useInvoices'
 
 const POSApp = () => {
   const [isCompanyModalOpen, setCompanyModalOpen] = useState(false)
-  const [selectedCompany, setSelectedCompany] = useState(null)
+ 
 
   const toast = useToast()
   const { isOpen: isProductModalOpen, onOpen: onProductModalOpen, onClose: onProductModalClose } = useDisclosure()
   const { isOpen: isTotalModalOpen, onOpen: onTotalModalOpen, onClose: onTotalModalClose } = useDisclosure()
+ 
 
-  const handleCompanySelect = (company) => {
-    setSelectedCompany(company)
-  }
+ 
+
 
   const {
     rows,
@@ -72,10 +72,18 @@ const POSApp = () => {
     setFoundProducts,
   } = useProducts(rows, setRows, updateTotal)
 
-  const { invoice, handleCreateInvoice, handleAddProductToInvoice, paymentMethods, paymentMethodsLoading, paymentMethodsError } = useInvoices(
-    rows,
-    selectedCompany
-  )
+  const {
+    invoice,
+    handleCreateInvoice,
+    handleAddProductToInvoice,
+    selectedPayMethods, 
+    setSelectedPayMethods,
+    paymentMethods,
+    paymentMethodsLoading,
+    paymentMethodsError,
+    handleCompanySelect,
+    selectedCompany,
+  } = useInvoices(rows,  taxDetails)
 
   if (loadingProducts) {
     return <p>Loading...</p>
@@ -215,9 +223,14 @@ const POSApp = () => {
                   </Flex>
 
                   <Flex alignItems="center">
-                    <Button colorScheme="whiteAlpha" leftIcon={<FcCurrencyExchange size={24} />}  onClick={() => {
+                    <Button
+                      colorScheme="whiteAlpha"
+                      leftIcon={<FcCurrencyExchange size={24} />}
+                      onClick={() => {
                         onTotalModalOpen()
-                      }} mr={4}>
+                      }}
+                      mr={4}
+                    >
                       Detalles total
                     </Button>
                     <StyledText pr={4}>Total: ${total.toFixed(2)}</StyledText>
@@ -233,6 +246,8 @@ const POSApp = () => {
                   paymentMethodsLoading={paymentMethodsLoading}
                   paymentMethods={paymentMethods}
                   paymentMethodsError={paymentMethodsError}
+                  handleCreateInvoice={handleCreateInvoice}
+                  setSelectedPayMethods={setSelectedPayMethods}
                 />
               </Box>
             </CardBody>

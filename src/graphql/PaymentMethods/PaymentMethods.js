@@ -50,6 +50,60 @@ const DELETE_PAYMENT_METHOD = gql`
   }
 `
 
+export const CREATE_INVOICE_PAYMENT_METHOD = gql`
+  mutation CreateInvoicePaymentMethod($input: InvoicePaymentMethodInput!) {
+    createInvoicePaymentMethod(input: $input) {
+      invoiceId
+      paymentMethodId
+      amount
+      invoice {
+        id
+        user {
+          id
+          firstName
+          lastName
+        }
+        branch {
+          id
+          name
+        }
+        companies {
+          id
+          name
+        }
+        paymentMethods {
+          id
+          name
+        }
+        total
+        status
+        taxInvoices {
+          id
+          amount
+          tax {
+            id
+            name
+            rate
+          }
+        }
+        createdAt
+        updatedAt
+      }
+      paymentMethod {
+        id
+        name
+      }
+    }
+  }
+`
+
+export const DELETE_INVOICE_PAYMENT_METHOD = gql`
+  mutation DeleteInvoicePaymentMethod($invoiceId: ID!, $paymentMethodId: ID!) {
+    deleteInvoicePaymentMethod(invoiceId: $invoiceId, paymentMethodId: $paymentMethodId)
+  }
+`
+
+
 export function useGetPaymentMethods() {
   return useQuery(GET_PAYMENT_METHODS)
 }
@@ -80,6 +134,12 @@ export function useCreatePaymentMethod() {
         },
       })
     },
+  })
+}
+
+export function useCreateInvoicePaymentMethod() {
+  return useMutation(CREATE_INVOICE_PAYMENT_METHOD, {
+    refetchQueries: [{ query: GET_PAYMENT_METHODS }],
   })
 }
 

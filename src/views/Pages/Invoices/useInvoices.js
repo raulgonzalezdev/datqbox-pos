@@ -24,19 +24,24 @@ export default function useInvoices() {
   const DELETE = DELETE_INVOICE
   const toast = useToast()
 
+
   useEffect(() => {
     if (data && data.getAllInvoices) {
+   
       const flattenedInvoices = flattenInvoiceData(data.getAllInvoices)
       setInitialLoad(false)
     }
   }, [data])
 
   const flattenInvoiceData = (invoices) => {
-    console.log(invoices)
+    
     const flatInvoices = invoices.map((invoice) => {
-  
+      console.log(invoice)
       const company = invoice.companies && invoice.companies.length > 0 ? invoice.companies[0].name : 'N/A'
+      console.log('invoice.companies',invoice.companies)
       const branch = invoice.branch ? invoice.branch.name : 'N/A'
+
+      
       // const paymentMethod = invoice.paymentMethods ? invoice.paymentMethods.name : 'N/A'
       const invoiceItems =
         invoice.invoiceItems && invoice.invoiceItems.length > 0
@@ -59,14 +64,15 @@ export default function useInvoices() {
         userLastName: invoice.user.lastName,
         userEmail: invoice.user.email,
         companyName: company,
-        companyId: invoice.companies[0].id, // Agregado companyId
+        companyId: invoice.companies && invoice.companies.length > 0 ? invoice.companies[0].id : 'N/A',
+        branchId: invoice.branch ? invoice.branch.id : 'N/A',
+        
         branchName: branch,
-        branchId: invoice.branch.id, // Agregado branchId
         // paymentMethodName: paymentMethod,
         // paymentMethodId: invoice.paymentMethods.id, // Agregado paymentMethodId
         invoiceItems: invoiceItems,
         total: invoice.total,
-        tax: invoice.tax,
+        //tax: invoice.tax,
         status: invoice.status,
         createdAt: invoice.createdAt,
       }
@@ -126,7 +132,7 @@ export default function useInvoices() {
         branchId: invoiceToClone.branchId,
         // paymentMethodId: invoiceToClone.paymentMethodIds.id,
         total: invoiceToClone.total,
-        tax: invoiceToClone.tax,
+        //tax: invoiceToClone.tax,
         status: invoiceToClone.status,
       },
     }
@@ -196,7 +202,7 @@ export default function useInvoices() {
             branchId: newRow.branchId,
             // paymentMethodId: newRow.paymentMethodsId,
             total: newRow.total,
-            tax: newRow.tax,
+            //tax: newRow.tax,
             status: newRow.status,
           },
         }
@@ -211,7 +217,7 @@ export default function useInvoices() {
             branchId: newRow.branchId,
             // paymentMethodId: newRow.paymentMethodId,
             total: newRow.total,
-            tax: newRow.tax,
+            //tax: newRow.tax,
             status: newRow.status,
           },
         }
