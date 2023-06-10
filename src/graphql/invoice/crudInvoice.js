@@ -22,10 +22,15 @@ query GetInvoices {
       id
       name
     }
-    paymentMethods {
-      id
-      name
-      description
+    invoicePaymentMethods {
+      amount
+      invoiceId
+      paymentMethodId
+      paymentMethod {
+        id
+        name
+        description
+      }
     }
     invoiceItems {
       id
@@ -86,10 +91,15 @@ const GET_INVOICE = gql`
       id
       name
     }
-    paymentMethods {
-      id
-      name
-      description
+    invoicePaymentMethods {
+      amount
+      invoiceId
+      paymentMethodId
+      paymentMethod {
+        id
+        name
+        description
+      }
     }
     invoiceItems {
       id
@@ -103,7 +113,7 @@ const GET_INVOICE = gql`
       }
     }
     total
-    tax
+
     exchangeRate {
       currencyId
       date

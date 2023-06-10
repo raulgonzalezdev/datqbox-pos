@@ -21,7 +21,7 @@ import taxTableTheme from 'theme/themeTableMUI'
 import { DataGrid } from '@mui/x-data-grid'
 import { StyledFormLabel, StyledInput } from 'components/ReusableComponents/ReusableComponents'
 
-function TaxDetailsComponent({ taxDetails, total }) {
+function TaxDetailsComponent({ taxDetails }) {
   const [rows, setRows] = React.useState([])
 
   const columns = [
@@ -41,7 +41,7 @@ function TaxDetailsComponent({ taxDetails, total }) {
     }))
 
     setRows(newRows)
-  }, [taxDetails])
+  }, [])
 
   return (
     <Box>
@@ -67,7 +67,7 @@ const reducer = (state, action) => {
   }
 }
 
-const TotalModal = ({ isOpen, onClose, total, taxDetails, subtotal }) => {
+const TotalModal = ({ isOpen, onClose, total, taxDetails }) => {
   const [selectedPaymentMethods, dispatch] = useReducer(reducer, {})
 
   useEffect(() => {

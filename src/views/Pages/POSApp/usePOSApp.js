@@ -13,16 +13,14 @@ export default function usePOSApp() {
     const [taxDetails, setTaxDetails] = useState({})
     const [subtotal, setSubtotal] = useState(0)
 
-    // const columns = createColumns(incrementQuantity, decrementQuantity, deleteRow)
 
     const handleCellClick = (params) => {
         if (selectedRows.includes(params.id)) {
-          // Si el ID ya está en la lista de filas seleccionadas, elimínalo
           setSelectedRows((prevSelectedRows) =>
             prevSelectedRows.filter((id) => id !== params.id)
           )
         } else {
-          // Si el ID no está en la lista de filas seleccionadas, agrégalo
+  
           setSelectedRows((prevSelectedRows) => [...prevSelectedRows, params.id])
         }
       }
@@ -52,10 +50,9 @@ export default function usePOSApp() {
             const newRows = rows.map((row) => {
               if (row.id === selectedRow.id) {
                 if (selectedOperation === 'Cant') {
-                  // Si se está actualizando la cantidad, convierte el valor anterior en número y agrega el nuevo dígito
+
                   row.cant = parseFloat(`${row.cant}${number}`)
                 } else if (selectedOperation === 'Precio') {
-                  // Si se está actualizando el precio, convierte el valor anterior en número y agrega el nuevo dígito
                   row.price = parseFloat(`${row.price}${number}`)
                 }
               }
@@ -137,7 +134,7 @@ export default function usePOSApp() {
           setRows(newRows)
           updateTotal(newRows) // Agrega esta línea para actualizar el total general
         } else {
-          console.log('product', product)
+         // console.log('product', product)
           const newRow = { ...product, cant: 1 }
           setRows([...rows, newRow])
           updateTotal([...rows, newRow]) // Agrega esta línea para actualizar el total general
@@ -182,15 +179,14 @@ export default function usePOSApp() {
         rows.forEach((row) => {
             const cant = parseFloat(row.cant)
             let price = parseFloat(row.price)
-
+    
             if (isNaN(cant) || isNaN(price)) {
                 return
             }
             
             const taxRate = parseFloat(row.taxRate) || 0
             let basePrice, tax
-
-        
+    
             if (row.taxInclued) {
                 basePrice = price / (1 + taxRate / 100)
                 tax = price - basePrice
@@ -198,10 +194,10 @@ export default function usePOSApp() {
                 basePrice = price
                 tax = price * (taxRate / 100)
             }
-
+    
             newSubtotal += basePrice * cant
             newTotal += (basePrice + tax) * cant
-
+    
             // If this taxRate does not exist in newTaxDetails, add it.
             if (!newTaxDetails[taxRate]) {
                 newTaxDetails[taxRate] = { subtotal: 0, tax: 0 }
@@ -215,6 +211,7 @@ export default function usePOSApp() {
         setTotal(newTotal)
         setTaxDetails(newTaxDetails)
     }
+    
 
 
 
@@ -234,11 +231,19 @@ export default function usePOSApp() {
         setInputValue(newValue)
       }
     
+      const resetState = () => {
+        setRows([])
+        setTaxDetails({})
+        setTotal(0)
+
+        
+      }
 
     return {
         rows,
         setRows,
         total,
+        resetState,
         setTotal,
         selectedOperation,
         setSelectedOperation,

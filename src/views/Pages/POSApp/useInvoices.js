@@ -6,7 +6,8 @@ import { useCreateTaxInvoice } from 'graphql/taxinvoice/crudTaxInvoice'
 import { useGetPaymentMethods, useCreateInvoicePaymentMethod } from 'graphql/PaymentMethods/PaymentMethods'
 import { useGetTaxes } from 'graphql/tax/crudTax'
 
-export default function useInvoices(rows,  taxDetails) {
+
+export default function useInvoices(rows,  taxDetails, resetState) {
   const toast = useToast()
   const [createInvoice] = useCreateInvoice()
   const [createInvoiceItem] = useCreateInvoiceItem()
@@ -15,11 +16,10 @@ export default function useInvoices(rows,  taxDetails) {
   const [selectedCompany, setSelectedCompany] = useState(null)
 
   const [selectedPayMethods, setSelectedPayMethods] = useState([])
-  const [invoice, setInvoice] = useState(null)
   const [paymentMethods, setPaymentMethods] = useState([])
   const { loading: paymentMethodsLoading, error: paymentMethodsError, data: paymentMethodsData } = useGetPaymentMethods()
   const { loading: taxLoading, error: taxError, data: taxData } = useGetTaxes()
-
+  //console.log('taxDetails', taxDetails)
   useEffect(() => {
     if (paymentMethodsData && paymentMethodsData.paymentMethods) {
       setPaymentMethods(paymentMethodsData.paymentMethods)
@@ -29,14 +29,14 @@ export default function useInvoices(rows,  taxDetails) {
 
   const handleCompanySelect = (company) => {
     setSelectedCompany(company)
-    console.log('Selected company: ', company)
+    //console.log('Selected company: ', company)
   }
 
 
 
   const handleCreateInvoice = useCallback(
     async (selectedMethods, total) => {
-      console.log('Creating invoice for company: ', selectedCompany)
+      let invoiceId = null
       try {
         const invoiceInput = {
           companyId:  selectedCompany.id,
@@ -48,10 +48,9 @@ export default function useInvoices(rows,  taxDetails) {
         }
 
         const { data } = await createInvoice({ variables: { input: invoiceInput } })
-        const invoiceId = data.createInvoice.id
-        setInvoice(data.createInvoice)
+        invoiceId = data.createInvoice.id
+        
 
-        // Crear InvoiceItems para cada fila
         for (const row of rows) {
           await createInvoiceItem({
             variables: {
@@ -65,11 +64,11 @@ export default function useInvoices(rows,  taxDetails) {
           })
         }
 
-        // Crear InvoicePaymentMethods para cada método de pago seleccionado
         for (const [paymentMethodId, amount] of selectedMethods) {
           await createInvoicePaymentMethod({ variables: { input: { invoiceId, paymentMethodId: paymentMethodId, amount } } })
         }
-
+        
+       // console.log('taxDetails',taxDetails)
         // Crear TaxInvoices para cada detalle de impuesto
         for (const taxRate of Object.keys(taxDetails)) {
           const taxDetail = taxDetails[taxRate]
@@ -80,7 +79,7 @@ export default function useInvoices(rows,  taxDetails) {
             console.error(`No se encontró tax con rate ${taxRate}`)
             continue
           }
-
+      
           const taxId = tax.id
           console.log('cambio', {
             variables: {
@@ -90,7 +89,7 @@ export default function useInvoices(rows,  taxDetails) {
               subtotal: taxDetail.subtotal,
             },
           })
-
+      
           await createTaxInvoice({
             variables: {
               invoiceId: parseInt(invoiceId),
@@ -99,10 +98,9 @@ export default function useInvoices(rows,  taxDetails) {
               subtotal: taxDetail.subtotal,
             },
           })
-
-       
-        }
-
+      }
+      
+ 
         toast({
           title: 'Factura creada con éxito',
           description: 'La factura se ha creado correctamente.',
@@ -110,6 +108,12 @@ export default function useInvoices(rows,  taxDetails) {
           duration: 9000,
           isClosable: true,
         })
+
+        resetState()
+        setSelectedCompany(null)
+        setPaymentMethods([])
+        
+       
       } catch (error) {
         console.error('Failed to create invoice', error)
         toast({
@@ -120,41 +124,15 @@ export default function useInvoices(rows,  taxDetails) {
           isClosable: true,
         })
       }
+      return invoiceId
     },
-    [createInvoice, createInvoiceItem, createInvoicePaymentMethod, createTaxInvoice, rows, selectedPayMethods, taxDetails, toast, selectedCompany]
+    [ createInvoice, createInvoiceItem, createInvoicePaymentMethod, createTaxInvoice, rows, selectedPayMethods, taxDetails, toast, selectedCompany]
   )
 
-  const handleAddProductToInvoice = useCallback(
-    async (productId, quantity, price) => {
-      if (!invoice) {
-        console.error('No invoice created yet')
-        return
-      }
-
-      try {
-        await createInvoiceItem({ variables: { input: { invoiceId: invoice.id, productId, quantity, price } } })
-      } catch (error) {
-        console.error('Failed to add product to invoice', error)
-      }
-    },
-    [createInvoiceItem, invoice]
-  )
-
-  useEffect(() => {
-    rows.forEach((row) => {
-      handleAddProductToInvoice(row.id, row.cant, row.price)
-    })
-  }, [rows, handleAddProductToInvoice])
-
-  const handleSubmitInvoice = () => {
-    console.error('No invoice created yet')
-    return
-  }
 
   return {
-    invoice,
+
     handleCreateInvoice,
-    handleAddProductToInvoice,
     paymentMethods,
     paymentMethodsLoading,
     paymentMethodsError,
@@ -162,5 +140,6 @@ export default function useInvoices(rows,  taxDetails) {
     setSelectedPayMethods,
     handleCompanySelect,
     selectedCompany,
+    resetState,
   }
 }

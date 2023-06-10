@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { SimpleGrid, Button, IconButton, Flex, Grid, useDisclosure } from '@chakra-ui/react'
 import { FaBackspace } from 'react-icons/fa'
 import { FcSalesPerformance, FcAcceptDatabase } from 'react-icons/fc'
 import { GrReturn } from 'react-icons/gr'
+import AlertDialogWithPDF from 'components/InvoicePDF/AlertDialogWithPDF'
+import { useGetInvoice } from 'graphql/invoice/crudInvoice'
 
 import PaymentModal from './PaymentModal'
 
@@ -23,23 +25,34 @@ const NumericButtons = ({
     borderColor: 'green.500',
     backgroundColor: 'green.500',
   }
+  const cancelRef = useRef()
+  const { isOpen: isPaymentModalOpen, onOpen: onPaymentModalOpen, onClose: onPaymentModalClose } = useDisclosure()
+  const { isOpen: isAlertDialogOpen, onOpen: onAlertDialogOpen, onClose: onAlertDialogClose } = useDisclosure()
+  // Agrega el id de la factura
+  const [invoiceId, setInvoiceId] = useState(null)
+  const [invoiceData, setInvoiceData] = useState(null)
+  const { data, loading, error } = useGetInvoice(invoiceId)
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  useEffect(() => {
+    if (data) {
+      setInvoiceData(data.getInvoice)
+    
+    }
+  }, [data])
 
   const handleOpenPaymentModal = () => {
     if (total > 0) {
-      onOpen()
+      onPaymentModalOpen()
     }
   }
 
   const handleClosePaymentModal = () => {
-    onClose()
+    onPaymentModalClose()
   }
 
   const [selectedPayMethods, setselectedPayMethods] = useState([])
 
   const handlePaymentMethodSelect = (selectedMethods) => {
- 
     setselectedPayMethods(selectedMethods)
   }
 
@@ -63,16 +76,18 @@ const NumericButtons = ({
     handleNumericButtonClick('backspace')
   }
 
-  const handleSubmitButtonClick = () => {
+  const handleSubmitButtonClick = async () => {
     if (selectedPayMethods.length > 0) {
+      const createdInvoiceId = await handleCreateInvoice(selectedPayMethods, total)
       
-     // setSelectedPayMethods(selectedPayMethods)
-      handleCreateInvoice(selectedPayMethods, total)
+      setInvoiceId(createdInvoiceId)
+      onAlertDialogOpen()
     }
-    
   }
 
- 
+  const handleAlertDialogClose = () => {
+    onAlertDialogClose()
+  }
 
   return (
     <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} my="26px" gap="18px">
@@ -101,6 +116,17 @@ const NumericButtons = ({
         >
           Grabar Operacion
         </Button>
+        {invoiceData && (
+          <AlertDialogWithPDF
+           isOpen={isAlertDialogOpen}
+        onClose={onAlertDialogClose}
+            documentData={invoiceData}
+            title="Descarga de factura"
+            bodyText="La factura ha sido creada exitosamente. ¿Deseas descargar la factura ahora?"
+            noButtonText="No"
+            yesButtonText="Ver Factura"
+          />
+        )}
       </Flex>
 
       <Flex>
@@ -158,8 +184,8 @@ const NumericButtons = ({
         </SimpleGrid>
       </Flex>
       <PaymentModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isPaymentModalOpen}
+        onClose={onPaymentModalClose}
         onPaymentMethodSelect={handlePaymentMethodSelect}
         total={total}
         paymentMethodsLoading={paymentMethodsLoading}

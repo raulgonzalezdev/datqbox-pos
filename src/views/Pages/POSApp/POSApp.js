@@ -27,10 +27,6 @@ const POSApp = () => {
   const { isOpen: isProductModalOpen, onOpen: onProductModalOpen, onClose: onProductModalClose } = useDisclosure()
   const { isOpen: isTotalModalOpen, onOpen: onTotalModalOpen, onClose: onTotalModalClose } = useDisclosure()
  
-
- 
-
-
   const {
     rows,
     setRows,
@@ -58,6 +54,7 @@ const POSApp = () => {
     subtotal,
     taxDetails,
     columns,
+    resetState,
   } = usePOSApp()
 
   const {
@@ -73,9 +70,8 @@ const POSApp = () => {
   } = useProducts(rows, setRows, updateTotal)
 
   const {
-    invoice,
+  
     handleCreateInvoice,
-    handleAddProductToInvoice,
     selectedPayMethods, 
     setSelectedPayMethods,
     paymentMethods,
@@ -83,7 +79,8 @@ const POSApp = () => {
     paymentMethodsError,
     handleCompanySelect,
     selectedCompany,
-  } = useInvoices(rows,  taxDetails)
+    
+  } = useInvoices(rows,  taxDetails,  resetState)
 
   if (loadingProducts) {
     return <p>Loading...</p>
@@ -138,7 +135,7 @@ const POSApp = () => {
 
   return (
     <Grid templateColumns={{ sm: '1fr', md: '2fr 1fr', lg: '1fr 1fr' }} my="26px" gap="18px" marginLeft="10" marginRight="10">
-      {/* Seccion 2 */}
+    
       <Box order={{ lg: 2, md: 1 }}>
         <Flex direction="column" justifyContent="space-between" marginTop="-15" overflowY="hidden" width={{ base: 'auto', md: '100%' }}>
           <Card width={{ base: 'auto', md: '100%' }}>
@@ -148,7 +145,7 @@ const POSApp = () => {
           </Card>
         </Flex>
       </Box>
-      {/* Seccion 1 */}
+  
 
       <Box order={{ lg: 2, md: 1 }}>
         <Flex w="100%" h="100%" justifyContent="space-between">
@@ -185,7 +182,6 @@ const POSApp = () => {
                         onTotalModalClose()
                       }}
                       total={total}
-                      subtotal={subtotal}
                       taxDetails={taxDetails}
                     />
                   </Flex>
