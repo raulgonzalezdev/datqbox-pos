@@ -18,12 +18,7 @@ export const GET_PRODUCTS = gql`
         isTaxedCost
         calcMethod
         taxRateCosts
-        product {
-          id
-          categoryId
-          name
-          description
-        }
+      
 
       }
       price
@@ -318,6 +313,166 @@ export const DELETE_PRODUCT_IMAGE = gql`
   }
 `
 
+export const GET_PRODUCTS_BY_CATEGORY = gql`
+  query GetProductsByCategory($categoryId: ID!) {
+    productsByCategory(categoryId: $categoryId) {
+      id
+      sku
+      name
+      vendor
+      description
+      image
+      isComposite
+      productCosts {
+        id
+        purchaseCost
+        otherCosts
+        shippingCost
+        isTaxedCost
+        calcMethod
+        taxRateCosts
+      
+
+      }
+      price
+      profit
+      category {
+        id
+        name
+      }
+      inventory
+      rentalType
+      featured
+      newarrivals
+      taxRate
+      unit
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
+      images {
+        id
+        url
+      }
+      reviews {
+        id
+        rating
+        comment
+      }
+      orderItems {
+        id
+        quantity
+      }
+      productColors {
+        color {
+          id
+          name
+        }
+      }
+      productSizes {
+        size {
+          id
+          name
+        }
+      }
+
+      exchangeRate {
+        currencyId
+        rate
+        date
+        currencyType {
+          id
+          name
+          symbol
+        }
+    }
+  }
+`
+
+export const GET_PRODUCTS_BY_PRICE_RANGE = gql`
+  query GetProductsByPriceRange($minPrice: Float!, $maxPrice: Float!) {
+    productsByPriceRange(minPrice: $minPrice, maxPrice: $maxPrice) {
+      id
+      sku
+      name
+      vendor
+      description
+      image
+      isComposite
+      productCosts {
+        id
+        purchaseCost
+        otherCosts
+        shippingCost
+        isTaxedCost
+        calcMethod
+        taxRateCosts
+      
+
+      }
+      price
+      profit
+      category {
+        id
+        name
+      }
+      inventory
+      rentalType
+      featured
+      newarrivals
+      taxRate
+      unit
+      taxInclued
+      requiresPrescription
+      expirationDate
+      dosage
+      usageInstructions
+      contraindications
+      activeIngredient
+      images {
+        id
+        url
+      }
+      reviews {
+        id
+        rating
+        comment
+      }
+      orderItems {
+        id
+        quantity
+      }
+      productColors {
+        color {
+          id
+          name
+        }
+      }
+      productSizes {
+        size {
+          id
+          name
+        }
+      }
+
+      exchangeRate {
+        currencyId
+        rate
+        date
+        currencyType {
+          id
+          name
+          symbol
+        }
+    }
+  }
+`
+
+
+
 export function useGetProducts() {
   return useQuery(GET_PRODUCTS)
 }
@@ -369,3 +524,16 @@ export function useDeleteProductImage() {
     refetchQueries: [{ query: GET_PRODUCTS }],
   })
 }
+
+export function useGetProductsByCategory(categoryId) {
+  return useQuery(GET_PRODUCTS_BY_CATEGORY, {
+    variables: { categoryId },
+  })
+}
+
+export function useGetProductsByPriceRange(minPrice, maxPrice) {
+  return useQuery(GET_PRODUCTS_BY_PRICE_RANGE, {
+    variables: { minPrice, maxPrice },
+  })
+}
+

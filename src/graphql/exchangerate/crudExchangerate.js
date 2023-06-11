@@ -1,48 +1,68 @@
 import { useQuery, useMutation, gql } from '@apollo/client'
 
 const GET_EXCHANGE_RATES = gql`
-  query GetExchangeRates {
-    getAllExchangeRates {
+query GetExchangeRates {
+  getAllExchangeRates {
+    id
+    date
+    rate
+    currencyId
+    currencyType {
       id
-      date
-      rate
-      currencyTypeId
+      name
+      symbol
     }
+    
   }
+}
 `
 
 const GET_EXCHANGE_RATE = gql`
   query GetExchangeRate($id: ID!) {
     getExchangeRate(id: $id) {
       id
-      date
-      rate
-      currencyTypeId
+    date
+    rate
+    currencyId
+    currencyType {
+      id
+      name
+      symbol
+    }
     }
   }
 `
 
 const CREATE_EXCHANGE_RATE = gql`
-  mutation CreateExchangeRate($date: String!, $rate: Float!, $currencyTypeId: Int!) {
-    createExchangeRate(input: {date: $date, rate: $rate, currencyTypeId: $currencyTypeId}) {
+mutation CreateExchangeRate($date: Date!, $rate: Float!, $currencyId: ID!) {
+  createExchangeRate(input: { date: $date, rate: $rate, currencyId: $currencyId }) {
+    id
+    date
+    rate
+    currencyType {
+      id
+      name
+      symbol
+    }
+  }
+}
+`
+
+const UPDATE_EXCHANGE_RATE = gql`
+  mutation UpdateExchangeRate($id: ID!, $date: Date!, $rate: Float!, $currencyId: ID!) {
+    updateExchangeRate(id: $id, input: { date: $date, rate: $rate, currencyId: $currencyId }) {
       id
       date
       rate
-      currencyTypeId
+      currencyType {
+        id
+        name
+        symbol
+      }
     }
   }
 `
 
-const UPDATE_EXCHANGE_RATE = gql`
-  mutation UpdateExchangeRate($id: ID!, $date: String!, $rate: Float!, $currencyTypeId: Int!) {
-    updateExchangeRate(id: $id, input: {date: $date, rate: $rate, currencyTypeId: $currencyTypeId}) {
-      id
-      date
-      rate
-      currencyTypeId
-    }
-  }
-`
 
 export const DELETE_EXCHANGE_RATE = gql`
   mutation DeleteExchangeRate($id: ID!) {

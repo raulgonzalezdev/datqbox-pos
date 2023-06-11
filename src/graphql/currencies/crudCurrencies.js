@@ -19,22 +19,25 @@ const GET_CURRENCY_TYPE = gql`
 `
 
 const CREATE_CURRENCY_TYPE = gql`
-  mutation CreateCurrencyType($name: String!) {
-    createCurrencyType(input: {name: $name}) {
+mutation CreateCurrencyType($name: String!, $symbol: String!) {
+  createCurrencyType(input: {name: $name, symbol: $symbol}) {
+    id
+    name
+    symbol
+  }
+}
+`
+
+const UPDATE_CURRENCY_TYPE = gql`
+  mutation UpdateCurrencyType($id: ID!, $name: String!, $symbol: String!) {
+    updateCurrencyType(id: $id, input: { name: $name, symbol: $symbol }) {
       id
       name
+      symbol
     }
   }
 `
 
-const UPDATE_CURRENCY_TYPE = gql`
-  mutation UpdateCurrencyType($id: ID!, $name: String!) {
-    updateCurrencyType(id: $id, input: {name: $name}) {
-      id
-      name
-    }
-  }
-`
 
 export const DELETE_CURRENCY_TYPE = gql`
   mutation DeleteCurrencyType($id: ID!) {

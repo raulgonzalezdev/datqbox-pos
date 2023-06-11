@@ -127,7 +127,8 @@ import {
         <Flex align="center" justifyContent="flex-end">
           <Box ml={2}>
             <Text >
-            {params.row.exchangeRate.rate.toLocaleString()}
+            {/* {params.row.exchangeRate.rate.toLocaleString()} */}
+            {params.row.exchangeRate.rate}
             </Text>
             
           </Box>
@@ -182,7 +183,7 @@ import {
           
 
             <IconButton
-            aria-label="Editar"
+            aria-label="clonar"
             icon={<MdFolderCopy size={20} />}
             onClick={() => onSelect(params)}
             cursor="pointer"

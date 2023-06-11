@@ -269,6 +269,7 @@ const handleNumberInputChange = (fieldName, value) => {
       taxInclued: formState.taxInclued,
       taxRate: parseFloat(formState.taxRate),
       categoryId: formState.categoryId,
+    
       unit: formState.unit,
       exchangeRateId: formState.exchangeRateId,
       requiresPrescription: formState.requiresPrescription,
