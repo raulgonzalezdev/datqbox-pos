@@ -217,8 +217,9 @@ const handleNumberInputChange = (fieldName, value) => {
   }
 
   const handleAddUpdateCosts = async (id) => {
+   
     let newProductId = id
-  
+    
     const adjustedFormState = {
       productId: newProductId,
       shippingCost: parseFloat(formState.shippingCost),
@@ -229,20 +230,24 @@ const handleNumberInputChange = (fieldName, value) => {
       calcMethod: formState.calcMethod,
       isTaxedCost: formState.isTaxedCost,
     }
-  
-    const existingProductCosts = data.product.productCosts
+
    
-    if (existingProductCosts ) {
+  
+    
+    const existingProductCosts = data !== null && data.product.productCosts !== undefined ? data.product.productCosts : null
+
+   
+    if (existingProductCosts !== null && existingProductCosts !== undefined) {
      
       let costId = existingProductCosts.id
-   
+      
       await updateProductCosts({
         variables: { id: costId, input: adjustedFormState },
       })
       
     } else {
       // existingProductCosts es null, undefined, o un array vacío
-     
+   
       await createProductCosts({
         variables: {  input: adjustedFormState },
       })
@@ -253,6 +258,9 @@ const handleNumberInputChange = (fieldName, value) => {
   const handleSubmit = async (e) => {
     // e.preventDefault();
     setIsLoading(true)
+
+    let newProductId = productId
+    
 
     const adjustedFormState = {
       name: formState.name,
@@ -281,10 +289,10 @@ const handleNumberInputChange = (fieldName, value) => {
       isComposite: formState.isComposite,
     }
 
-    let newProductId = productId
+   
 
     try {
-      if (newProductId) {
+      if (newProductId !== null && newProductId !== undefined) {
         await updateProduct({
           variables: { id: productId, input: adjustedFormState },
         })
@@ -294,9 +302,11 @@ const handleNumberInputChange = (fieldName, value) => {
           variables: { input: adjustedFormState },
         })
         newProductId = newProduct.data.createProduct.id
+       
         
       }
       
+     
       const { dataC } = await removeProductColor({
         variables: {
           input: {
@@ -304,6 +314,7 @@ const handleNumberInputChange = (fieldName, value) => {
           },
         },
       })
+      
       const { dataZ } = await removeProductSize({
         variables: {
           input: {
@@ -312,25 +323,35 @@ const handleNumberInputChange = (fieldName, value) => {
         },
       })
 
+     
       const productSizes = selectedSizes.map((sizeId) => ({
         ProductId: newProductId,
         SizeId: sizeId,
         stock: 10,
       }))
 
+    
+
       const productColors = selectedColors.map((colorId) => ({
         ProductId: newProductId,
         ColorId: colorId,
       }))
+     
 
       await addMultipleProductSizes({ variables: { input: productSizes } })
+    
       await addMultipleProductColors({ variables: { input: productColors } })
 
+      
       handleAddImages(selectedImages, newProductId)
-      await handleCompositeProductItems(newProductId)
+     
       await handleAddUpdateCosts(newProductId)
+   
+      await handleCompositeProductItems(newProductId)
+      
+      
 
-      if (productId) {
+      if (newProductId) {
         toast({
           title: 'Producto actualizado',
           description: 'El producto ha sido actualizado exitosamente',

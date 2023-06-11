@@ -98,12 +98,7 @@ export const GET_PRODUCT = gql`
         isTaxedCost
         calcMethod
         taxRateCosts
-        product {
-          id
-          categoryId
-          name
-          description
-        }
+      
 
       }
       price
@@ -331,8 +326,6 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
         isTaxedCost
         calcMethod
         taxRateCosts
-      
-
       }
       price
       profit
@@ -346,7 +339,7 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
       newarrivals
       taxRate
       unit
-      taxInclued
+      taxIncluded
       requiresPrescription
       expirationDate
       dosage
@@ -378,7 +371,6 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
           name
         }
       }
-
       exchangeRate {
         currencyId
         rate
@@ -388,6 +380,7 @@ export const GET_PRODUCTS_BY_CATEGORY = gql`
           name
           symbol
         }
+      }
     }
   }
 `
@@ -410,8 +403,6 @@ export const GET_PRODUCTS_BY_PRICE_RANGE = gql`
         isTaxedCost
         calcMethod
         taxRateCosts
-      
-
       }
       price
       profit
@@ -425,7 +416,7 @@ export const GET_PRODUCTS_BY_PRICE_RANGE = gql`
       newarrivals
       taxRate
       unit
-      taxInclued
+      taxIncluded
       requiresPrescription
       expirationDate
       dosage
@@ -457,7 +448,6 @@ export const GET_PRODUCTS_BY_PRICE_RANGE = gql`
           name
         }
       }
-
       exchangeRate {
         currencyId
         rate
@@ -467,10 +457,10 @@ export const GET_PRODUCTS_BY_PRICE_RANGE = gql`
           name
           symbol
         }
+      }
     }
   }
 `
-
 
 
 export function useGetProducts() {
