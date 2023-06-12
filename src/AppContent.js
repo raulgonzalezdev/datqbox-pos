@@ -5,12 +5,14 @@ import { VALIDATE_TOKEN } from 'graphql/users/crudUser'
 import AuthLayout from 'layouts/Auth'
 import AdminLayout from 'layouts/AdminLayout'
 import PosLayout from 'layouts/Pos'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import { clientId } from 'variables/clienteId'
 
 import { AuthContext } from './AuthContext'
 
 const AppContent = ({ onLogout, token }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+  const clientGoogle = clientId
   const { loading, error, data } = useQuery(VALIDATE_TOKEN, {
     variables: { token },
     skip: !token,
@@ -28,6 +30,7 @@ const AppContent = ({ onLogout, token }) => {
   }
 
   return (
+    <GoogleOAuthProvider clientId={clientGoogle}>
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
       <HashRouter>
         <Switch>
@@ -48,6 +51,7 @@ const AppContent = ({ onLogout, token }) => {
         </Switch>
       </HashRouter>
     </AuthContext.Provider>
+    </GoogleOAuthProvider>
   )
 }
 

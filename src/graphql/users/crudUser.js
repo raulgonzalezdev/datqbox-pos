@@ -81,6 +81,19 @@ const DELETE_USER = gql`
   }
 `
 
+export const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email)
+  }
+`
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($token: String!, $password: String!) {
+    resetPassword(token: $token, password: $password)
+  }
+`
+
+
 // Funciones CRUD
 export function useGetUsers() {
   return useQuery(GET_USERS)
