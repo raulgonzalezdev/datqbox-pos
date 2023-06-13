@@ -5,6 +5,7 @@ const GET_CURRENCY_TYPES = gql`
     getAllCurrencyTypes {
       id
       name
+      symbol
     }
   }
 `
@@ -14,6 +15,7 @@ const GET_CURRENCY_TYPE = gql`
     getCurrencyType(id: $id) {
       id
       name
+      symbol
     }
   }
 `
@@ -23,6 +25,7 @@ const CREATE_CURRENCY_TYPE = gql`
     createCurrencyType(input: {name: $name}) {
       id
       name
+      symbol
     }
   }
 `
@@ -32,6 +35,7 @@ const UPDATE_CURRENCY_TYPE = gql`
     updateCurrencyType(id: $id, input: {name: $name}) {
       id
       name
+      symbol
     }
   }
 `

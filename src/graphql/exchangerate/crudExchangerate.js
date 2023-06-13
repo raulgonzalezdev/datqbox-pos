@@ -7,19 +7,44 @@ const GET_EXCHANGE_RATES = gql`
       date
       rate
       currencyId
+      currencyType {
+        id
+        name
+        symbol
+      }
     }
   }
 `
 
 const GET_EXCHANGE_RATE = gql`
-  query GetExchangeRate($id: ID!) {
-    getExchangeRate(id: $id) {
+query GetExchangeRate($id: ID!) {
+  getExchangeRate(id: $id) {
+    id
+    date
+    rate
+    currencyId
+    currencyType {
       id
-      date
-      rate
-      currencyId
+      name
+      symbol
     }
   }
+}
+`
+const GET_EXCHANGE_RATE_BY_CURRENCY_ID = gql`
+query GetExchangeRateByCurrencyId($currencyId: ID!) {
+  getExchangeRateByCurrencyId(currencyId: $currencyId) {
+    id
+    date
+    rate
+    currencyId
+    currencyType {
+      id
+      name
+      symbol
+    }
+  }
+}
 `
 
 const CREATE_EXCHANGE_RATE = gql`
@@ -75,5 +100,11 @@ export function useCreateExchangeRate() {
 export function useGetExchangeRate(id) {
   return useQuery(GET_EXCHANGE_RATE, {
     variables: { id },
+  })
+}
+
+export function useGetExchangeRateByCurrencyId(currencyId) {
+  return useQuery(GET_EXCHANGE_RATE_BY_CURRENCY_ID, {
+    variables: { currencyId },
   })
 }

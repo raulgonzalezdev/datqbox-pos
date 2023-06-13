@@ -17,7 +17,9 @@ import SizesList from 'views/Pages/Sizes/SizesList'
 import PaymentsList from 'views/Pages/Payments/PaymentsList'
 import CompaniesList from 'views/Pages/Companies/CompaniesList'
 import TaxesList from 'views/Pages/Taxes/TaxesList'
+import CurrenciesList from 'views/Pages/Currencies/CurrenciesList'
 import Invoices from 'views/Pages/Invoices/Invoices'
+import ExchangesRateList from 'views/Pages/ExchangeRate/ExchangesRateList'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
 var dashRoutes = [
@@ -108,22 +110,14 @@ var dashRoutes = [
     ],
   },
   {
-    name: 'Pedidos',
-    path: '/periodsaccounting',
+    name: 'Taxes/Currencies',
+    path: '/taxandcurrencies',
     category: 'account',
     rtlName: 'صفحات',
     state: 'pageArcordion',
     icon: <CreditIcon color="inherit" />,
     views: [
-      {
-        path: '/invoices',
-        name: 'Invoices',
-        rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: Invoices,
-        layout: '/admin',
-      },
+     
      
       {
         path: '/paymentmethods',
@@ -141,6 +135,45 @@ var dashRoutes = [
         component: TaxesList,
         layout: '/admin',
       },
+      {
+        path: '/currencies',
+        name: 'Currencies',
+        rtlName: 'آرتيإل',
+        icon: <SupportIcon color="inherit" />,
+        component: CurrenciesList,
+        layout: '/admin',
+      },
+      {
+        path: '/exchangesrate',
+        name: 'Tasa de Cambio',
+        rtlName: 'آرتيإل',
+        icon: <SupportIcon color="inherit" />,
+        component: ExchangesRateList,
+        layout: '/admin',
+      },
+      
+    ],
+  },
+  {
+    name: 'Pedidos',
+    path: '/periodsaccounting',
+    category: 'account',
+    rtlName: 'صفحات',
+    state: 'pageArcordion',
+    icon: <CreditIcon color="inherit" />,
+    views: [
+      {
+        path: '/invoices',
+        name: 'Invoices',
+        rtlName: 'آرتيإل',
+        icon: <SupportIcon color="inherit" />,
+        secondaryNavbar: true,
+        component: Invoices,
+        layout: '/admin',
+      },
+     
+     
+      
     ],
   },
 

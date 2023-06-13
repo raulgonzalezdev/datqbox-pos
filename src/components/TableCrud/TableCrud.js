@@ -64,6 +64,8 @@ export default function TableCrud({ useCustomHook, ColumnsComponent }) {
   if (error) {
     return <Box>Error: {error.message}</Box>
   }
+ 
+
 
   return (
     <GradientBorder p="2px">
