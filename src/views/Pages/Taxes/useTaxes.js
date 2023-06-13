@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { useGetPaymentMethods, useCreatePaymentMethod, useUpdatePaymentMethod, DELETE_PAYMENT_METHOD } from 'graphql/payments/crudPayments'
+import { useGetTaxes, useCreateTax, useUpdateTax, DELETE_TAX } from 'graphql/tax/crudTax'
 import { GridRowModes } from '@mui/x-data-grid'
 
-export default function usePayments() {
+export default function useTaxes() {
   const [rowModesModel, setRowModesModel] = useState({})
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [Id, setId] = useState(null)
@@ -15,15 +15,15 @@ export default function usePayments() {
     page: 0,
   })
 
-  const { data = {}, loading, error, refetch } = useGetPaymentMethods()
-  const [create, { loading: createLoading }] = useCreatePaymentMethod()
-  const [update, { loading: updateLoading }] = useUpdatePaymentMethod()
-  const DELETE = DELETE_PAYMENT_METHOD
+  const { data = {}, loading, error, refetch }  = useGetTaxes()
+  const [create, { loading: createLoading }] = useCreateTax()
+  const [update, { loading: updateLoading }] = useUpdateTax()
+  const DELETE = DELETE_TAX
   const toast = useToast()
 
   useEffect(() => {
-    if (data && data.paymentMethods) {
-      setRows(data.paymentMethods)
+    if (data && data.getAllTaxes) {
+      setRows(data.getAllTaxes)
       setInitialLoad(false)
     }
   }, [data])
@@ -55,36 +55,36 @@ export default function usePayments() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
   }
 
-
-
-
   const refetchData = async () => {
     try {
       const newData = await refetch()
-      if (newData && newData.data && newData.data.paymentMethods) {
-        setRows(newData.data.paymentMethods)
+      if (newData && newData.data && newData.data.getAllTaxes) {
+        setRows(newData.data.getAllTaxes)
       }
     } catch (error) {
       console.error('Error refetching data:', error)
     }
   }
+  
 
   const handleClon = (id) => async () => {
     const rowToClone = rows.find((row) => row.id === id)
-    const newSize = {
+    const newRow = {
       input: {
         name: rowToClone.name,
-        description: rowToClone.description,
+        rate: rowToClone.rate,
+       
       },
     }
 
     try {
-      const result = await create({ variables: newSize })
-     
-      setRows([...rows, { ...result.data.createPaymentMethod, isNew: false }])
+      const result = await create({ variables: newRow })
+      const newId = result
+      console.log(newId)
+      setRows([...rows, { ...result.data.addTax, isNew: true }])
       toast({
         title: 'Success',
-        description: 'New paymentMethods created successfully',
+        description: 'New taxes created successfully',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -136,7 +136,8 @@ export default function usePayments() {
         const rowNew = {
           input: {
             name: newRow.name,
-            description: newRow.description,
+            rate: newRow.rate,
+          
           },
         }
 
@@ -146,11 +147,12 @@ export default function usePayments() {
           id: newRow.id,
           input: {
             name: newRow.name,
-            description: newRow.description,
+            rate: newRow.rate,
+          
           },
         }
 
-        console.log(rowUpdate)
+        
         response = await update({ variables: rowUpdate })
       }
 
@@ -158,8 +160,8 @@ export default function usePayments() {
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
       setRowModesModel({ ...rowModesModel, [newRow.id]: { mode: GridRowModes.View } })
       toast({
-        title: newRow.isNew ? 'Pyment creado' : 'Pyment Actualizado',
-        description: newRow.isNew ? 'El Pyment ha sido creado  exitosamente' : 'El Pyment ha sido Actualiado exitosamente',
+        title: newRow.isNew ? 'taxes creado' : 'taxes Actualizado',
+        description: newRow.isNew ? 'El taxes ha sido creado  exitosamente' : 'El taxes ha sido Actualiado exitosamente',
         status: 'success',
         duration: 3000,
         isClosable: true,

@@ -6,7 +6,7 @@ const GET_EXCHANGE_RATES = gql`
       id
       date
       rate
-      currencyTypeId
+      currencyId
     }
   }
 `
@@ -17,7 +17,7 @@ const GET_EXCHANGE_RATE = gql`
       id
       date
       rate
-      currencyTypeId
+      currencyId
     }
   }
 `
@@ -28,7 +28,7 @@ const CREATE_EXCHANGE_RATE = gql`
       id
       date
       rate
-      currencyTypeId
+      currencyId
     }
   }
 `
@@ -39,7 +39,7 @@ const UPDATE_EXCHANGE_RATE = gql`
       id
       date
       rate
-      currencyTypeId
+      currencyId
     }
   }
 `

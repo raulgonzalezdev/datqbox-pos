@@ -16,6 +16,7 @@ import ColorsList from 'views/Pages/Colors/ColorsList'
 import SizesList from 'views/Pages/Sizes/SizesList'
 import PaymentsList from 'views/Pages/Payments/PaymentsList'
 import CompaniesList from 'views/Pages/Companies/CompaniesList'
+import TaxesList from 'views/Pages/Taxes/TaxesList'
 import Invoices from 'views/Pages/Invoices/Invoices'
 import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
 
@@ -130,6 +131,14 @@ var dashRoutes = [
         rtlName: 'آرتيإل',
         icon: <SupportIcon color="inherit" />,
         component: PaymentsList,
+        layout: '/admin',
+      },
+      {
+        path: '/taxes',
+        name: 'Taxes',
+        rtlName: 'آرتيإل',
+        icon: <SupportIcon color="inherit" />,
+        component: TaxesList,
         layout: '/admin',
       },
     ],

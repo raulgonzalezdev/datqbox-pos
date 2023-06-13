@@ -10,22 +10,7 @@ export const GET_PRODUCTS = gql`
       description
       image
       isComposite
-      productCosts {
-        id
-        purchaseCost
-        otherCosts
-        shippingCost
-        isTaxedCost
-        calcMethod
-        taxRateCosts
-        product {
-          id
-          categoryId
-          name
-          description
-        }
-
-      }
+      
       price
       profit
       category {
@@ -75,11 +60,7 @@ export const GET_PRODUCTS = gql`
         currencyId
         rate
         date
-        currencyType {
-          id
-          name
-          symbol
-        }
+        
       }
     }
   }
@@ -160,11 +141,7 @@ export const GET_PRODUCT = gql`
         currencyId
         rate
         date
-        currencyType {
-          id
-          name
-          symbol
-        }
+        
       }
     }
   }

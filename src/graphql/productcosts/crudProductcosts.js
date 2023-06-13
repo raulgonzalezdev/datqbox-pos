@@ -53,6 +53,7 @@ export const GET_PRODUCT_COSTS = gql`
       isTaxedCost
       calcMethod
       taxRateCosts
+      productId
     }
   }
 `
