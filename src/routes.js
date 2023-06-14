@@ -20,14 +20,27 @@ import TaxesList from 'views/Pages/Taxes/TaxesList'
 import CurrenciesList from 'views/Pages/Currencies/CurrenciesList'
 import Invoices from 'views/Pages/Invoices/Invoices'
 import ExchangesRateList from 'views/Pages/ExchangeRate/ExchangesRateList'
-import { HomeIcon, StatsIcon, CreditIcon, PersonIcon, DocumentIcon, RocketIcon, SupportIcon } from 'components/Icons/Icons'
+import { BiAperture, BiCategory } from 'react-icons/bi'
+import { ImOffice, ImUsers , ImMakeGroup, ImPieChart} from 'react-icons/im'
+import { FaLaravel, FaCoins,FaMoneyBillWave, FaFileInvoiceDollar, FaUsers  } from 'react-icons/fa'
+import { SiTaxbuzz, SiDassaultsystemes } from 'react-icons/si'
+import { GiPayMoney } from 'react-icons/gi'
+import { FcShop, FcOrgUnit } from 'react-icons/fc'
+import { BsGraphUpArrow } from 'react-icons/bs'
+import { TbReceiptTax } from 'react-icons/tb'
+import { CgSize, CgMonday, CgProfile } from 'react-icons/cg'
+import { MdCoPresent, MdDashboard } from 'react-icons/md'
+
+
+
 
 var dashRoutes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
     rtlName: 'لوحة القيادة',
-    icon: <HomeIcon color="inherit" />,
+    icon: <FcOrgUnit color="white" size={24} />,
+    secondaryNavbar: true,
     component: Dashboard,
     layout: '/admin',
   },
@@ -35,7 +48,7 @@ var dashRoutes = [
     path: '/pos',
     name: 'POS',
     rtlName: 'لوحة القيادة',
-    icon: <CreditIcon color="inherit" />,
+    icon: <FcShop color="white" size={24} />,
     component: POSApp,
     layout: '/pos',
   },
@@ -45,14 +58,14 @@ var dashRoutes = [
     path: '/products',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <CgMonday color="white" size={24}/>,
     state: 'pageArcordion',
     views: [
       {
         path: '/products',
         name: 'Articulos',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <FaLaravel color="white" size={24}/>,
         secondaryNavbar: true,
         component: ProductsList,
         layout: '/admin',
@@ -61,7 +74,7 @@ var dashRoutes = [
         path: '/categories',
         name: 'Categorias',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BiCategory color="white" size={24}/>,
         secondaryNavbar: true,
         component: CategoriesList,
         layout: '/admin',
@@ -70,7 +83,7 @@ var dashRoutes = [
         path: '/sizes',
         name: 'Tallas',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <CgSize color="white" size={24}/>,
         secondaryNavbar: true,
         component: SizesList,
         layout: '/admin',
@@ -79,7 +92,7 @@ var dashRoutes = [
         path: '/colores',
         name: 'Colores',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BiAperture color="white" size={24}/>,
         secondaryNavbar: true,
         component: ColorsList,
         layout: '/admin',
@@ -92,14 +105,14 @@ var dashRoutes = [
     path: '/customers',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <MdCoPresent color="white" size={24}/>,
     state: 'pageArcordion',
     views: [
       {
         path: '/companies',
         name: 'Empresas',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <ImOffice color="white" size={24}/>,
         secondaryNavbar: true,
         component: CompaniesList,
         layout: '/admin',
@@ -115,7 +128,7 @@ var dashRoutes = [
     category: 'account',
     rtlName: 'صفحات',
     state: 'pageArcordion',
-    icon: <CreditIcon color="inherit" />,
+    icon: <SiTaxbuzz color="white" size={24}/>,
     views: [
      
      
@@ -123,7 +136,8 @@ var dashRoutes = [
         path: '/paymentmethods',
         name: 'PaymentMethods',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <GiPayMoney color="white" size={24}/>,
+        secondaryNavbar: true,
         component: PaymentsList,
         layout: '/admin',
       },
@@ -131,7 +145,8 @@ var dashRoutes = [
         path: '/taxes',
         name: 'Taxes',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <TbReceiptTax color="white" size={24}/>,
+        secondaryNavbar: true,
         component: TaxesList,
         layout: '/admin',
       },
@@ -139,7 +154,8 @@ var dashRoutes = [
         path: '/currencies',
         name: 'Currencies',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <FaCoins color="yellow" size={24}/>,
+        secondaryNavbar: true,
         component: CurrenciesList,
         layout: '/admin',
       },
@@ -147,7 +163,8 @@ var dashRoutes = [
         path: '/exchangesrate',
         name: 'Tasa de Cambio',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <FaMoneyBillWave color="green" size={24}/>,
+        secondaryNavbar: true,
         component: ExchangesRateList,
         layout: '/admin',
       },
@@ -160,13 +177,13 @@ var dashRoutes = [
     category: 'account',
     rtlName: 'صفحات',
     state: 'pageArcordion',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImMakeGroup color="white" size={24}/>,
     views: [
       {
         path: '/invoices',
         name: 'Invoices',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <FaFileInvoiceDollar color="green" size={24}/>,
         secondaryNavbar: true,
         component: Invoices,
         layout: '/admin',
@@ -182,14 +199,14 @@ var dashRoutes = [
     path: '/stepperform',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImPieChart color="white" size={24}/>,
     state: 'pageArcordion',
     views: [
       {
         path: '/stepperform',
         name: 'Detalle de Ventas',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BsGraphUpArrow color="white" size={24}/>,
         secondaryNavbar: true,
         component: StepperForm,
         layout: '/admin',
@@ -201,14 +218,14 @@ var dashRoutes = [
     path: '/stepperform',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImUsers color="white" size={24}/>,
     state: 'pageArcordion',
     views: [
       {
         path: '/stepperform',
         name: 'Usuarios',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <FaUsers color="white" size={24}/>,
         secondaryNavbar: true,
         component: StepperForm,
         layout: '/admin',
@@ -217,7 +234,7 @@ var dashRoutes = [
         path: '/stepperform',
         name: 'Mi Perfil',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <CgProfile color="white" size={24}/>,
         secondaryNavbar: true,
         component: StepperForm,
         layout: '/admin',
