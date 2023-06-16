@@ -215,19 +215,19 @@ var dashRoutes = [
   },
   {
     name: 'Usuarios',
-    path: '/stepperform',
+    path: '/user',
     category: 'account',
     rtlName: 'صفحات',
     icon: <ImUsers color="white" size={24}/>,
     state: 'pageArcordion',
     views: [
       {
-        path: '/stepperform',
+        path: '/users',
         name: 'Usuarios',
         rtlName: 'لوحة القيادة',
         icon: <FaUsers color="white" size={24}/>,
         secondaryNavbar: true,
-        component: StepperForm,
+        component: UsersList,
         layout: '/admin',
       },
       {

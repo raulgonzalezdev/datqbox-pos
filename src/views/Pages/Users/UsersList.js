@@ -1,96 +1,170 @@
-
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useToast } from '@chakra-ui/react'
 import DataTable from 'components/Tables/DataTable'
-import { useGetUsers } from 'graphql/users/crudUser'
+import {
+  useGetUsers,
+  DELETE_USER,
+  useAddUser,
+} from 'graphql/users/crudUser'
+import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
 import { createColumns } from './gridColumns'
+import UsersForm from './UserForm'
 
 
 
-// funciones generales
+const CategoriesList = () => {
+  const [createUsers, { loading: createLoading }] = useAddUser()
+  const toast = useToast()
 
-const incrementQuantity = (params) => {
-  const newRows = rows.map((row) => {
-    if (row.id === params.id) {
-      row.cant += 1
+  const editRow = (rowData) => {
+
+    setShowUsersForm(true)
+    setuserId(rowData)
+  }
+  const deleteRow = (rowData) => {
+   
+    setuserId(rowData)
+    setShowDeleteAlert(true)
+  }
+
+  const handleSelect = async (rowData) => {
+    
+  
+    const newUsers = {
+      
+      firstName: rowData.row.firstName,
+      lastName: rowData.row.lastName,
+      email: rowData.row.email,
+      password: rowData.row.password,
+      avatar: rowData.row.avatar,
+      role: rowData.row.role,
+      is_superuser: rowData.row.is_superuser,
+      is_active: rowData.row.is_active,
     }
-    return row
-  })
-  setRows(newRows)
-  updateTotal(newRows)
-}
+    
+  
+  
+   
+    try {
+      const result = await createUsers({ variables: { input: newUsers } })
+     
+  
+      // Update the UI to reflect the new product
+      setRows([...rows, result.data.createUsers])
 
-const decrementQuantity = (params) => {
-  const newRows = rows.map((row) => {
-    if (row.id === params.id && row.cant > 0) {
-      row.cant -= 1
+      // Show success toast
+      toast({
+        title: 'Success',
+        description: 'New Users created successfully',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+    } catch (error) {
+      console.error('Error creating new product:', error)
+  
+      // Show error toast
+      toast({
+        title: 'Error',
+        description: 'Error creating new product: ' + error,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
     }
-    return row
+  }
+  
+  
+
+  const columns = createColumns(editRow, deleteRow, handleSelect)
+
+  const [initialLoad, setInitialLoad] = useState(true)
+  const { data, loading, error, refetch } = useGetUsers({
+    skip: !initialLoad,
   })
-  setRows(newRows)
-  updateTotal(newRows)
-}
 
-const deleteRow = (params) => {
-  const newRows = rows.filter((row) => row.id !== params.id)
-  setRows(newRows)
-  updateTotal(newRows)
-}
+  const [showUsersForm, setShowUsersForm] = useState(false)
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false)
+  const [userId, setuserId] = useState(null)
 
-const handleAdd = () => {
-  console.log('Add new record')
-  // Implement the logic to add a new record
-}
 
-const handleSelect = (rowData) => {
-  console.log('Selected row data:', rowData)
-  // Implement the logic to handle the selected row data
-}
 
+  const [rows, setRows] = useState([])
+
+
+  useEffect(() => {
+    if (data && data.users) {
+      setRows(data.users)
+      setInitialLoad(false)
+    }
+  }, [data])
   
-// inicio componenete
-  
-  const UsersList = () => {
-    const columns = createColumns(
-      incrementQuantity,
-      decrementQuantity,
-      deleteRow,
-      handleSelect,
-    )
-
-    const { data, loading, error } = useGetUsers()
-
+  const handleConfirmDelete = async () => {
+    try {
+      const result = await refetch()
+     
+      setShowUsersForm(false)
+     
+    } catch (error) {
+      console.error('Refetch error:', error)
+    } finally {
+      setShowDeleteAlert(false)
+      setuserId(null)
+    }
+  }
   
   
-  if (loading) return <p>Loading...</p>
+
+  const handleAdd = () => {
+    console.log('Add new record')
+    setuserId(null)
+    setShowUsersForm(true)
+  }
+
+  const handleCancel = () => {
+    setShowUsersForm(false)
+  }
+
+  const handleSuccess = (newUsers) => {
+    setShowUsersForm(false)
+    refetch()
+  }
+
+  const handleCloseDeleteAlert = () => {
+    setShowDeleteAlert(false)
+    setuserId(null)
+  }
+
+  // if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>
 
-  const rows = data.users.map((row, index) => {
-     return {
-      id: row.id,
-      logo: row.avatar,
-      name: (row.firstName || '') + ' ' + (row.lastName || ''),
-      email: row.email,
-      role: row.role,
-      status: row.is_active,
-    
-    }
-   })
-
-
-
-
- 
-
   return (
-    <DataTable
-      title="Clientes o Usuarios"
-      columns={columns}
-      data={rows}
-      onAdd={handleAdd}
-      onSelect={handleSelect}
-    />
+    <>
+      <DeleteAlert
+        modelName="Usuarios"
+        isOpen={showDeleteAlert}
+        onClose={handleCloseDeleteAlert}
+        mutation={DELETE_USER}
+        id={userId}
+        handleConfirm={handleConfirmDelete}
+      />
+
+      {showUsersForm ? (
+        <UsersForm userId={userId} onCancel={handleCancel} onSuccess={handleSuccess} />
+      ) : (
+        <DataTable
+          title="Lista de Usuarios"
+          columns={columns}
+          data={rows}
+          onAdd={handleAdd}
+          onSelect={handleSelect}
+          onDelete={deleteRow}
+          refetchData={() => refetch()}
+        />
+      )}
+    </>
   )
 }
 
-export default UsersList
+export default CategoriesList
