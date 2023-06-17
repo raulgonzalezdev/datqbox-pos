@@ -42,13 +42,16 @@ const CategoryTabs = ({ rows, setRows, updateTotal, handleProductDoubleClick }) 
 
   return (
     <Tabs isLazy variant="enclosed" colorScheme="gray" width={{ base: 'auto', md: '100%' }}>
-      <TabList width={{ base: 'auto', md: '100%' }}>
-        {categories.map((category) => (
-          <Tab key={category.id} color="white">
-            {category.name}
-          </Tab>
-        ))}
-      </TabList>
+     <TabList width={{ base: 'auto', md: '100%' }}>
+  {categories.map((category) => (
+    <Tab key={category.id} color="white">
+      {category.image && (
+        <Image src={category.image} h="24px" w="24px" alt={category.name} style={{ marginRight: '5px' }} />
+      )}
+      {category.name}
+    </Tab>
+  ))}
+</TabList>
 
       <Box>
         <Input
