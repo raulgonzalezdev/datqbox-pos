@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import { HamburgerIcon } from '@chakra-ui/icons'
-import { Box, Stack, Text } from '@chakra-ui/react'
+import { Box, Stack, Text, Portal, Flex } from '@chakra-ui/react'
 
 import { SidebarHelp } from 'components/Sidebar/SidebarHelp'
 import PropTypes from 'prop-types'
@@ -32,7 +32,9 @@ function Sidebar(props) {
     <Box ref={mainPanel}>
       <SidebarResponsive logoText={props.logoText} routes={props.routes} />
       <Box display={{ sm: "none", xl: "block" }} position="fixed" overflowY="auto" h="100%">
-        <Box
+        <Flex
+           flexDirection="column"
+           position="relative" 
           bg={sidebarBg}
           backdropFilter="blur(10px)"
           transition={variantChange}
@@ -44,7 +46,7 @@ function Sidebar(props) {
           my={{
             sm: "16px",
           }}
-          h="200%"
+         // h="200%"
           ps="20px"
           pe="20px"
           m={sidebarMargins}
@@ -60,7 +62,7 @@ function Sidebar(props) {
             </Box>
           </Stack>
           <SidebarHelp/>
-        </Box>
+        </Flex>
       </Box>
     </Box>
   )
