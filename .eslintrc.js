@@ -9,13 +9,18 @@ module.exports = {
     }
   },
   'plugins': [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'import'
   ],
   'rules': {
     'import/no-webpack-loader-syntax': 'off',
     'no-undef': 'off',
     'semi': ['error', 'never'],
     'quotes': ['error', 'single'],
+    'import/order': ['error', {
+      'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      'newlines-between': 'always'
+    }],
   },
   'settings': {
     'import/resolver': {

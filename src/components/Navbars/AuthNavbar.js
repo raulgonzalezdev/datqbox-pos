@@ -1,11 +1,3 @@
-/*!
-
-   
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
 // Chakra imports
 import {
   Box,
@@ -27,9 +19,8 @@ import {
 import SidebarResponsive from 'components/Sidebar/SidebarResponsive'
 import PropTypes from 'prop-types'
 import React from 'react'
-
 import { NavLink } from 'react-router-dom'
-import routes from 'routes.js'
+import routes from 'routes'
 import logo_Brand from 'assets/img/logo.png'
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, ...rest } = props
@@ -72,7 +63,7 @@ export default function AuthNavbar(props) {
         <Image
           src={logo_Brand}
           width="275px"
-          height="65px"
+          height="75px"
           alt="Logo"
           me="10px"
           mt="2px"

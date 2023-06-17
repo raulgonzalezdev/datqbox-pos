@@ -40,7 +40,7 @@ const UPDATE_PAYMENT_METHOD = gql`
   }
 `
 
-const DELETE_PAYMENT_METHOD = gql`
+export const DELETE_PAYMENT_METHOD = gql`
   mutation DeletePaymentMethod($id: ID!) {
     deletePaymentMethod(id: $id)
   }

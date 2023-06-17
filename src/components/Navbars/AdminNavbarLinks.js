@@ -1,19 +1,7 @@
 // Chakra Icons
 import { BellIcon, SearchIcon } from '@chakra-ui/icons'
 // Chakra Imports
-import {
-  Button,
-  Flex,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Flex, Avatar, Tooltip, IconButton, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 // Assets
 import avatar1 from 'assets/img/avatars/avatar1.png'
 import avatar2 from 'assets/img/avatars/avatar2.png'
@@ -25,29 +13,32 @@ import { ItemContent } from 'components/Menu/ItemContent'
 import SidebarResponsive from 'components/Sidebar/SidebarResponsive'
 import PropTypes from 'prop-types'
 import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../../AuthContext'
-import {  useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import routes from 'routes'
 
-import routes from 'routes.js'
+import { AuthContext } from '../../AuthContext'
 
 export default function HeaderLinks(props) {
   const { variant, children, fixed, secondary, onOpen, ...rest } = props
 
-
   const history = useHistory()
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+  const { isAuthenticated, setIsAuthenticated, userData, setUserData } = useContext(AuthContext)
+
+ const userInfo = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
 
   useEffect(() => {
     if (!isAuthenticated) {
       history.push('/auth/signin')
-
     }
   }, [isAuthenticated, history])
-  
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    setUserData(null)
+
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('user')
   }
 
   // Chakra Color Mode
@@ -62,13 +53,8 @@ export default function HeaderLinks(props) {
   }
   const settingsRef = React.useRef()
   return (
-    <Flex
-      pe={{ sm: '0px', md: '16px' }}
-      w={{ sm: '100%', md: 'auto' }}
-      alignItems="center"
-      flexDirection="row"
-    >
-      <InputGroup
+    <Flex pe={{ sm: '0px', md: '16px' }} w={{ sm: '100%', md: 'auto' }} alignItems="center" flexDirection="row">
+      {/* <InputGroup
         cursor="pointer"
         bg={inputBg}
         borderRadius="15px"
@@ -104,8 +90,8 @@ export default function HeaderLinks(props) {
           placeholder="Type here..."
           borderRadius="inherit"
         />
-      </InputGroup>
-
+      </InputGroup> */}
+      <Tooltip label={userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : ''}>
       <Button
         ms="0px"
         px="0px"
@@ -113,19 +99,19 @@ export default function HeaderLinks(props) {
         color={navbarIcon}
         variant="transparent-with-icon"
         onClick={handleLogout}
-        leftIcon={<ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />}
+        leftIcon={
+          userInfo && userInfo.avatar ? (
+            <Avatar src={userInfo.avatar} w="32px" h="32px" me="0px" />
+          ) : (
+            <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+          )
+        }
       >
         <Text display={{ sm: 'none', md: 'flex' }}>Logout</Text>
       </Button>
+      </Tooltip>
 
-      <SidebarResponsive
-        iconColor="gray.500"
-        logoText={props.logoText}
-        secondary={props.secondary}
-        routes={routes}
-     
-        {...rest}
-      />
+      <SidebarResponsive iconColor="gray.500" logoText={props.logoText} secondary={props.secondary} routes={routes} {...rest} />
       <SettingsIcon
         cursor="pointer"
         ms={{ base: '16px', xl: '0px' }}
@@ -161,13 +147,7 @@ export default function HeaderLinks(props) {
               }}
               mb="10px"
             >
-              <ItemContent
-                time="13 minutes ago"
-                info="from Alicia"
-                boldInfo="New Message"
-                aName="Alicia"
-                aSrc={avatar1}
-              />
+              <ItemContent time="13 minutes ago" info="from Alicia" boldInfo="New Message" aName="Alicia" aSrc={avatar1} />
             </MenuItem>
             <MenuItem
               borderRadius="8px"
@@ -180,16 +160,9 @@ export default function HeaderLinks(props) {
               _focus={{
                 bg: 'transparent',
               }}
-            
               mb="10px"
             >
-              <ItemContent
-                time="2 days ago"
-                info="by Josh Henry"
-                boldInfo="New Album"
-                aName="Josh Henry"
-                aSrc={avatar2}
-              />
+              <ItemContent time="2 days ago" info="by Josh Henry" boldInfo="New Album" aName="Josh Henry" aSrc={avatar2} />
             </MenuItem>
             <MenuItem
               borderRadius="8px"
@@ -203,13 +176,7 @@ export default function HeaderLinks(props) {
                 bg: 'transparent',
               }}
             >
-              <ItemContent
-                time="3 days ago"
-                info="Payment succesfully completed!"
-                boldInfo=""
-                aName="Kara"
-                aSrc={avatar3}
-              />
+              <ItemContent time="3 days ago" info="Payment succesfully completed!" boldInfo="" aName="Kara" aSrc={avatar3} />
             </MenuItem>
           </Flex>
         </MenuList>

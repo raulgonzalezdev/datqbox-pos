@@ -9,9 +9,9 @@ import {
   InputGroup,
   InputLeftElement,
 } from '@chakra-ui/react'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardBody from 'components/Card/CardBody'
 import { SearchIcon } from '@chakra-ui/icons'
 
 const DataTable = ({ title, columns, data, onAdd, onSelect, refetchData }) => {

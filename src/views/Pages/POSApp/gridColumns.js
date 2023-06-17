@@ -1,10 +1,23 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { Flex, IconButton } from '@chakra-ui/react'
+import { Flex, IconButton, Box, Text } from '@chakra-ui/react'
 import { AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons'
 
 export const createColumns = (incrementQuantity, decrementQuantity, deleteRow): GridColDef[] => [
   { field: 'cant', headerName: 'Cant', width: 55, editable: true },
-  { field: 'productName', headerName: 'Producto', width: 180 },
+  {
+    field: 'name',
+    headerName: 'Producto',
+    width: 180,
+    sortable: true,
+    renderCell: (params) => (
+      <Flex align="center">
+        <Box ml={2}>
+          <Text>{params.row.name + ' ' + params.row.description}</Text>
+        </Box>
+      </Flex>
+    ),
+  },
+  
   {
     field: 'price',
     headerName: 'Precio',

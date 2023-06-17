@@ -1,69 +1,27 @@
 import React from 'react'
-
-// Chakra imports
 import { Box, Flex, Button, FormControl, FormLabel, HStack, Input, Link, Switch, Text, Icon, DarkMode, useToast } from '@chakra-ui/react'
-
-// Icons
 import { FaApple, FaFacebook, FaGoogle } from 'react-icons/fa'
-// Custom Components
 import AuthFooter from 'components/Footer/AuthFooter'
 import GradientBorder from 'components/GradientBorder/GradientBorder'
-import { useAddUser } from 'graphql/users/crudUser'
-import { useHistory } from 'react-router-dom'
-
-// Assets
 import signUpImage from 'assets/img/signUpImage.png'
+import useFormSubmit from 'components/SignUp/useFormSubmit'
+import GoogleSignUp from 'components/SignUp/useGoogleSignUp'
 
 function SignUp() {
   const titleColor = 'white'
   const textColor = 'gray.400'
 
-  const [addUser, { loading, error }] = useAddUser()
+ 
+
+  const { handleSubmit, loading } = useFormSubmit()
+
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const history = useHistory()
 
-  const toast = useToast()
-
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-
-    try {
-      const newUser = {
-        firstName: name,
-        lastName: '.',
-        email: email,
-        password: password,
-        avatar: '',
-        role: 'USER',
-        is_superuser: false,
-        is_active: true,
-      }
-
-      const response = await addUser({ variables: { input: newUser } })
-      console.log('User created:', response.data.addUser)
-
-      toast({
-        title: 'Usuario creado con éxito',
-        description: `El usuario ${response.data.addUser.user.firstName} fue creado exitosamente.`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      })
-
-      history.push('/auth/signin')
-    } catch (err) {
-      console.error('Error creating user:', err)
-
-      toast({
-        title: 'Error creando usuario',
-        description: 'El email puede estar en uso o el password no cumple con la longitud requerida',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
+    handleSubmit(name, email, password)
   }
 
   return (
@@ -88,7 +46,14 @@ function SignUp() {
           mb="50px"
           w={{ base: '100%', md: '50%', lg: '42%' }}
         >
-          <Flex direction="column" textAlign="center" justifyContent="center" align="center" mt={{ base: '60px', md: '140px', lg: '200px' }} mb="50px">
+          <Flex
+            direction="column"
+            textAlign="center"
+            justifyContent="center"
+            align="center"
+            mt={{ base: '60px', md: '140px', lg: '200px' }}
+            mb="50px"
+          >
             <Text fontSize="4xl" lineHeight="39px" color="white" fontWeight="bold">
               Welcome!
             </Text>
@@ -158,17 +123,18 @@ function SignUp() {
                     w="71px"
                     h="71px"
                     borderRadius="15px"
+                    id="google-button" 
+                    // onClick={() => renderGoogleSignUpButton(name, email, password)}
                   >
-                    <Link href="#">
-                      <Icon color={titleColor} as={FaGoogle} w="30px" h="30px" _hover={{ filter: 'brightness(120%)' }} />
-                    </Link>
+                        <GoogleSignUp />
+                      
                   </Flex>
                 </GradientBorder>
               </HStack>
               <Text fontSize="lg" color="gray.400" fontWeight="bold" textAlign="center" mb="22px">
                 or
               </Text>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={onSubmit}>
                 <FormLabel color={titleColor} ms="4px" fontSize="sm" fontWeight="normal">
                   Name
                 </FormLabel>
@@ -263,7 +229,15 @@ function SignUp() {
         <Box w={{ base: '335px', md: '450px' }} mx={{ base: 'auto', lg: 'unset' }} ms={{ base: 'auto', lg: 'auto' }} mb="90px">
           <AuthFooter />
         </Box>
-        <Box display={{ base: 'none', lg: 'block' }} overflowX="hidden" h="1300px" maxW={{ md: '50vw', lg: '48vw' }} w="960px" position="absolute" left="0px">
+        <Box
+          display={{ base: 'none', lg: 'block' }}
+          overflowX="hidden"
+          h="1300px"
+          maxW={{ md: '50vw', lg: '48vw' }}
+          w="960px"
+          position="absolute"
+          left="0px"
+        >
           <Box
             bgImage={signUpImage}
             w="100%"

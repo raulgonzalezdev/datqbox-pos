@@ -12,6 +12,19 @@ const GET_SIZES = gql`
   }
 `
 
+export const GET_SIZE = gql`
+  query GetSize($id: ID!) {
+    size(id: $id) {
+      id
+      name
+      products {
+        id
+        name
+      }
+    }
+  }
+`
+
 const CREATE_SIZE = gql`
   mutation CreateSize($name: String!) {
     createSize(name: $name) {
@@ -30,7 +43,7 @@ const UPDATE_SIZE = gql`
   }
 `
 
-const DELETE_SIZE = gql`
+export const DELETE_SIZE = gql`
   mutation DeleteSize($id: ID!) {
     deleteSize(id: $id) 
   }
@@ -58,4 +71,10 @@ export function useGetSizes() {
       refetchQueries: [{ query: GET_SIZES }],
     })
   }
+
+  export function useGetSize(id) {
+    return useQuery(GET_SIZE, {
+      variables: { id },
+    })
+  } 
   

@@ -1,27 +1,35 @@
-import Dashboard from 'views/Dashboard/Dashboard.js'
-import Tables from 'views/Dashboard/Tables.js'
-import Billing from 'views/Dashboard/Billing.js'
-import RTLPage from 'views/RTL/RTLPage.js'
-import Profile from 'views/Dashboard/Profile.js'
-import SignIn from 'views/Pages/SignIn.js'
-import SignUp from 'views/Pages/SignUp.js'
-import StepperForm from 'views/Pages/StepperForm/StepperForm.js'
+import React from 'react'
+import Dashboard from 'views/Dashboard/Dashboard'
+import Tables from 'views/Dashboard/Tables'
+import Billing from 'views/Dashboard/Billing'
+import RTLPage from 'views/RTL/RTLPage'
+import Profile from 'views/Dashboard/Profile'
+import SignIn from 'views/Pages/SignIn'
+import SignUp from 'views/Pages/SignUp'
+import StepperForm from 'views/Pages/StepperForm/StepperForm'
 import UsersList from 'views/Pages/Users/UsersList'
-import PeriodsAccounting from 'views/Pages/PeriodsAccounting/PeriodsAccounting.js'
-import POSApp from 'views/Pages/POSApp/POSApp.js'
-import ProductsList from 'views/Pages/Products/ProductsList.js'
-
-
-import {
-  HomeIcon,
-  StatsIcon,
-  CreditIcon,
-  PersonIcon,
-  DocumentIcon,
-  RocketIcon,
-  SupportIcon,
-  
-} from 'components/Icons/Icons'
+import PeriodsAccounting from 'views/Pages/PeriodsAccounting/PeriodsAccounting'
+import POSApp from 'views/Pages/POSApp/POSApp'
+import ProductsList from 'views/Pages/Products/ProductsList'
+import CategoriesList from 'views/Pages/Categories/CategoriesList'
+import ColorsList from 'views/Pages/Colors/ColorsList'
+import SizesList from 'views/Pages/Sizes/SizesList'
+import PaymentsList from 'views/Pages/Payments/PaymentsList'
+import CompaniesList from 'views/Pages/Companies/CompaniesList'
+import TaxesList from 'views/Pages/Taxes/TaxesList'
+import CurrenciesList from 'views/Pages/Currencies/CurrenciesList'
+import Invoices from 'views/Pages/Invoices/Invoices'
+import ExchangesRateList from 'views/Pages/ExchangeRate/ExchangesRateList'
+import { BiAperture, BiCategory } from 'react-icons/bi'
+import { ImOffice, ImUsers, ImMakeGroup, ImPieChart } from 'react-icons/im'
+import { FaLaravel, FaCoins, FaMoneyBillWave, FaFileInvoiceDollar, FaUsers } from 'react-icons/fa'
+import { SiTaxbuzz, SiDassaultsystemes } from 'react-icons/si'
+import { GiPayMoney } from 'react-icons/gi'
+import { FcShop, FcOrgUnit } from 'react-icons/fc'
+import { BsGraphUpArrow } from 'react-icons/bs'
+import { TbReceiptTax } from 'react-icons/tb'
+import { CgSize, CgMonday, CgProfile } from 'react-icons/cg'
+import { MdCoPresent, MdDashboard } from 'react-icons/md'
 
 
 var dashRoutes = [
@@ -29,75 +37,143 @@ var dashRoutes = [
     path: '/dashboard',
     name: 'Dashboard',
     rtlName: 'لوحة القيادة',
-    icon: <HomeIcon color="inherit" />,
+    icon: <FcOrgUnit color="white" size={24} />,
+    secondaryNavbar: true,
     component: Dashboard,
     layout: '/admin',
+    role: 'ALL',
   },
   {
     path: '/pos',
     name: 'POS',
     rtlName: 'لوحة القيادة',
-    icon: <CreditIcon color="inherit" />,
+    icon: <FcShop color="white" size={24} />,
     component: POSApp,
     layout: '/pos',
+    role: 'ALL',
   },
-
- 
 
   {
     name: 'Productos',
     path: '/products',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <CgMonday color="white" size={24} />,
     state: 'pageArcordion',
+    role: 'ADMIN',
     views: [
       {
         path: '/products',
         name: 'Articulos',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <FaLaravel color="white" size={24} />,
         secondaryNavbar: true,
         component: ProductsList,
         layout: '/admin',
+        role: 'ADMIN',
       },
       {
-        path: '/products',
+        path: '/categories',
         name: 'Categorias',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BiCategory color="white" size={24} />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: CategoriesList,
         layout: '/admin',
+        role: 'ADMIN',
       },
       {
-        path: '/products',
+        path: '/sizes',
         name: 'Tallas',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <CgSize color="white" size={24} />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: SizesList,
         layout: '/admin',
+        role: 'ADMIN',
       },
       {
-        path: '/products',
+        path: '/colores',
         name: 'Colores',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BiAperture color="white" size={24} />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: ColorsList,
         layout: '/admin',
+        role: 'ADMIN',
+      },
+    ],
+  },
+  {
+    name: 'Clientes',
+    path: '/customers',
+    category: 'account',
+    rtlName: 'صفحات',
+    icon: <MdCoPresent color="white" size={24} />,
+    state: 'pageArcordion',
+    role: 'ALL',
+    views: [
+      {
+        path: '/companies',
+        name: 'Empresas',
+        rtlName: 'لوحة القيادة',
+        icon: <ImOffice color="white" size={24} />,
+        secondaryNavbar: true,
+        component: CompaniesList,
+        layout: '/admin',
+        role: 'ALL',
+      },
+    ],
+  },
+  {
+    name: 'Taxes/Currencies',
+    path: '/taxandcurrencies',
+    category: 'account',
+    rtlName: 'صفحات',
+    state: 'pageArcordion',
+    icon: <SiTaxbuzz color="white" size={24} />,
+    role: 'ALL',
+    views: [
+      {
+        path: '/paymentmethods',
+        name: 'PaymentMethods',
+        rtlName: 'آرتيإل',
+        icon: <GiPayMoney color="white" size={24} />,
+        secondaryNavbar: true,
+        component: PaymentsList,
+        layout: '/admin',
+        role: 'ALL',
       },
       {
-        path: '/products',
-        name: 'Reviews',
-        rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        path: '/taxes',
+        name: 'Taxes',
+        rtlName: 'آرتيإل',
+        icon: <TbReceiptTax color="white" size={24} />,
         secondaryNavbar: true,
-        component: ProductsList,
+        component: TaxesList,
         layout: '/admin',
+        role: 'ADMIN',
       },
-      
+      {
+        path: '/currencies',
+        name: 'Currencies',
+        rtlName: 'آرتيإل',
+        icon: <FaCoins color="yellow" size={24} />,
+        secondaryNavbar: true,
+        component: CurrenciesList,
+        layout: '/admin',
+        role: 'ADMIN',
+      },
+      {
+        path: '/exchangesrate',
+        name: 'Tasa de Cambio',
+        rtlName: 'آرتيإل',
+        icon: <FaMoneyBillWave color="green" size={24} />,
+        secondaryNavbar: true,
+        component: ExchangesRateList,
+        layout: '/admin',
+        role: 'ALL',
+      },
     ],
   },
   {
@@ -106,84 +182,73 @@ var dashRoutes = [
     category: 'account',
     rtlName: 'صفحات',
     state: 'pageArcordion',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImMakeGroup color="white" size={24} />,
+    role: 'ADMIN',
+
     views: [
-     
       {
-        path: '/periodsaccounting',
-        name: 'Clientes',
+        path: '/invoices',
+        name: 'Invoices',
         rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
+        icon: <FaFileInvoiceDollar color="green" size={24} />,
         secondaryNavbar: true,
-        component: PeriodsAccounting,
-        layout: '/auth',
-      },
-      {
-        path: '/rtl-support-page',
-        name: 'Pedidos',
-        rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
-        component: RTLPage,
+        component: Invoices,
         layout: '/admin',
-      },
-      {
-        path: '/rtl-support',
-        name: 'Pagos',
-        rtlName: 'آرتيإل',
-        icon: <SupportIcon color="inherit" />,
-        component: ProductsList,
-        layout: '/admin',
+        role: 'ADMIN',
       },
     ],
   },
-  
+
   {
     name: 'Reportes',
     path: '/stepperform',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImPieChart color="white" size={24} />,
     state: 'pageArcordion',
+    role: 'ADMIN',
     views: [
       {
         path: '/stepperform',
         name: 'Detalle de Ventas',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <BsGraphUpArrow color="white" size={24} />,
         secondaryNavbar: true,
         component: StepperForm,
         layout: '/admin',
+        role: 'ADMIN',
       },
-     
     ],
   },
   {
     name: 'Usuarios',
-    path: '/stepperform',
+    path: '/user',
     category: 'account',
     rtlName: 'صفحات',
-    icon: <CreditIcon color="inherit" />,
+    icon: <ImUsers color="white" size={24} />,
     state: 'pageArcordion',
+    role: 'ALL',
     views: [
       {
-        path: '/stepperform',
+        path: '/users',
         name: 'Usuarios',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <FaUsers color="white" size={24} />,
         secondaryNavbar: true,
-        component: StepperForm,
+        component: UsersList,
         layout: '/admin',
+        role: 'ADMIN',
       },
       {
         path: '/stepperform',
         name: 'Mi Perfil',
         rtlName: 'لوحة القيادة',
-        icon: <PersonIcon color="inherit" />,
+        icon: <CgProfile color="white" size={24} />,
         secondaryNavbar: true,
         component: StepperForm,
         layout: '/admin',
+        role: 'ALL',
       },
-     
     ],
   },
 ]

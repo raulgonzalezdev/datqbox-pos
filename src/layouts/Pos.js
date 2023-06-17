@@ -1,13 +1,13 @@
 // chakra imports
 import { Box, ChakraProvider, Portal } from '@chakra-ui/react'
-import Footer from 'components/Footer/Footer.js'
+import Footer from 'components/Footer/Footer'
 // core components
-import PosNavbar from 'components/Navbars/PosNavbar.js'
+import PosNavbar from 'components/Navbars/PosNavbar'
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import routes from 'routes.js'
+import routes from 'routes'
 //import theme from "theme/themeAuth.js";
-import theme from 'theme/themeAdmin.js'
+import theme from 'theme/themeAdmin'
 import { withRouter } from 'react-router-dom'
 
 

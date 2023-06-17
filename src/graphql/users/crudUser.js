@@ -26,6 +26,8 @@ const LOGIN_USER = gql`
         firstName
         lastName
         email
+        avatar
+        role
       }
     }
   }
@@ -75,11 +77,40 @@ const UPDATE_USER = gql`
   }
 `
 
-const DELETE_USER = gql`
+export const DELETE_USER = gql`
   mutation DeleteUser($id: ID!) {
     deleteUser(id: $id)
   }
 `
+
+export const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email)
+  }
+`
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($token: String!, $password: String!) {
+    resetPassword(token: $token, password: $password)
+  }
+`
+
+const GET_USER = gql`
+  query GetUser($id: ID!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      password
+      avatar
+      role
+      is_superuser
+      is_active
+    }
+  }
+`
+
 
 // Funciones CRUD
 export function useGetUsers() {
@@ -100,4 +131,10 @@ export function useDeleteUser() {
 
 export function useSignIn() {
   return useMutation(LOGIN_USER)
+}
+
+export function useGetUser(id) {
+  return useQuery(GET_USER, {
+    variables: { id },
+  })
 }

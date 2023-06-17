@@ -1,11 +1,11 @@
 import { Box, ChakraProvider, Portal } from '@chakra-ui/react'
-import AuthNavbar from 'components/Navbars/AuthNavbar.js'
+import AuthNavbar from 'components/Navbars/AuthNavbar'
 import React, { useEffect, useRef } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import routes from 'routes.js'
-import theme from 'theme/themeAuth.js'
-import SignIn from 'views/Pages/SignIn.js'
-import SignUp from 'views/Pages/SignUp.js'
+import routes from 'routes'
+import theme from 'theme/themeAuth'
+import SignIn from 'views/Pages/SignIn'
+import SignUp from 'views/Pages/SignUp'
 
 const AuthLayout = (props) => {
   const wrapper = useRef(null)

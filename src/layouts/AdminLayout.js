@@ -2,18 +2,19 @@
 // Chakra imports
 import { ChakraProvider, Portal, useDisclosure } from '@chakra-ui/react'
 import Configurator from 'components/Configurator/Configurator'
-import Footer from 'components/Footer/Footer.js'
-import AdminNavbar from 'components/Navbars/AdminNavbar.js'
-import Sidebar from 'components/Sidebar/Sidebar.js'
+import Footer from 'components/Footer/Footer'
+import AdminNavbar from 'components/Navbars/AdminNavbar'
+import Sidebar from 'components/Sidebar/Sidebar'
 import React, { useState , useRef} from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import routes from 'routes.js'
-import theme from 'theme/themeAdmin.js'
+import routes from 'routes'
+import theme from 'theme/themeAdmin'
+import { withRouter } from 'react-router-dom'
+
 import FixedPlugin from '../components/FixedPlugin/FixedPlugin'
 import MainPanel from '../components/Layout/MainPanel'
 import PanelContainer from '../components/Layout/PanelContainer'
 import PanelContent from '../components/Layout/PanelContent'
-import { withRouter } from 'react-router-dom'
 
 
 const AdminLayout = ( props ) => {

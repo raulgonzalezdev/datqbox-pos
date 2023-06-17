@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import { SidebarHelp } from 'components/Sidebar/SidebarHelp'
+
 import Brand from './Brand'
 import SidebarLinks from './SidebarLinks'
 
@@ -29,20 +30,13 @@ const SidebarResponsive = (props) => {
   const [state, setState] = React.useState({})
   const mainPanel = React.useRef()
 
+  const { logoText, routes, sidebarVariant, iconColor, ...rest } = props
 
-  const { logoText, routes, sidebarVariant,iconColor, ...rest } = props
-  
-
- 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
   // Color variables
   return (
-    <Flex
-      display={{ sm: 'flex', xl: 'none' }}
-      ref={mainPanel}
-      alignItems="center"
-    >
+    <Flex display={{ sm: 'flex', xl: 'none' }} ref={mainPanel} alignItems="center">
       <HamburgerIcon
         color={iconColor}
         w="18px"
@@ -51,12 +45,7 @@ const SidebarResponsive = (props) => {
         // colorScheme="teal"
         onClick={onOpen}
       />
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
-        finalFocusRef={btnRef}
-      >
+      <Drawer isOpen={isOpen} onClose={onClose} placement={document.documentElement.dir === 'rtl' ? 'right' : 'left'} finalFocusRef={btnRef}>
         <DrawerOverlay />
         <DrawerContent
           backdropFilter="blur(10px)"
@@ -71,11 +60,7 @@ const SidebarResponsive = (props) => {
           }}
           borderRadius="16px"
         >
-          <DrawerCloseButton
-            color="white"
-            _focus={{ boxShadow: 'none' }}
-            _hover={{ boxShadow: 'none' }}
-          />
+          <DrawerCloseButton color="white" _focus={{ boxShadow: 'none' }} _hover={{ boxShadow: 'none' }} />
           <DrawerBody maxW="250px" px="1rem">
             <Box maxW="100%" h="100vh">
               <Box>
@@ -84,10 +69,7 @@ const SidebarResponsive = (props) => {
               </Box>
               <Stack direction="column" mb="40px">
                 <Box>
-                  <SidebarLinks
-                    routes={routes}
-                     sidebarVariant={sidebarVariant}
-                  />
+                  <SidebarLinks routes={routes} sidebarVariant={sidebarVariant} />
                 </Box>
               </Stack>
               <SidebarHelp></SidebarHelp>

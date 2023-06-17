@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { AddIcon, MinusIcon, DeleteIcon } from '@chakra-ui/icons'
+import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
     Flex,
     Text,
@@ -8,72 +8,118 @@ import {
     Badge,
     IconButton,
     Button,
+    Image,
+    Checkbox,
   
   } from '@chakra-ui/react'
 
 
-  export const createColumns = (
-    incrementQuantity,
-    decrementQuantity,
+   export const createColumns = (
+    editRow,
     deleteRow,
     onSelect
     
   ): GridColDef[] => [
     {
-      field: 'userData',
-      headerName: 'AUTHOR',
-      width: 300,
-      sortable: false,
+      field: 'id',
+      headerName: 'Id',
+      width: 50,
+      sortable: true,
       renderCell: (params) => (
         <Flex align="center">
-          <Avatar
-          bg='teal.500'
-          size='lg'
-          src={params.row.logo || ''}
-          name={params.row.name}
-        />
+          
           <Box ml={2}>
-            <Text fontWeight="bold">{params.row.name}</Text>
-            <Text fontSize="sm">{params.row.email}</Text>
+            <Text >{params.row.id}</Text>
+          
+          </Box>
+        </Flex>
+      ),
+    },
+    {
+      field: 'names',
+      headerName: 'Nombre',
+      width: 200,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            <Text>{params.row.firstName + ' ' + params.row.lastName}</Text>
+          </Box>
+        </Flex>
+      ),
+    },
+   
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 200,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            <Text>{params.row.email}</Text>
+          </Box>
+        </Flex>
+      ),
+    },
+  
+    {
+      field: 'avatar',
+      headerName: 'Avatar',
+      width: 150,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            {params.row.avatar && (
+              <Image src={params.row.avatar} boxSize="64px" objectFit="cover" />
+            )}
           </Box>
         </Flex>
       ),
     },
     {
       field: 'role',
-      headerName: 'FUNCTION',
-      width: 200,
-      sortable: false,
+      headerName: 'Rol',
+      width: 150,
+      sortable: true,
       renderCell: (params) => (
         <Flex align="center">
           <Box ml={2}>
-            <Text fontSize="md" color="#fff" fontWeight="bold">
-              {params.row.role}
-            </Text>
-            
+            <Text>{params.row.role}</Text>
           </Box>
         </Flex>
       ),
     },
     {
-      field: 'status',
-      headerName: 'Status',
-      width: 150,
-      sortable: false,
+      field: 'is_superuser',
+      headerName: '¿Es superusuario?',
+      width: 100,
+      sortable: true,
       renderCell: (params) => (
-        <Badge
-          bg={params.row.status  ? 'green.400' : 'transparent'}
-          color={params.row.status ? 'white' : 'gray.400'}
-          fontSize="sm"
-          p="3px 10px"
-          borderRadius="8px"
-          border={params.row.status  ? 'none' : '1px solid #fff'}
-          fontWeight="normal"
-        >
-          {params.row.status ? 'Activo' : 'Inactivo'}
-        </Badge>
+        <Flex align="center">
+          <Box ml={2}>
+            <Checkbox isChecked={params.row.is_superuser} isReadOnly />
+          </Box>
+        </Flex>
       ),
     },
+    {
+      field: 'is_active',
+      headerName: '¿Está activo?',
+      width: 100,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            <Checkbox isChecked={params.row.is_active} isReadOnly />
+          </Box>
+        </Flex>
+      ),
+    },
+    
+    
+   
     {
       field: 'actions',
       headerName: 'Acciones',
@@ -84,29 +130,23 @@ import {
       renderCell: (params) => (
         <Flex justifyContent="space-around">
           <IconButton
-            aria-label="Incrementar"
-            icon={<AddIcon />}
-            onClick={() => incrementQuantity(params)}
+            aria-label="Editar"
+            icon={<EditIcon />}
+            onClick={() => editRow(params.row.id)}
             cursor="pointer"
             mx={2}
           />
-          <IconButton
-            aria-label="Decrementar"
-            icon={<MinusIcon />}
-            onClick={() => decrementQuantity(params)}
-            cursor="pointer"
-            mx={2}
-          />
+          
           <IconButton
             aria-label="Eliminar"
             icon={<DeleteIcon />}
-            onClick={() => deleteRow(params)}
+            onClick={() => deleteRow(params.row.id)}
             cursor="pointer"
             mx={2}
           />
-          <Button colorScheme="yellow" onClick={() => onSelect(params)}>
-              Select
-            </Button>
+           <Button colorScheme="yellow" onClick={() => onSelect(params)}>
+              Clonar
+            </Button> 
         </Flex>
       ),
     },

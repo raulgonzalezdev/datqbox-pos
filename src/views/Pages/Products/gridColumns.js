@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { MdSave, MdCancel, MdDelete, MdOutlineBorderColor, MdFolderCopy } from 'react-icons/md'
 import {
     Flex,
     Text,
@@ -49,52 +49,6 @@ import {
       ),
     },
     {
-      field: 'name',
-      headerName: 'Name',
-      width: 150,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          
-          <Box ml={2}>
-            <Text>{params.row.name}</Text>
-          
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'description',
-      headerName: 'description',
-      width: 150,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          
-          <Box ml={2}>
-            <Text>{params.row.description}</Text>
-          
-          </Box>
-        </Flex>
-      ),
-    },
-    {
-      field: 'vendor',
-      headerName: 'Vendedor',
-      width: 100,
-      sortable: true,
-      renderCell: (params) => (
-        <Flex align="center">
-          <Box ml={2}>
-            <Text >
-              {params.row.vendor}
-            </Text>
-            
-          </Box>
-        </Flex>
-      ),
-    },
-    {
       field: 'category',
       headerName: 'Category',
       width: 100,
@@ -111,8 +65,23 @@ import {
       ),
     },
     {
+      field: 'nameDescription',
+      headerName: 'Description',
+      width: 200,
+      sortable: true,
+      renderCell: (params) => (
+        <Flex align="center">
+          <Box ml={2}>
+            <Text>{`${params.row.name} - ${params.row.description}`}</Text>
+          </Box>
+        </Flex>
+      ),
+    },
+    
+    
+    {
       field: 'price',
-      headerName: 'price',
+      headerName: 'price $',
       width: 100,
       sortable: true,
       align: 'right',
@@ -128,8 +97,29 @@ import {
       ),
     },
     {
-      field: 'taxrate',
-      headerName: 'TaxRate',
+      field: 'pricelocal',
+      headerName: 'Price Local',
+      width: 100,
+      sortable: true,
+      align: 'right',
+      renderCell: (params) => (
+        <Flex align="center" justifyContent="flex-end">
+          <Box ml={2}>
+            <Text>
+              {params.row.price && params.row.exchangeRate && params.row.exchangeRate.rate
+                ? (params.row.price * params.row.exchangeRate.rate).toLocaleString()
+                : ''}
+            </Text>
+          </Box>
+        </Flex>
+      ),
+    },
+    
+
+
+    {
+      field: 'exchangeRate',
+      headerName: 'Exchange',
       width: 100,
       sortable: true,
       align: 'right',
@@ -137,13 +127,14 @@ import {
         <Flex align="center" justifyContent="flex-end">
           <Box ml={2}>
             <Text >
-            {params.row.price.toLocaleString()}
+            {params.row.exchangeRate.rate.toLocaleString()}
             </Text>
             
           </Box>
         </Flex>
       ),
     },
+    
     {
       field: 'newarrivals',
       headerName: 'New Arrivals',
@@ -174,7 +165,7 @@ import {
         <Flex justifyContent="space-around">
           <IconButton
             aria-label="Editar"
-            icon={<EditIcon />}
+            icon={<MdOutlineBorderColor size={20} />}
             onClick={() => editRow(params.row.id)}
             cursor="pointer"
             mx={2}
@@ -182,14 +173,21 @@ import {
           
           <IconButton
             aria-label="Eliminar"
-            icon={<DeleteIcon />}
+            icon={<MdDelete size={20} />}
             onClick={() => deleteRow(params.row.id)}
             cursor="pointer"
             mx={2}
+            
           />
-           <Button colorScheme="yellow" onClick={() => onSelect(params)}>
-              Clonar
-            </Button> 
+          
+
+            <IconButton
+            aria-label="Editar"
+            icon={<MdFolderCopy size={20} />}
+            onClick={() => onSelect(params)}
+            cursor="pointer"
+            mx={2}
+          />
         </Flex>
       ),
     },

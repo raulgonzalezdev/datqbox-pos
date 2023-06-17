@@ -42,7 +42,7 @@ function DashboardTableRow(props) {
           {members.map((member, index) => {
             return (
               <Avatar
-                 key={index} 
+                key={member.id} 
                 name='Ryan Florence'
                 src={member}
                 
@@ -53,12 +53,12 @@ function DashboardTableRow(props) {
           })}
         </AvatarGroup>
       </Td>
-      <Td borderBottomColor='#56577A' border={lastItem ? 'none' : null}>
+      <Td borderBottomColor='#56577A' border={lastItem ? 'none' : undefined}>
         <Text fontSize='sm' color='#fff' fontWeight='bold' pb='.5rem'>
           {budget}
         </Text>
       </Td>
-      <Td borderBottomColor='#56577A' border={lastItem ? 'none' : null}>
+      <Td borderBottomColor='#56577A' border={lastItem ? 'none' : undefined}>
         <Flex direction='column'>
           <Text
             fontSize='sm'
@@ -67,7 +67,7 @@ function DashboardTableRow(props) {
             pb='.2rem'>{`${progression}%`}</Text>
           <Progress
             colorScheme='brand'
-            h='3px'
+            height='3px'
             bg='#2D2E5F'
             value={progression}
             borderRadius='30px'

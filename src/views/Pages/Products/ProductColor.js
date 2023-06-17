@@ -25,18 +25,15 @@ import {
   useDisclosure,
 
 } from '@chakra-ui/react'
-
 import { IconButton, Icon } from '@chakra-ui/react'
 import { AddIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { CustomCheckbox } from 'components/CheckBox/CustomCheckBox'
-
 import {
   useGetColors,
   useCreateColor,
   useUpdateColor,
   useDeleteColor,
 } from 'graphql/color/crudColor'
-
 import ColorPicker from 'components/ColorPicker/colorPiker'
 
 function ProductColor({
@@ -153,10 +150,10 @@ function ProductColor({
                   <Box
                     key={color.id}
                     w="120%"
-                    h="auto" // ajusta la altura para que sea automática y se adapte al contenido
+                    h="auto" 
                     mb={1}
                     pr={{ base: '0', md: '4', xl: '4' }}
-                    p={1} // añade un poco de padding para dar más espacio alrededor del contenido
+                    p={1}
                   >
                     <CustomCheckbox
                       value={color.id}
@@ -185,6 +182,7 @@ function ProductColor({
                   <Stack direction="row" spacing={2}>
                     <PopoverTrigger>
                       <IconButton
+                      colorScheme="blue"
                         aria-label="Add new color"
                         icon={<AddIcon />}
                         onClick={() => {
@@ -195,8 +193,9 @@ function ProductColor({
                     </PopoverTrigger>
 
                     <IconButton
+                    colorScheme="blue"
                       aria-label="Edit color"
-                      icon={<EditIcon />}
+                      icon={<EditIcon  />}
                       onClick={() => {
                         if (radioValue) {
                           console.log(selectedColor.name)
@@ -208,8 +207,9 @@ function ProductColor({
                       }}
                     />
                     <IconButton
+                      colorScheme="red"
                       aria-label="Delete color"
-                      icon={<DeleteIcon />}
+                      icon={<DeleteIcon colorScheme="blue" />}
                       onClick={() => {
                         setActionType('delete')
                         handleSubmit('color', 'delete', radioValue.index)

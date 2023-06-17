@@ -94,7 +94,7 @@ function ImagesUpload({ onImageSelect }) {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>View All</Button>
+      <Button colorScheme="blue" mr={4} onClick={() => setIsOpen(true)}>View All</Button>
       <Modal size={'xl'} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay
           bg="none"

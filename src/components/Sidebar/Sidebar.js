@@ -1,43 +1,40 @@
 /*eslint-disable*/
-import { HamburgerIcon } from "@chakra-ui/icons";
-import {
-  Box,
+import { HamburgerIcon } from '@chakra-ui/icons'
+import { Box, Stack, Text, Portal, Flex } from '@chakra-ui/react'
 
-  Stack,
-  Text,
-
-} from "@chakra-ui/react";
-
-
-import { SidebarHelp } from "components/Sidebar/SidebarHelp";
-import PropTypes from "prop-types";
-import React from "react";
-import {  useLocation } from "react-router-dom";
-import SidebarResponsive from "./SidebarResponsive";
-import Brand from "./Brand";
-import SidebarLinks from "./SidebarLinks";
+import { SidebarHelp } from 'components/Sidebar/SidebarHelp'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { useLocation } from 'react-router-dom'
+import SidebarResponsive from './SidebarResponsive'
+import Brand from './Brand'
+import SidebarLinks from './SidebarLinks'
 
 function Sidebar(props) {
-  const location = useLocation();
-  const [state, setState] = React.useState({});
-  const mainPanel = React.useRef();
-  const variantChange = "0.2s linear";
+  const location = useLocation()
+  const [state, setState] = React.useState({})
+  const mainPanel = React.useRef()
+  const variantChange = '0.2s linear'
 
- 
+  const { logoText, routes, sidebarVariant } = props
 
-  const { logoText, routes, sidebarVariant } = props;
+  // let sidebarBg = 'linear-gradient(111.84deg, rgba(6, 11, 38, 0.94) 59.3%, rgba(26, 31, 55, 0) 100%)'
+  // let sidebarRadius = '16px'
+  // let sidebarMargins = '16px 0px 16px 16px'
 
   let sidebarBg =
-    "linear-gradient(111.84deg, rgba(6, 11, 38, 0.94) 59.3%, rgba(26, 31, 55, 0) 100%)";
-  let sidebarRadius = "16px";
-  let sidebarMargins = "16px 0px 16px 16px";
+    "linear-gradient(111.84deg, rgba(6, 11, 38, 0.94) 59.3%, rgba(26, 31, 55, 0) 100%)"
+  let sidebarRadius = "16px"
+  let sidebarMargins = "16px 0px 16px 16px"
 
   // SIDEBAR
   return (
     <Box ref={mainPanel}>
       <SidebarResponsive logoText={props.logoText} routes={props.routes} />
-      <Box display={{ sm: "none", xl: "block" }} position="fixed">
-        <Box
+      <Box display={{ sm: "none", xl: "block" }} position="fixed" overflowY="auto" h="100%">
+        <Flex
+           flexDirection="column"
+           position="relative" 
           bg={sidebarBg}
           backdropFilter="blur(10px)"
           transition={variantChange}
@@ -49,7 +46,7 @@ function Sidebar(props) {
           my={{
             sm: "16px",
           }}
-          h="calc(100vh - 32px)"
+         // h="200%"
           ps="20px"
           pe="20px"
           m={sidebarMargins}
@@ -64,11 +61,11 @@ function Sidebar(props) {
               <SidebarLinks routes={routes} sidebarVariant={sidebarVariant} />
             </Box>
           </Stack>
-          <SidebarHelp></SidebarHelp>
-        </Box>
+          <SidebarHelp/>
+        </Flex>
       </Box>
     </Box>
-  );
+  )
 }
 
 // FUNCTIONS
@@ -80,6 +77,6 @@ Sidebar.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.object),
   variant: PropTypes.string,
   sidebarVariant: PropTypes.string, // Añade esta línea
-};
+}
 
-export default Sidebar;
+export default Sidebar

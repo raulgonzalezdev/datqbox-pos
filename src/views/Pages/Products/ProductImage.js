@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Image, VStack, HStack, Stack, Input, useBreakpointValue, Flex, Grid, SimpleGrid, Button } from '@chakra-ui/react'
-
 import { BaseFlex, StyledText, StyledInput, StyledFormLabel } from 'components/ReusableComponents/ReusableComponents'
 import ImagesUpload from 'components/ImagesUpload/ImagesUpload'
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
 import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 import { useDropzone } from 'react-dropzone'
 import { REMOVE_PRODUCT_IMAGES, REMOVE_IMAGE } from 'graphql/image/crudImage'
@@ -63,7 +62,14 @@ function ProductImage({ formState, productId, onImageSelect, handleChange }) {
   }
 
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } = useDropzone({
-    accept: ['image/jpeg', 'image/png', 'image/gif'],
+    accept: {
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/png': ['.png'],
+      'image/gif': ['.gif'],
+      'image/svg+xml': ['.svg'],
+      'image/jpg': ['.jpg']
+    }
+    ,
     maxSize: 5 * 1024 * 1024,
     onDrop: (acceptedFiles) => {
       const images = acceptedFiles.map((file) =>
@@ -82,7 +88,14 @@ function ProductImage({ formState, productId, onImageSelect, handleChange }) {
     acceptedFiles: mainAcceptedFiles,
     fileRejections: mainFileRejections,
   } = useDropzone({
-    accept: ['image/jpeg', 'image/png', 'image/gif'],
+    accept: {
+      'image/jpeg': ['.jpeg', '.jpg'],
+      'image/png': ['.png'],
+      'image/gif': ['.gif'],
+      'image/svg+xml': ['.svg'],
+      'image/jpg': ['.jpg']
+    }
+    ,
     maxSize: 5 * 1024 * 1024,
     maxFiles: 1, // Asegúrate de aceptar solo una imagen
     onDrop: (acceptedFiles) => {

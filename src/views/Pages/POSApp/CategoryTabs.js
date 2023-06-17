@@ -14,51 +14,67 @@ import {
   Stack,
   Heading,
   Divider,
+  Input,
 } from '@chakra-ui/react'
-import { productosRows as productsList, categories } from 'variables/products'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
 
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
-import GradientBorder from 'components/GradientBorder/GradientBorder'
+import useProducts from './useProducts'
 
-const CategoryTabs = ({ handleProductDoubleClick }) => {
+const CategoryTabs = ({ rows, setRows, updateTotal, handleProductDoubleClick }) => {
+  const { 
+    products, 
+    loadingProducts, 
+    selectedProduct, 
+    foundProducts, 
+    searchProduct, 
+    handleProductSelect, 
+    loadingCategories, 
+    categories, 
+    searchValue, 
+    handleSearchChange, 
+    filteredProducts 
+  } = useProducts(rows, setRows, updateTotal)
+
+  if (loadingProducts || loadingCategories) {
+    return <p>Loading...</p>
+  }
+
   return (
-    <Tabs
-      isLazy
-      variant="enclosed"
-      colorScheme="gray"
-      width={{ base: 'auto', md: '100%' }}
-    >
-      <TabList width={{ base: 'auto', md: '100%' }}>
-        {categories.map((category) => (
-          <Tab key={category.id} color="white">
-            {category.categoryName}
-          </Tab>
-        ))}
-      </TabList>
+    <Tabs isLazy variant="enclosed" colorScheme="gray" width={{ base: 'auto', md: '100%' }}>
+     <TabList width={{ base: 'auto', md: '100%' }}>
+  {categories.map((category) => (
+    <Tab key={category.id} color="white">
+      {category.image && (
+        <Image src={category.image} h="24px" w="24px" alt={category.name} style={{ marginRight: '5px' }} />
+      )}
+      {category.name}
+    </Tab>
+  ))}
+</TabList>
 
       <Box>
+        <Input
+          style={{
+            fontSize: '24px',
+            cursor: 'text',
+            backgroundColor: 'white',
+            color: 'black',
+          }}
+          placeholder="Buscar productos..."
+          value={searchValue}
+          onChange={handleSearchChange}
+          mt={3}
+        />
+
         <TabPanels width={{ base: 'auto', md: '100%' }} mt={4}>
           {categories.map((category) => (
             <TabPanel key={category.id}>
-              {/* <GradientBorder p="2px"> */}
               <Card marginLeft="-5" marginRight="5" w={{ base: '100%', md: '108%', '2xl': '100%' }} h="100%">
-  
-
-                <CardBody
-                  overflowY="auto"
-                  maxH={{ base: '150px', md: '600px' }}
-                  width={{ base: 'auto', md: '100%' }}
-                >
-                  {/* <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 5 }} spacing={4}> */}
-                  <SimpleGrid
-                    columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3, '2xl': 4 }}
-                    spacing={4}
-                  >
-                    {productsList
-                      .filter(
-                        (product) => product.category === category.categoryName
-                      )
+                <CardBody overflowY="auto" maxH={{ base: '150px', md: '600px' }} width={{ base: 'auto', md: '100%' }}>
+                  <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 3, '2xl': 4 }} spacing={4}>
+                    {filteredProducts
+                      .filter((product) => product.category.id === category.id)
                       .map((product) => (
                         <ChakraCard
                           key={product.id}
@@ -79,7 +95,7 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                           minHeight="100px"
                         >
                           <Image
-                            src={product?.imageUrl}
+                            src={product?.image}
                             fallbackSrc="https://via.placeholder.com/350"
                             alt="Product Image"
                             objectFit="cover"
@@ -88,22 +104,11 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                           />
 
                           <ChakraCardBody>
-                            <Heading
-                              fontSize="0.7rem"
-                              ml="-4"
-                              mt="-2"
-                              textAlign="center"
-                              noOfLines={3}
-                            >
-                              {product.productName}
+                            <Heading fontSize="0.7rem" ml="-4" mt="-2" textAlign="center" noOfLines={3}>
+                              {product.name}
                             </Heading>
 
-                            <Text
-                              py="2"
-                              color="blue.600"
-                              fontSize="md"
-                              textAlign="right"
-                            >
+                            <Text py="2" color="blue.600" fontSize="md" textAlign="right">
                               {product.price}
                             </Text>
                           </ChakraCardBody>
@@ -112,7 +117,6 @@ const CategoryTabs = ({ handleProductDoubleClick }) => {
                   </SimpleGrid>
                 </CardBody>
               </Card>
-              {/* </GradientBorder> */}
             </TabPanel>
           ))}
         </TabPanels>

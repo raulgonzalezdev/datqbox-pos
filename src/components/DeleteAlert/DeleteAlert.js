@@ -1,7 +1,5 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
-
-
 import {
   AlertDialog,
   AlertDialogBody,
@@ -30,13 +28,17 @@ const DeleteAlert = ({
   const handleDeleteClick = async () => {
     try {
       let result
+     
 
       if (id) {
+        console.log('Prueba de eliminación: ID', id, 'Mutación', mutation)
         result = await deleteMutation({
           variables: {
             id: id,
           },
         })
+
+        console.log('Resultado de eliminación:', result)
       } else if (productId) {
        
      
@@ -52,11 +54,11 @@ const DeleteAlert = ({
         result = await deleteMutation(query)
        
       } else {
-        console.log('no hay opción')
+        console.log('no hay opción: ID', id)
       }
-
-      onClose()
       handleConfirm()
+      onClose()
+      
 
       toast({
         title: modelName + ' excluído.',

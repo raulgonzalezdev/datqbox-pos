@@ -1,5 +1,6 @@
 import React from 'react'
-import Stepper from 'components/Stepper/Stepper.js'
+import Stepper from 'components/Stepper/Stepper'
+
 import AccountingPeriods from './AccountingPeriods'
 import BankAccountsList from './BankAccountsList'
 import CreateBankAccount from './CreateBankAccount'

@@ -29,7 +29,7 @@ export default function AuthFooter(props) {
         </Text>
         
         <Link href='https://www.datqbox.com' target='_blank'>
-          {document.documentElement.dir === "rtl" ? "سيممبل " : " DatqBox Systems"}
+          {document.documentElement.dir === "rtl" ? "سيممبل " : " DatqBox  "}
         </Link>
         {document.documentElement.dir === "rtl"
           ? "للحصول على ويب أفضل"
@@ -42,7 +42,7 @@ export default function AuthFooter(props) {
             base: "20px",
           }}>
           <Link color='white' fontSize='sm' href='https://www.datqbox.com'>
-            {document.documentElement.dir === "rtl" ? "سيممبل" : "DatqBox Systems"}
+            {document.documentElement.dir === "rtl" ? "سيممبل" : "DatqBox  "}
           </Link>
         </ListItem>
         <ListItem

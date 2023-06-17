@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { SketchPicker } from 'react-color'
+
 import TextColorBasedOnBgColor from './color.utils'
 
 const ColorPicker = ({ boxProps, handleColor }) => {

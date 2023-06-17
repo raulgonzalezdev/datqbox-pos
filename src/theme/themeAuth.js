@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+
 import { globalStyles } from './styles'
 import { bgAuth } from './bgAuth'
 // import { breakpoints } from "./foundations/breakpoints";

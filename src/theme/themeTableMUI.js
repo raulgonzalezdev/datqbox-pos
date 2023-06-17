@@ -52,19 +52,31 @@ const taxTableTheme = createTheme({
         },
       },
     },
+    MuiPickersDay: {
+      day: {
+        color: '#56577A',
+      },
+      daySelected: {
+        color: '#000000',
+      },
+      text:{
+        primary:'#56577A', 
+      }
+    },
+    MuiIconButton: {
+      root: {
+        color: '#56577A',
+      },
+    },
   },
   palette: {
     primary: {
-      main: '#fff',
+      main: '#56577A',
     },
     text: {
       primary: '#56577A',
     },
   },
 })
-
-
-
-
 
 export default taxTableTheme

@@ -22,7 +22,6 @@ import {
   DarkMode,
   LightMode,
 } from '@chakra-ui/react'
-
 import { Separator } from 'components/Separator/Separator'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'

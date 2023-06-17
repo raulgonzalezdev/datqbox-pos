@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import DataTable from 'components/Tables/DataTable'
-import {
-  useGetProducts,
-  DELETE_PRODUCT,
-  useCreateProduct,
-} from 'graphql/products/crudProducts'
-import { createColumns } from './gridColumns'
-import ProductForm from './ProductForm'
+import { useGetProducts, DELETE_PRODUCT, useCreateProduct } from 'graphql/products/crudProducts'
 import DeleteAlert from 'components/DeleteAlert/DeleteAlert'
 
+import { createColumns } from './gridColumns'
+import ProductForm from './ProductForm'
 
-
-const ProductsList = () => {
+const ProductsList = ({ ptValue, onProductSelect, loadedProducts }) => {
   const [createProduct, { loading: createLoading }] = useCreateProduct()
   const toast = useToast()
 
   const editRow = (rowData) => {
-
     setShowProductForm(true)
     setProductId(rowData)
   }
   const deleteRow = (rowData) => {
-   
     setProductId(rowData)
     setShowDeleteAlert(true)
   }
 
+  const handleProductDoubleClick = (rowData) => {
+ 
+    if (onProductSelect) {
+      onProductSelect(rowData)
+    }
+  }
+
   const handleSelect = async (rowData) => {
-    
-  
-    const newProduct = { 
+    let expirationDate
+
+      if (rowData.row.expirationDate !== null) {
+        const expirationDateMillis = Number(rowData.row.expirationDate)
+        if (!isNaN(expirationDateMillis)) {
+          expirationDate = new Date(expirationDateMillis).toISOString().split('T')[0]
+        }
+      }
+
+    const newProduct = {
       name: rowData.row.name,
       vendor: rowData.row.vendor,
       sku: rowData.row.sku,
@@ -40,17 +47,24 @@ const ProductsList = () => {
       inventory: parseFloat(rowData.row.inventory),
       rentalType: rowData.row.rentalType,
       featured: rowData.row.featured,
+      taxInclued: rowData.row.taxInclued,
       newarrivals: rowData.row.newarrivals,
       taxRate: parseFloat(rowData.row.taxRate),
       categoryId: rowData.row.category.id,
-  }
-  
-  
-   
+      unit: rowData.row.unit,
+      exchangeRateId: rowData.row.exchangeRate.currencyId,
+      requiresPrescription: rowData.row.requiresPrescription,
+      expirationDate: expirationDate,
+      dosage: rowData.row.dosage,
+      usageInstructions:rowData.row.usageInstructions,
+      contraindications:rowData.row.contraindications,
+      activeIngredient:rowData.row.activeIngredient,
+    }
+     //console.log({ variables: { input: newProduct } })
+
     try {
       const result = await createProduct({ variables: { input: newProduct } })
-     
-  
+
       // Update the UI to reflect the new product
       setRows([...rows, result.data.createProduct])
 
@@ -64,7 +78,7 @@ const ProductsList = () => {
       })
     } catch (error) {
       console.error('Error creating new product:', error)
-  
+
       // Show error toast
       toast({
         title: 'Error',
@@ -75,38 +89,36 @@ const ProductsList = () => {
       })
     }
   }
-  
-  
 
   const columns = createColumns(editRow, deleteRow, handleSelect)
 
   const [initialLoad, setInitialLoad] = useState(true)
   const { data, loading, error, refetch } = useGetProducts({
-    skip: !initialLoad,
+    skip: !!loadedProducts,
   })
 
   const [showProductForm, setShowProductForm] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [productId, setProductId] = useState(null)
 
-
-
   const [rows, setRows] = useState([])
 
-
   useEffect(() => {
-    if (data && data.products) {
-      setRows(data.products)
+    
+    const productsData = loadedProducts || (data && data.products)
+    if (productsData) {
+      setRows(productsData)
       setInitialLoad(false)
     }
-  }, [data])
-  
+  }, [data, loadedProducts])
+
+
+
   const handleConfirmDelete = async () => {
     try {
       const result = await refetch()
-     
+
       setShowProductForm(false)
-     
     } catch (error) {
       console.error('Refetch error:', error)
     } finally {
@@ -114,8 +126,6 @@ const ProductsList = () => {
       setProductId(null)
     }
   }
-  
-  
 
   const handleAdd = () => {
     console.log('Add new record')
@@ -135,6 +145,10 @@ const ProductsList = () => {
   const handleCloseDeleteAlert = () => {
     setShowDeleteAlert(false)
     setProductId(null)
+  }
+
+  const handleRowSelect = (params) => {
+    handleProductDoubleClick(params.row)
   }
 
   // if (loading) return <p>Loading...</p>;
@@ -161,7 +175,9 @@ const ProductsList = () => {
           onAdd={handleAdd}
           onSelect={handleSelect}
           onDelete={deleteRow}
+          onRowDoubleClick={handleRowSelect}
           refetchData={() => refetch()}
+          ptValue={ptValue}
         />
       )}
     </>
