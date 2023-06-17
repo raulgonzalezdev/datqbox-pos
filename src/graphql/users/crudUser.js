@@ -27,6 +27,7 @@ const LOGIN_USER = gql`
         lastName
         email
         avatar
+        role
       }
     }
   }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { 
   Accordion, 
   AccordionItem, 
@@ -14,15 +14,27 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import IconBox from 'components/Icons/IconBox'
 
+//import { AuthContext } from '../../AuthContext'
+
+
+
+
 
 const SidebarLinks = (props) => {
     const { routes, sidebarVariant } = props
     const variantChange = '0.2s linear'
+   // const { userData, setUserData } = useContext(AuthContext)
     const [state, setState] = React.useState({})
     const activeRoute = (routeName) => {
       return location.pathname === routeName ? 'active' : ''
     }
-  
+    //
+    const userDataObj = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+
+    //setUserData(userDataObj)
+
+    const role = userDataObj ? userDataObj.role : null
+
     const createLinks = (routes) => {
 
       if (!routes || routes.length < 1) {
@@ -37,7 +49,13 @@ const SidebarLinks = (props) => {
         let sidebarActiveShadow = 'none'
     
         return routes
-        .filter(prop => prop.path !== undefined)
+        .filter((prop) => {
+          if (role === 'ADMIN') {
+            return true // Mostrar todas las rutas para el rol de "ADMIN"
+          } else {
+            return prop.role === 'ALL' || prop.role === 'USER' // Mostrar rutas con role "ALL" o "USER" para el rol de "USER"
+          }
+        })
           .map((prop, key) => {
             if (prop.redirect) {
               return null
@@ -121,7 +139,7 @@ const SidebarLinks = (props) => {
             }
     
             return (
-              <NavLink to={prop.layout + prop.path}>
+              <NavLink key={prop.path} to={prop.layout + prop.path}>
                 {activeRoute(prop.layout + prop.path) === 'active' ? (
                   <Button
                     boxSize="initial"

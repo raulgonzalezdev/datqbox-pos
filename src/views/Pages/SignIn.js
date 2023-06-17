@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Box, Flex, Button, FormControl, FormLabel, Heading, Input, Link, Switch, Text, DarkMode, useToast, HStack, Icon, useDisclosure } from '@chakra-ui/react'
 import signInImage from 'assets/img/signInImage.png'
@@ -20,7 +20,9 @@ function SignIn() {
   const [password, setPassword] = React.useState('')
   const [rememberMe, setRememberMe] = React.useState(false)
   const history = useHistory()
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
+  const [userDat, setUserDat] = useState(null)
+  const { isAuthenticated, setIsAuthenticated, userData, setUserData } = useContext(AuthContext)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const toast = useToast()
@@ -49,11 +51,23 @@ function SignIn() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/pos')
-      // } else if (!isAuthenticated && currentLocation !== '/auth/signin') {
-      //   history.push('/auth/signin')
+     console.log(userDat)
+      if (userDat.role ==='ADMIN') {
+        history.push('/admin/dashboard')
+      } else {
+      const currentLocation = history.location.pathname
+      if (currentLocation !== '/pos') {
+        history.push('/pos')
+      }
     }
+  }
   }, [isAuthenticated, history])
+  
+
+  useEffect(() => {
+   // console.log('userDataaaaaaa', userDat)
+    setUserData(userDat)
+  }, [userDat])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -61,8 +75,15 @@ function SignIn() {
       const response = await signIn({ variables: { email, password } })
 
       if (response && response.data && response.data.loginUser) {
-        const { token } = response.data.loginUser
+        const { token, user } = response.data.loginUser
+     
+       
         localStorage.setItem('authToken', token)
+        localStorage.setItem('user', JSON.stringify(user)) 
+        setUserDat(user)
+        // console.log('userData',userData)
+      
+
         setIsAuthenticated(true)
 
         // Aquí agregamos un mensaje de toast para el éxito

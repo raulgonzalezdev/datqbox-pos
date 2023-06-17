@@ -1,5 +1,6 @@
 
 // Chakra imports
+import React from 'react'
 import {
 	Box,
 	Button,
@@ -24,7 +25,7 @@ import {
 	Tr
 } from '@chakra-ui/react'
 // Styles for the circular progressbar
-import medusa from 'assets/img/cardimgfree.png'
+import medusa from 'assets/img/signInImage.png'
 // Custom components
 import Card from 'components/Card/Card'
 import CardBody from 'components/Card/CardBody'
@@ -36,7 +37,6 @@ import IconBox from 'components/Icons/IconBox'
 import { CartIcon, DocumentIcon, GlobeIcon, RocketIcon, StatsIcon, WalletIcon } from 'components/Icons/Icons'
 import DashboardTableRow from 'components/Tables/DashboardTableRow'
 import TimelineRow from 'components/Tables/TimelineRow'
-import React from 'react'
 import { AiFillCheckCircle } from 'react-icons/ai'
 import { BiHappy } from 'react-icons/bi'
 import { BsArrowRight } from 'react-icons/bs'
@@ -50,7 +50,10 @@ import {
 } from 'variables/charts'
 import { dashboardTableData, timelineData } from 'variables/general'
 
+
 export default function Dashboard() {
+
+	const userDataObj = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
 	return (
 		<Flex flexDirection='column' pt={{ base: '120px', md: '75px' }}>
 			<SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px'>
@@ -191,7 +194,8 @@ export default function Dashboard() {
 									Welcome back,
 								</Text>
 								<Text fontSize='28px' color='#fff' fontWeight='bold' mb='18px'>
-									Mark Johnson
+								     {userDataObj.firstName + ' '+ userDataObj.lastName}
+									
 								</Text>
 								<Text fontSize='md' color='gray.400' fontWeight='normal' mb='auto'>
 									Glad to see you again! <br />

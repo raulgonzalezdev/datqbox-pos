@@ -7,16 +7,22 @@ import AppContent from './AppContent'
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('authToken'))
+  const [userData, setUserData] = useState()
 
+  //console.log('userData', userData)
   const handleLogout = () => {
-    localStorage.removeItem('authToken')
+    //localStorage.removeItem('authToken')
     setToken(null)
+    setUserData(null)
   }
 
   useEffect(() => {
     const handleStorage = (e) => {
       if (e.key === 'authToken') {
         setToken(localStorage.getItem('authToken'))
+      }
+      if (e.key === 'user') {
+        setUserData(localStorage.getItem('user'))
       }
     }
 
@@ -29,7 +35,7 @@ const App = () => {
 
   return (
     <ApolloProvider client={client}>
-      <AppContent onLogout={handleLogout} token={token} />
+      <AppContent onLogout={handleLogout} token={token} login={userData}  />
     </ApolloProvider>
   )
 }

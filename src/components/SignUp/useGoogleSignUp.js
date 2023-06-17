@@ -33,14 +33,16 @@ const GoogleSignUp = () => {
   async function handleSuccess(credentialResponse: CredentialResponse) {
     if (credentialResponse.credential) {
       const { payload } = decodeJwt(credentialResponse.credential)
-      console.log('payload credential', payload)
+      //console.log('payload credential', payload)
   
       const response = await signIn({ variables: { email: payload.email, password: payload.sub } })
   
       if (response && response.data && response.data.loginUser && response.data.loginUser.user) {
         // El usuario ya existe, realizar el inicio de sesión
-        const { token } = response.data.loginUser
+        const { token, user } = response.data.loginUser
         localStorage.setItem('authToken', token)
+        localStorage.setItem('user', JSON.stringify(user))
+
         setIsAuthenticated(true)
   
         toast({
@@ -50,8 +52,14 @@ const GoogleSignUp = () => {
           duration: 5000,
           isClosable: true,
         })
-  
-        history.push('/pos')
+        
+        if (user.role==='ADMIN')  {
+          history.push('/admin/dashboard')
+        } else {
+          history.push('/pos')
+        }
+
+
       } else {
         // El usuario no existe, crear un nuevo usuario
         const newUser = {
@@ -68,8 +76,9 @@ const GoogleSignUp = () => {
         const addUserResponse = await addUser({ variables: { input: newUser } })
   
         if (addUserResponse && addUserResponse.data && addUserResponse.data.addUser && addUserResponse.data.addUser.user) {
-          const { token } = addUserResponse.data.addUser
+          const { token, user } = addUserResponse.data.addUser
           localStorage.setItem('authToken', token)
+          localStorage.setItem('user', JSON.stringify(user))
           setIsAuthenticated(true)
           
 

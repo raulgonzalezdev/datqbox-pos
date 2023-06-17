@@ -10,8 +10,10 @@ import { clientId } from 'variables/clienteId'
 
 import { AuthContext } from './AuthContext'
 
-const AppContent = ({ onLogout, token }) => {
+const AppContent = ({ onLogout, token, login }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [userData, setUserData] = useState(null)
+
   const clientGoogle = clientId
   const { loading, error, data } = useQuery(VALIDATE_TOKEN, {
     variables: { token },
@@ -25,32 +27,44 @@ const AppContent = ({ onLogout, token }) => {
     },
   })
 
+  // Actualizar userData cuando login cambie
+  useEffect(() => {
+    if (login) {
+      setUserData(login)
+    } else {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        setUserData(JSON.parse(storedUser))
+      }
+    }
+  }, [login])
+
   if (loading) {
     return null
   }
 
   return (
     <GoogleOAuthProvider clientId={clientGoogle}>
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-      <HashRouter>
-        <Switch>
-          <Route path={'/auth'} component={AuthLayout} />
-          <Route
-            path={'/admin'}
-            render={(props) =>
-              isAuthenticated ? <AdminLayout {...props} onLogout={onLogout} /> : <Redirect to="/auth/signin" />
-            }
-          />
-          <Route
-            path={'/pos'}
-            render={(props) =>
-              isAuthenticated ? <PosLayout {...props} onLogout={onLogout} /> : <Redirect to="/auth/signin" />
-            }
-          />
-          <Redirect from={'/'} to={isAuthenticated ? '/pos' : '/auth/signin'} />
-        </Switch>
-      </HashRouter>
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userData, setUserData }}>
+        <HashRouter>
+          <Switch>
+            <Route path={'/auth'} component={AuthLayout} />
+            <Route
+              path={'/admin'}
+              render={(props) =>
+                isAuthenticated ? <AdminLayout {...props} onLogout={onLogout} /> : <Redirect to="/auth/signin" />
+              }
+            />
+            <Route
+              path={'/pos'}
+              render={(props) =>
+                isAuthenticated ? <PosLayout {...props} onLogout={onLogout} /> : <Redirect to="/auth/signin" />
+              }
+            />
+            <Redirect from={'/'} to={isAuthenticated ? '/pos' : '/auth/signin'} />
+          </Switch>
+        </HashRouter>
+      </AuthContext.Provider>
     </GoogleOAuthProvider>
   )
 }
