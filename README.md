@@ -1,45 +1,43 @@
-# datqbox-backend
+# datqbox-pos
 
 ## Description
 
-This is the "datqbox-backend" project, version 1.0.0. It is a backend application developed using Node.js, Express, and Sequelize ORM. It provides GraphQL API endpoints for a commerce platform.
+This is a project named "datqbox-pos" with version 1.0.1. It is a private repository hosted on GitLab at [https://gitlab.com/datqbox/datqbox-pos](https://gitlab.com/datqbox/datqbox-pos).
+
+## Dependencies
+
+- [@apollo/client](https://www.npmjs.com/package/@apollo/client) - v3.7.14
+- [@babel/eslint-parser](https://www.npmjs.com/package/@babel/eslint-parser) - v7.21.8
+- [@chakra-ui/icons](https://www.npmjs.com/package/@chakra-ui/icons) - v2.0.19
+- [@chakra-ui/react](https://www.npmjs.com/package/@chakra-ui/react) - v2.6.1
+- ... (list of other dependencies)
 
 ## Getting Started
 
 To get started with this project, follow these steps:
 
-1. Clone the repository: `git clone https://gitlab.com/datqbox/datqbox-backend`
-2. Install the dependencies: `npm install`
-3. Set up the PostgreSQL database:
-   - Ensure PostgreSQL is installed and running.
-   - Create a database named "ecommerce".
-   - Set up the database connection in the `.env` file.
-4. Run database migrations: `npx sequelize-cli db:migrate`
-5. Start the server: `npm start`
+1. Clone the repository: `git clone https://gitlab.com/datqbox/datqbox-pos`
+2. Install the dependencies: `yarn install`
+3. Start the application: `yarn start`
 
 ## Scripts
 
-- `start`: Starts the server using Node.js
-- `chmod`: Grants execution permissions to shell scripts
-- `db`: Runs the shell script to set up the database
-- `test`: Runs the tests (currently no tests specified)
+- `start`: Starts the development server
+- `build`: Builds the production-ready application
+- `test`: Runs the tests
+- ... (other available scripts)
 
-## Dependencies
+## Contributing
 
-- [apollo-server](https://www.npmjs.com/package/apollo-server) - v3.12.0
-- [bcryptjs](https://www.npmjs.com/package/bcryptjs) - v2.4.3
-- [cors](https://www.npmjs.com/package/cors) - v2.8.5
-- [crypto](https://nodejs.org/api/crypto.html) - v1.0.1
-- [dotenv](https://www.npmjs.com/package/dotenv) - v16.0.3
-- [express](https://www.npmjs.com/package/express) - v4.18.2
-- ... (list of other dependencies)
+To contribute to this project, please follow these guidelines:
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Open a pull request
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
-## Notes
-
-- Ensure PostgreSQL is installed and running with a database named "ecommerce" before starting the server.
-
-For more information, please refer to the [GitLab repository](https://gitlab.com/datqbox/datqbox-backend).
+For more information, visit the [homepage](https://datqbox.com).
